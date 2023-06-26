@@ -15,9 +15,9 @@
 
 ![](screenshots/cover.png) -->
 
-## [Live Site](https://devfrom.netlify.app)
+<!-- ## [Live Site](https://devfrom.netlify.app)
 
-## [Backend API](https://devfrom.herokuapp.com/)
+## [Backend API](https://devfrom.herokuapp.com/) -->
 
 ## Tech
 
