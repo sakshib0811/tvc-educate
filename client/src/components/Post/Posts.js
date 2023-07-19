@@ -9,10 +9,11 @@ const Posts = ({ cover }) => {
     const fetchPosts = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/posts`
+          //`${process.env.REACT_APP_BASE_URL}/posts`
+          "http://localhost:5000/api/posts"
         );
         setLoadedPosts(responseData.posts);
-      } catch (err) {}
+      } catch (err) {console.log(err);}
     };
     fetchPosts();
   }, [sendReq]);

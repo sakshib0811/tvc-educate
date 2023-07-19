@@ -18,7 +18,7 @@ const Footer = () => {
         </a>
         .
       </p> */}
-      <p>TVC Educate! By the youth and For the Youth.</p>
+      <p>TVC Educate! By the Youth and For the Youth.</p>
     </footer>
   );
 };

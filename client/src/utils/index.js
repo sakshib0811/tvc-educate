@@ -76,3 +76,15 @@ export const renderAlternateSkeletons = (elementOne, elementTwo, count) => {
   }
   return skeletons;
 };
+
+export const bodyShortener = (str) => {
+  let res = "";
+  //return res;
+  let n = str.length > 100 ? 100 : str.length;
+  for(let i = 0; i < n ; i++)
+  {
+    res += str[i];
+  }
+  res += "....";
+  return res;
+}

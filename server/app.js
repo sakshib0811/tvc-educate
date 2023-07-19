@@ -73,7 +73,7 @@ app.use("/api/comments", commentsRoutes);
 app.use("/api/tags", tagsRoutes);
 
 app.get("/", (req, res) => {
-  res.send("DEV.to is running");
+  res.send("TVC Educate is running");
 });
 
 // app.use((req, res, next) => {

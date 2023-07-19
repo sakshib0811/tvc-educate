@@ -94,7 +94,7 @@ POST PREVIEW
 .preview .author__name {
   font-weight: 500;
   margin-top: 0;
-  color: var(--color-black);
+  /* color: var(--color-black); */
   display: inline-block;
 }
 

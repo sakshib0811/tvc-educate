@@ -10,10 +10,10 @@ const AuthModal = (props) => {
     <Modal title='Log in to continue' show={props.show} onClose={props.onClose}>
       <div className='modal__container'>
         <NavLink to='/' className='header__logo nav__logo--modal'>
-          <FaDev size='6.125rem' />
+          {/* <FaDev size='6.125rem' /> */} <p size='6.125rem'>TVC EDUCATE</p>
         </NavLink>
         <p>
-          We're a place where coders share, stay up-to-date and grow their
+          TVC Educate is a place where students share, stay up-to-date and grow their
           careers.
         </p>
         <ul className='nav__list nav__list--modal'>
