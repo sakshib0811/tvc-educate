@@ -17,9 +17,9 @@ ul.sidebar__list {
 }
 
 .sidebar__list{
-  background: #e8106b;
+  background: #ebf2f5 !important;
   margin-right: 10px;
-   border: 2px solid #fae903;
+   /* border: 2px solid #fae903; */
    border-radius: 7px;
 }
 
@@ -42,7 +42,7 @@ ul.sidebar__list li:not(:first-child) {
 }
 
 .sidebar__list a {
-  color: #fae903;
+  color: #01427a;
   display: flex;
   align-items: center;
   /* width: 98%; */

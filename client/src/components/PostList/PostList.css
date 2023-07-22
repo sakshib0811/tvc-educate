@@ -58,7 +58,49 @@ POST PREVIEW
 .title-link h2 {
   font-size: 2.4rem;
   margin-bottom: 1rem;
+  color: #01427a;
+  font-weight: 600;
+  position: relative; 
 }
+
+.title-link h2::after{
+  content: "";
+  height: 2px;
+  display: block;
+  background: #e14177;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+
+}
+
+.title-link h2:hover{
+  color: #e14177;
+  /* width: 100%; 
+  left: 0; */
+  /* content: "";
+  display: block;
+  height: 3.8rem;
+  background: #e14177;
+  text-decoration: underline; */
+}
+
+/* .title-link h2::after {    
+  background: none repeat scroll 0 0;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #fff;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+  color:#e14177 ;
+}
+.title-link h2:hover::after{ 
+  width: 100%; 
+  left: 0; 
+  color:#e14177 ;
+} */
 
 .preview__tags {
   display: flex;
@@ -172,14 +214,16 @@ POST PREVIEW
 
 button.btn--save {
   /* background: #d6d6d7; */
-  background: rgb(157, 181, 226);
+  background: #e14177;
+  color: #fff;
   text-transform: none;
   font-size: 1.4rem;
   padding: 0.8rem 1rem;
 }
 
 button.btn--save:hover {
-  background: #bdbdbd;
+  background: #ebf2f5;
+  color: #01427a;
  ;
 }
 

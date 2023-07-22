@@ -4,9 +4,9 @@
   padding: 2rem;
   padding-bottom: 1rem;
   gap: 2rem;
-  color: #fae903;
-  background: #e8106b;
-  border: 2px solid #fae903;
+  color: #01427a;
+  background:  #ebf2f5 !important;
+  /* border: 2px solid #e14177; */
   border-radius: 7px;
 }
 
@@ -31,9 +31,9 @@
   font-weight: 800;
   font-size: 2rem;
   line-height: 1.3;
-  color: #fae903;
+  color: #01427a;
 }
 
 .about__bold--co {
-  color: #fae903;
+  color: #01427a;
 }
