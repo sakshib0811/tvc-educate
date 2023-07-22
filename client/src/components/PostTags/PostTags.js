@@ -9,7 +9,7 @@ export const PostTags = ({ tags }) => {
         tags.map((tag, i) => (
           <li key={i} className='preview__tag preview__tag--post'>
             <Link to={`/tags/${tag.name}`}>
-              <span style={{ color: getRandomColor() }}>#</span>
+              <span style={{ color: "rgb(187, 254, 142)" }}>#</span>
               {tag.name}
             </Link>
           </li>

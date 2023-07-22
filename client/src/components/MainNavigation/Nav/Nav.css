@@ -137,7 +137,8 @@ NAV
 
 .item--create:hover,
 .item--create:focus {
-  background-color: var(--color-primary);
+  /* background-color: var(--color-primary); */
+  opacity: 0.5;
   text-decoration: underline;
 }
 
@@ -193,16 +194,19 @@ NAV
 
 .hvr-bg-lt:hover,
 .hvr-bg-lt:focus {
-  color: var(--color-primary);
-  background-color: rgba(49, 62, 190, 0.2);
+  transform: scale(1.01);
+  color: #fae903;
+  /* background-color: #fae903; */
+  opacity: 0.6;
   text-decoration: underline;
   border-radius: var(--border-radius);
 }
 
 .item--create:hover,
 .item--create:focus {
-  background-color: var(--color-primary);
-  color: #fff;
+  /* background-color: #ffffff; */
+  opacity: 0.6;
+  color: #fae903;
   text-decoration: underline;
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import NewPost from './pages/NewPost/NewPost';
 import EditPost from './pages/EditPost/EditPost';
@@ -17,11 +17,13 @@ import Footer from './components/Footer/Footer';
 import { AuthContext } from './context/auth';
 import { BrowserRouter as Router } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
+import useAuth from './hooks/useAuth';
 
 
 const MainRouter = ({ token }) => {
   let routes;
   const { isLoggedIn } = useContext(AuthContext);
+  
   if (isLoggedIn) {
     routes = (
       <>
@@ -66,7 +68,7 @@ const MainRouter = ({ token }) => {
           <Route path='/posts/:titleURL/:postId/edit' exact>
             <EditPost />
           </Route>
-          <Redirect to='/auth' />
+          <Redirect to="/home" />
         </Switch>
         <Footer />
       </>
@@ -104,7 +106,7 @@ const MainRouter = ({ token }) => {
           <Route path='/posts/:titleURL/:postId' exact>
             <Post />
           </Route>
-          <Redirect to='/auth' />
+          <Redirect to="/auth" />
         </Switch>
         <Footer />
       </>

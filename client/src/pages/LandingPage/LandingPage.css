@@ -178,8 +178,8 @@
   .col4gy3row:hover {
     transform: scale(1.01);
     transition: all .6s ease-out;
-    background: linear-gradient(to right, white 50%, #e8106b 50%);
-    background-size: 200% 100%;
+    background: linear-gradient(to right, #e8106b 50%, white);
+    background-size: 100% 200%;
     color: #fae903;
     background-position: right bottom;
   }
@@ -280,8 +280,8 @@
   .col4gy3row02:hover {
     /* transform: scale(1.01); */
     transition: all .6s ease-out;
-    background: linear-gradient(to right, white 50%, #e8106b 50%);
-    background-size: 200% 100%;
+    background: linear-gradient(to right, #e8106b 50%, white);
+    background-size: 100% 200%;
     color: #fae903;
     background-position: right bottom;
   }

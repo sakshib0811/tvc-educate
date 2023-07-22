@@ -23,7 +23,7 @@ const PostContent = ({ post, handleDelete }) => {
       <div className='post__body'>
         <div className='post__author'>
           <Avatar link={`/users/${author.id}`} src={author.avatar} />
-          <div className='author__details'>
+          <div className=''>
             <Link to={`/users/${author.id}`}>
               <h4>{author.name}</h4>
             </Link>

@@ -29,8 +29,8 @@ const Auth = ({ newUser }) => {
   const formValues = renderFormValues();
   const formInputs = renderFormInputs();
 
-  // const { login, token, isLoggedIn } = useContext(AuthContext);
-  const { login, token, isLoggedIn } = useAuth();
+  const { login } = useContext(AuthContext);
+  // const { login, token, isLoggedIn } = useAuth();
 
   const history = useHistory();
 
@@ -111,7 +111,7 @@ const Auth = ({ newUser }) => {
         );
       }
       login(responseData.user);
-      console.log(token, isLoggedIn);
+      // console.log(token, isLoggedIn);
       history.push("/");
     } catch (err) {}
   };
@@ -124,8 +124,8 @@ const Auth = ({ newUser }) => {
         <div className="auth__social">
           <GLogin onLogin={handleGoogleAuth} />
           {/* <GHLogin onLogin={handleGithubAuth} />
-          <FBLogin onLogin={handleFBAuth} />
-          <TwitterLogin /> */}
+          <FBLogin onLogin={handleFBAuth} /> */}
+          <TwitterLogin /> 
         </div>
 
         <form className="form__auth">

@@ -1,24 +1,25 @@
 .container-sidebar {
   display: none;
   max-width: 24rem;
+  margin-left: -10rem;
 }
 
 /* .sidebar {
   border-radius: 10px;
-  
 } */
 
 ul.sidebar__list {
   font-size: 1.65rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   /* gap: 0.5rem; */
 }
 
 .sidebar__list{
   background: #e8106b;
   margin-right: 10px;
+  padding: 15px;
    border: 2px solid #fae903;
    border-radius: 7px;
 }

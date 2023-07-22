@@ -81,12 +81,12 @@ const LandingPage = () => {
                                     return (
                                         <div className={"col4gy3row"} key={e._id} onMouseEnter={()=>{
                                             var arr = [...trendingHover];
-                                            arr[i].hoverClass = true;
+                                            arr[i].hover = true;
                                             setTrendingHover(arr);
                                         }}
                                         onMouseLeave={()=>{
                                             var arr = [...trendingHover];
-                                            arr[i].hoverClass = false;
+                                            arr[i].hover = false;
                                             setTrendingHover(arr);
                                         }}
                                         >
@@ -98,15 +98,15 @@ const LandingPage = () => {
                                                 >
                                                     <div className='preview__author ml--1'>
                                                         <div className="author__image"><img src={e.author.avatar} alt={`user photo ${e.author.name}`} /></div>
-                                                        <div className={`author__details ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"}`}>
-                                                            <p className={`author__name ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"}`}>{e.author.name}</p>
-                                                            <p className={`author__date ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"}`}>{date}</p>
+                                                        <div className={`${trendingHover[i]?.hover ? "lp" : "no-lp"}`}>
+                                                            <p className={`${trendingHover[i]?.hover ? "lp" : "no-lp"}`}>{e.author.name}</p>
+                                                            <p className={`${trendingHover[i]?.hover ? "lp" : "no-lp"}`}>{date}</p>
                                                         </div>
                                                     </div>
                                                     <div className="authHeading">
-                                                        <p className={`authorTitle ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"}`}>{e.title}</p>
+                                                        <p className={`authorTitle ${trendingHover[i]?.hover ? "lp" : "no-lp"}`}>{e.title}</p>
                                                     </div>
-                                                    <span className={`${trendingHover[i]?.hoverClass ? "lp" : "no-lp"}`}>{readingDuration}</span>
+                                                    <span className={`${trendingHover[i]?.hover ? "lp" : "no-lp"}`}>{readingDuration}</span>
                                                 </Link>
                                             </div>
                                             <img className="trending-news-rep-img" src={e.image} alt={`trending news image with title: ${e.title}`} />
@@ -145,9 +145,9 @@ const LandingPage = () => {
                                                 >
                                                     <div className='preview__author ml--1'>
                                                         <div className="author__image"><img src={e.author.avatar} alt={`user photo ${e.author.name}`} /></div>
-                                                        <div className={`author__details ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"}`}>
-                                                            <p className={`author__name ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"}`}>{e.author.name}</p>
-                                                            <p className={`author__date ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"}`}>{date}</p>
+                                                        <div className={`${hoverClass[i]?.hoverClass ? "lp" : "no-lp"}`}>
+                                                            <p className={`${hoverClass[i]?.hoverClass ? "lp" : "no-lp"}`}>{e.author.name}</p>
+                                                            <p className={`${hoverClass[i]?.hoverClass ? "lp" : "no-lp"}`}>{date}</p>
                                                         </div>
                                                     </div>
                                                     <div className="authHeading02 ">

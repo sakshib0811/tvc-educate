@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useHttpClient from '../../hooks/useHttpClient';
 
 const MiniPostList = (props) => {
   const [post, setPost] = useState([]);
+  const { sendReq } = useHttpClient();
   async function fetchTopPost(){
-    fetch(`http://localhost:5000/api/posts/${props.tag}/${props.posts}`)
-    .then((res)=> {
-      setPost(res.data);
-      console.log(res);
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
+    try{
+      const responseData = await sendReq(
+        //`${process.env.REACT_APP_BASE_URL}/posts`
+        "http://localhost:5000/api/posts"
+      )
+      
+        var arr = responseData.posts.filter((item) => item.id === props.posts[0]);
+        console.log(arr);
+        setPost(arr);
+    } catch (err) {console.log(err);}
   }
 
   useEffect(()=> {
@@ -24,19 +28,22 @@ const MiniPostList = (props) => {
   return (
     <>
       <div className={props.tag}>
-        <h3>#{props.tag}</h3>
+        {/* <h4>#{props.tag}</h4> */}
         <ul>
           {props.posts &&
-            props.posts.map((post, i) => (
-              <div className='post__item' key={post.id}>
+            post.map((e, i) =>{
+            var linkURL = props.type === "post" ? "posts/" + e.titleURL + "/" + e.id : "users/" + e.author.id;
+             return (
+              <div className='post__item' key={e.id}>
                 <Link
                   className='title-link'
-                  to={`/posts/${post.titleURL}/${post.id}`}
+                  to={`${linkURL}`}
                 >
-                  {post.title}
+                  <p style={{ fontWeight: "bold" }}>{props.type === "post" ? e.title : e.author.name}</p>
+                  {/* <img src={e.image} style={{ width: "80%" }} alt={"trending article rep img"} /> */}
                 </Link>
               </div>
-            ))}
+            )})}
         </ul>
       </div>
     </>

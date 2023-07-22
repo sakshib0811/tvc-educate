@@ -5,7 +5,7 @@ let logoutTimer;
 
 const useAuth = () => {
   const [token, setToken] = useState(false);
-  const [isLoggedIn, setILoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState({});
@@ -19,7 +19,7 @@ const useAuth = () => {
     setToken(user.token);
     setUserId(user.userId);
     setUser(user);
-    setILoggedIn(true);
+    setIsLoggedIn(true);
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
     setTokenExpirationDate(tokenExpirationDate);
@@ -46,25 +46,25 @@ const useAuth = () => {
     setUserId(null);
     setUser(null);
     setTokenExpirationDate(null);
-    setILoggedIn(false);
+    setIsLoggedIn(false);
     localStorage.removeItem('userData');
     localStorage.setItem('currentUser', {
       isLoggedIn: false
     });
     //GET request to backend for twitter since it uses passport
-    // sendReq(
-    //   `${process.env.REACT_APP_BASE_URL}/users/auth/twitter/logout`,
-    //   'GET',
-    //   null,
-    //   {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'Access-Control-Allow-Credentials': true,
-    //   },
-    //   'include'
-    // );
+    sendReq(
+      `${process.env.REACT_APP_BASE_URL}/users/auth/twitter/logout`,
+      'GET',
+      null,
+      {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials': true,
+      },
+      'include'
+    );
     // remember to add sendReq in the [] below 
-  }, []);
+  }, [sendReq]);
 
   useEffect(() => {
     if (token && tokenExpirationDate) {
@@ -78,7 +78,7 @@ const useAuth = () => {
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('userData'));
-    if (storedData && (new Date(storedData.expiration) > new Date())) {
+    if (storedData && new Date(storedData.expiration) > new Date()) {
       //console.log("I did execute");
       login(
         // storedData.userId,

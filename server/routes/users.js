@@ -17,9 +17,9 @@ const {
   googleLogin,
   // githubLogin,
   // fbLogin,
-  // twitterLogin,
-  // twitterFailure,
-  // twitterLogout,
+  twitterLogin,
+  twitterFailure,
+  twitterLogout,
   updateUser,
   followUser,
   unfollowUser,
@@ -48,15 +48,15 @@ router.post('/auth/google', googleLogin);
 
 // router.post('/auth/facebook', fbLogin);
 
-// router.get('/auth/twitter/success', twitterLogin);
+router.get('/auth/twitter/success', twitterLogin);
 
-// router.get('/auth/twitter/failed', twitterFailure);
+router.get('/auth/twitter/failed', twitterFailure);
 
-// router.get('/auth/twitter/logout', twitterLogout);
+router.get('/auth/twitter/logout', twitterLogout);
 
 router.post('/login', login);
 
-//router.get('/auth/twitter', passport.authenticate('twitter'));
+router.get('/auth/twitter', passport.authenticate('twitter'));
 
 router.get(
   '/auth/twitter/callback',

@@ -2,8 +2,8 @@ const { validationResult } = require('express-validator');
 const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-//const passport = require('passport');
-//const TwitterStrategy = require('passport-twitter').Strategy;
+const passport = require('passport');
+const TwitterStrategy = require('passport-twitter').Strategy;
 const { OAuth2Client } = require('google-auth-library');
 require('dotenv').config();
 const { GOOGLE_API_KEY, JWT_KEY, GH_CLIENT_ID, GH_CLIENT_SECRET } = process.env;
@@ -369,60 +369,60 @@ const googleLogin = async (req, res, next) => {
 //     }
 //   }
 
-//   const token = createJWTtoken(user.id, user.email);
-//   res.status(201).json({
-//     user: {
-//       name: user.name,
-//       userId: user.id,
-//       email: user.email,
-//       token,
-//       bio: user.bio,
-//       avatar: user.avatar,
-//       tags: user.followedTags,
-//     },
-//   });
-// };
+  // const token = createJWTtoken(user.id, user.email);
+  // res.status(201).json({
+  //   user: {
+  //     name: user.name,
+  //     userId: user.id,
+  //     email: user.email,
+  //     token,
+  //     bio: user.bio,
+  //     avatar: user.avatar,
+  //     tags: user.followedTags,
+  //   },
+  // });
 
-// // when login is successful, retrieve user info
-// const twitterLogin = (req, res) => {
-//   if (req.user) {
-//     const {
-//       name,
-//       id: userId,
-//       email,
-//       bio,
-//       avatar,
-//       followedTags: tags,
-//     } = req.user;
-//     const token = createJWTtoken(req.user.id, req.user.email);
-//     res.status(201).json({
-//       user: {
-//         name,
-//         userId,
-//         email,
-//         bio,
-//         avatar,
-//         token,
-//         tags,
-//       },
-//     });
-//   }
-// };
 
-// // when login failed, send failed msg
-// const twitterFailure = (req, res) => {
-//   res.status(401).json({
-//     success: false,
-//     message: 'user failed to authenticate.',
-//   });
-// };
+// when login is successful, retrieve user info
+const twitterLogin = (req, res) => {
+  if (req.user) {
+    const {
+      name,
+      id: userId,
+      email,
+      bio,
+      avatar,
+      followedTags: tags,
+    } = req.user;
+    const token = createJWTtoken(req.user.id, req.user.email);
+    res.status(201).json({
+      user: {
+        name,
+        userId,
+        email,
+        bio,
+        avatar,
+        token,
+        tags,
+      },
+    });
+  }
+};
 
-// const twitterLogout = (req, res) => {
-//   if (req.user) {
-//     req.logout();
-//     res.json({ message: 'Logout successful' });
-//   }
-// };
+// when login failed, send failed msg
+const twitterFailure = (req, res) => {
+  res.status(401).json({
+    success: false,
+    message: 'user failed to authenticate.',
+  });
+};
+
+const twitterLogout = (req, res) => {
+  if (req.user) {
+    req.logout();
+    res.json({ message: 'Logout successful' });
+  }
+};
 
 const updateUser = async (req, res, next) => {
   const { userId } = req.params;
@@ -501,9 +501,9 @@ exports.login = login;
 exports.googleLogin = googleLogin;
 //exports.githubLogin = githubLogin;
 //exports.fbLogin = fbLogin;
-//exports.twitterFailure = twitterFailure;
-//exports.twitterLogin = twitterLogin;
-//exports.twitterLogout = twitterLogout;
+exports.twitterFailure = twitterFailure;
+exports.twitterLogin = twitterLogin;
+exports.twitterLogout = twitterLogout;
 exports.updateUser = updateUser;
 exports.followUser = followUser;
 exports.unfollowUser = unfollowUser;

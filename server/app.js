@@ -43,9 +43,9 @@ app.use(
 
 app.use(bodyParser.json());
 
-//app.use(passport.initialize());
-//app.use(passport.session());
-//require('./config/passport-twitter');
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport-twitter');
 
 const io = new Server(httpServer, {
   cors: {
