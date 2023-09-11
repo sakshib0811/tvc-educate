@@ -1,0 +1,37 @@
+.hero-element{
+    background-color: rgb(12, 30, 41);
+    padding-top: 1px;
+    padding-bottom: 6rem;
+}
+
+.title-intro{
+    font-size: 2rem;
+}
+
+.title-intro:hover{
+    cursor: pointer;
+}
+
+.top-row{
+    display: flex;
+    gap: 8rem;
+    margin-left: 5rem;
+    margin-top: -3rem;
+}
+
+.row2{
+    padding-top: 7rem;
+    padding-bottom: 2rem;
+}
+
+.span:hover{
+    cursor: auto;
+}
+
+.btn{
+    background-color: rgb(12, 30, 41);
+    color: white;
+    margin-left: 11rem;
+    border-radius: 10px ;
+    padding: 0.3rem;
+}
