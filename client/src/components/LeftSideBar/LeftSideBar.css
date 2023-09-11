@@ -3,12 +3,24 @@
   max-width: 24rem;
 }
 
+/* .sidebar {
+  border-radius: 10px;
+  
+} */
+
 ul.sidebar__list {
   font-size: 1.65rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   /* gap: 0.5rem; */
+}
+
+.sidebar__list{
+  background: #ebf2f5 !important;
+  margin-right: 10px;
+   /* border: 2px solid #fae903; */
+   border-radius: 7px;
 }
 
 .sidebar__list .list__item {
@@ -30,7 +42,7 @@ ul.sidebar__list li:not(:first-child) {
 }
 
 .sidebar__list a {
-  color: var(--color-black);
+  color: #01427a;
   display: flex;
   align-items: center;
   /* width: 98%; */

@@ -12,6 +12,7 @@ import "./Auth.css";
 import ErrorModal from "../../components/Modal/ErrorModal";
 import FBLogin from "../../components/Auth/FBLogin";
 import TwitterLogin from "../../components/Auth/TwitterLogin";
+import useAuth from "../../hooks/useAuth";
 
 const Auth = ({ newUser }) => {
   const { renderFormInputs, renderFormValues, isFormValid, setForm } =
@@ -28,7 +29,9 @@ const Auth = ({ newUser }) => {
   const formValues = renderFormValues();
   const formInputs = renderFormInputs();
 
-  const { login } = useContext(AuthContext);
+  // const { login, token, isLoggedIn } = useContext(AuthContext);
+  const { login, token, isLoggedIn } = useAuth();
+
   const history = useHistory();
 
   const { sendReq, error, clearError } = useHttpClient();
@@ -108,6 +111,7 @@ const Auth = ({ newUser }) => {
         );
       }
       login(responseData.user);
+      console.log(token, isLoggedIn);
       history.push("/");
     } catch (err) {}
   };

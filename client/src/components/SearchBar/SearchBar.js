@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import useSearch from '../../hooks/useSearch.js';
+// import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBar = (props) => {
   const { search } = useSearch();
   const [value, setValue] = useState('');
+  const [showSearch, setShowSearch] = useState(true);
 
   //handle input change for search bar
   const onInputChange = (evt) => {
@@ -19,7 +21,8 @@ const SearchBar = (props) => {
     }
   };
 
-  return (
+  return (<>
+     
     <input
       className={
         props.showSearchOnMobile ? 'search-bar--mobile ' : 'search-bar '
@@ -30,6 +33,7 @@ const SearchBar = (props) => {
       onChange={onInputChange}
       onKeyDown={onEnterKey}
     />
+    </>
   );
 };
 

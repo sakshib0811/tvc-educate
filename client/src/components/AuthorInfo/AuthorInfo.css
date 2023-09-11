@@ -19,7 +19,7 @@
 }
 
 .author__details p {
-  color: var(--color-gray);
+  /* color: var(--color-gray); */
 }
 
 .author__details h3 {

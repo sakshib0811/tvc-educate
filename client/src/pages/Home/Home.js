@@ -4,10 +4,13 @@ import RightSideBar from '../../components/RightSideBar/RightSideBar';
 import LeftSideBar from '../../components/LeftSideBar/LeftSideBar';
 import useHttpClient from '../../hooks/useHttpClient';
 import { AuthContext } from '../../context/auth';
+import useAuth from '../../hooks/useAuth';
 
 const Home = () => {
   const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { sendReq, isLoading } = useHttpClient();
+  const { user } = useAuth();
   // const { login } = useContext(AuthContext);
 
   // useEffect(() => {
@@ -32,10 +35,16 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/tags/home`
+          `http://localhost:5000/api/tags`
         );
         setTags(responseData.tags);
-      } catch (err) {}
+        setLoading(true);
+        console.log(responseData);
+        var currentUserData = localStorage?.userData;
+        console.log(currentUserData ? JSON.parse(localStorage?.userData): "no one is here");
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchPosts();
   }, [sendReq]);
@@ -46,7 +55,7 @@ const Home = () => {
         <LeftSideBar />
       </div>
       <Posts cover={true} />
-      <RightSideBar tags={tags} isLoading={isLoading} />
+      {loading ? <RightSideBar tags={tags} isLoading={loading} /> : ""}
     </div>
   );
 };

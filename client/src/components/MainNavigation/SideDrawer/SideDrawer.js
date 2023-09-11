@@ -9,7 +9,7 @@ const SideDrawer = (props) => {
     <aside className='side-drawer' onClick={props.onClick}>
       <div className='drawer__content'>
         <div className='side-drawer__top'>
-          <h3>DEV Community</h3>
+          <h3>TVC Educate</h3>
           <i onClick={props.onClose}>
             <GrFormClose />
           </i>

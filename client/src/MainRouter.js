@@ -16,6 +16,8 @@ import ReadingList from './pages/ReadingList/ReadingList';
 import Footer from './components/Footer/Footer';
 import { AuthContext } from './context/auth';
 import { BrowserRouter as Router } from 'react-router-dom';
+import LandingPage from './pages/LandingPage/LandingPage';
+
 
 const MainRouter = ({ token }) => {
   let routes;
@@ -27,6 +29,9 @@ const MainRouter = ({ token }) => {
         <Switch>
           <Route path='/' exact>
             <Home />
+          </Route>
+          <Route path='/home' exact>
+            <LandingPage />
           </Route>
           <Route path='/users/:userId' exact>
             <UserProfile />
@@ -74,6 +79,9 @@ const MainRouter = ({ token }) => {
         <Switch>
           <Route path='/' exact>
             <Home />
+          </Route>
+          <Route path='/home' exact>
+            <LandingPage />
           </Route>
           <Route path='/auth/new-user' exact>
             <Auth newUser={true} />

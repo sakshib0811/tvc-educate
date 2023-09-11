@@ -13,7 +13,7 @@ RIGHT SIDEBAR
 .webdev {
   display: flex;
   flex-direction: column;
-  background: #fafafa;
+  background: #e8106b;
   border: 1px solid #efefef;
   border-radius: var(--border-radius);
 }
