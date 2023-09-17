@@ -1,127 +1,136 @@
-import React, { useEffect, useState } from "react";
-import "./LandingPage.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useContext } from "react";
-import { ThemeContexts } from "../../context/ThemeContexts";
-import { AuthorInfo } from "../../components/AuthorInfo/AuthorInfo";
-import { bodyShortener, formatDate, readingTime } from "../../utils";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import React, { useEffect, useState } from 'react'
+import './LandingPage.css'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useContext } from 'react'
+import { ThemeContexts } from '../../context/ThemeContexts'
+import { AuthorInfo } from '../../components/AuthorInfo/AuthorInfo'
+import { bodyShortener, formatDate, readingTime } from '../../utils'
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
 
 const LandingPage = () => {
-  const [addTask, setAddTask] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { handleChangeTheme } = useContext(ThemeContexts);
-  const [tags, setTags] = useState([]);
-  const [hoverClass, setHoverClass] = useState([]);
-  const [trendingHover, setTrendingHover] = useState([]);
+  const [addTask, setAddTask] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const { handleChangeTheme } = useContext(ThemeContexts)
+  const [tags, setTags] = useState([])
+  const [hoverClass, setHoverClass] = useState([])
+  const [trendingHover, setTrendingHover] = useState([])
+
+  let cardsSectionRef = React.useRef()
+
+  const scroll = (scrollOffset) => {
+    if (cardsSectionRef.current) {
+      cardsSectionRef.current.scrollLeft += scrollOffset
+    }
+  }
 
   async function getPosts() {
     axios.get(`http://localhost:5000/api/posts`).then((res) => {
-      setAddTask(res.data.posts);
-      setIsLoading(false);
-      var arr = [...res.data.posts];
+      setAddTask(res.data.posts)
+      setIsLoading(false)
+      var arr = [...res.data.posts]
       for (let i = 0; i < arr.length; i++) {
-        var obj = arr[i];
-        obj = { ...obj, hover: false };
-        arr[i] = obj;
+        var obj = arr[i]
+        obj = { ...obj, hover: false }
+        arr[i] = obj
       }
-      setHoverClass(arr);
-      setTrendingHover(arr);
-    });
+      setHoverClass(arr)
+      setTrendingHover(arr)
+    })
   }
 
   async function getTags() {
     axios.get(`http://localhost:5000/api/tags`).then((res) => {
-      setTags(res.data.tags);
-    });
+      setTags(res.data.tags)
+    })
   }
 
   useEffect(() => {
-    getPosts();
-    getTags();
-  }, []);
+    getPosts()
+    getTags()
+  }, [])
 
   return (
     <>
       {!isLoading ? (
         <>
-          <section className="homeContainer">
-            <div className="homeSection">
+          <section className='homeContainer'>
+            <div className='homeSection'>
               <Carousel
-                className="carousel-container"
+                className='carousel-container'
                 autoPlay
                 infiniteLoop={true}
-                style={{ borderRadius: "20px" }}
+                style={{ borderRadius: '20px' }}
                 showThumbs={false}
                 showArrows={true}
               >
                 {addTask.length > 0
                   ? addTask.map((e, i) => {
                       return (
-                        <div className="carousel-data-container">
+                        <div className='carousel-data-container'>
                           <img
                             src={e.image}
                             alt={i}
-                            style={{ width: "100%", opacity: "0.5" }}
+                            style={{ width: '100%', opacity: '0.5' }}
                           />
                           <div
-                            className="img-cover"
+                            className='img-cover'
                             style={{
-                              width: "100%",
-                              height: "550px",
-                              backgroundColor: "rgba(0,0,0,0.5)",
-                              marginTop: "-550px",
+                              width: '100%',
+                              height: '550px',
+                              backgroundColor: 'rgba(0,0,0,0.5)',
+                              marginTop: '-550px'
                             }}
                           >
-                            <p className="legend-carousel">
+                            <p className='legend-carousel'>
                               {e.title}
                               <br />
                               <span>{`By ${e.author.name}`}</span>
                             </p>
                           </div>
                         </div>
-                      );
+                      )
                     })
-                  : ""}
+                  : ''}
               </Carousel>
             </div>
           </section>
-          <hr className="hr-tag"></hr>
+          <hr className='hr-tag'></hr>
 
-          <section className="trendingSection">
-            <div className="trendingPart">
-              <p className="headingTitle-trending">TRENDING ON TVC EDYOUCATE</p>
-              <div className="myRowFlex">
+          <section className='trendingSection'>
+            <div className='trendingPart'>
+              <p className='headingTitle-trending'>TRENDING ON TVC EDYOUCATE</p>
+              <div className='myRowFlex'>
                 {addTask.length > 0
                   ? addTask.map((e, i) => {
-                      var date = formatDate(e.date);
-                      var readingDuration = readingTime(e.body);
+                      var date = formatDate(e.date)
+                      var readingDuration = readingTime(e.body)
 
                       return (
                         <div
-                          className={"col4gy3row"}
+                          className={'col4gy3row'}
                           key={e._id}
                           onMouseEnter={() => {
-                            var arr = [...trendingHover];
-                            arr[i].hoverClass = true;
-                            setTrendingHover(arr);
+                            var arr = [...trendingHover]
+                            arr[i].hoverClass = true
+                            setTrendingHover(arr)
                           }}
                           onMouseLeave={() => {
-                            var arr = [...trendingHover];
-                            arr[i].hoverClass = false;
-                            setTrendingHover(arr);
+                            var arr = [...trendingHover]
+                            arr[i].hoverClass = false
+                            setTrendingHover(arr)
                           }}
                         >
-                          <div className="colis10">
+                          <div className='colis10'>
                             <Link
                               onClick={() => handleChangeTheme(5)}
-                              style={{ textDecoration: "none" }}
+                              style={{ textDecoration: 'none' }}
                               to={`/posts/${e.titleURL}/${e.id}`}
                             >
-                              <div className="preview__author ml--1">
-                                <div className="author__image">
+                              <div className='preview__author ml--1'>
+                                <div className='author__image'>
                                   <img
                                     src={e.author.avatar}
                                     alt={`user photo ${e.author.name}`}
@@ -130,15 +139,15 @@ const LandingPage = () => {
                                 <div
                                   className={`author__details ${
                                     trendingHover[i]?.hoverClass
-                                      ? "lp"
-                                      : "no-lp"
+                                      ? 'lp'
+                                      : 'no-lp'
                                   }`}
                                 >
                                   <p
                                     className={`author__name ${
                                       trendingHover[i]?.hoverClass
-                                        ? "lp"
-                                        : "no-lp"
+                                        ? 'lp'
+                                        : 'no-lp'
                                     }`}
                                   >
                                     {e.author.name}
@@ -146,20 +155,20 @@ const LandingPage = () => {
                                   <p
                                     className={`author__date ${
                                       trendingHover[i]?.hoverClass
-                                        ? "lp"
-                                        : "no-lp"
+                                        ? 'lp'
+                                        : 'no-lp'
                                     }`}
                                   >
                                     {date}
                                   </p>
                                 </div>
                               </div>
-                              <div className="authHeading">
+                              <div className='authHeading'>
                                 <p
                                   className={`authorTitle ${
                                     trendingHover[i]?.hoverClass
-                                      ? "lp"
-                                      : "no-lp"
+                                      ? 'lp'
+                                      : 'no-lp'
                                   }`}
                                 >
                                   {e.title}
@@ -167,7 +176,7 @@ const LandingPage = () => {
                               </div>
                               <span
                                 className={`${
-                                  trendingHover[i]?.hoverClass ? "lp" : "no-lp"
+                                  trendingHover[i]?.hoverClass ? 'lp' : 'no-lp'
                                 }`}
                               >
                                 {readingDuration}
@@ -175,52 +184,52 @@ const LandingPage = () => {
                             </Link>
                           </div>
                           <img
-                            className="trending-news-rep-img"
+                            className='trending-news-rep-img'
                             src={e.image}
                             alt={`trending news image with title: ${e.title}`}
                           />
                         </div>
-                      );
+                      )
                     })
-                  : " "}
+                  : ' '}
               </div>
             </div>
           </section>
-          <hr className="hr-tag"></hr>
+          <hr className='hr-tag'></hr>
 
-          <section className="blogSection">
-            <p className="headingTitle-all-blogs">EXPLORE!</p>
-            <div className="allBlogs">
-              <div className="leftBlogSection">
+          <section className='blogSection'>
+            <p className='headingTitle-all-blogs'>EXPLORE!</p>
+            <div className='allBlogs'>
+              <div className='leftBlogSection'>
                 {addTask.length > 0
                   ? addTask.map((e, i) => {
-                      var date = formatDate(e.date);
-                      var readingDuration = readingTime(e.body);
-                      var shortenedBody = bodyShortener(e.body);
-                      var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
+                      var date = formatDate(e.date)
+                      var readingDuration = readingTime(e.body)
+                      var shortenedBody = bodyShortener(e.body)
+                      var hoverVal = hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                       return (
                         <div
-                          className="col4gy3row02"
+                          className='col4gy3row02'
                           key={e._id + 1}
                           onMouseEnter={() => {
-                            var arr = [...hoverClass];
-                            arr[i].hoverClass = true;
-                            setHoverClass(arr);
+                            var arr = [...hoverClass]
+                            arr[i].hoverClass = true
+                            setHoverClass(arr)
                           }}
                           onMouseLeave={() => {
-                            var arr = [...hoverClass];
-                            arr[i].hoverClass = false;
-                            setHoverClass(arr);
+                            var arr = [...hoverClass]
+                            arr[i].hoverClass = false
+                            setHoverClass(arr)
                           }}
                         >
-                          <div className="colis1002">
+                          <div className='colis1002'>
                             <Link
                               // onClick={() => handleChangeTheme(5)}
                               // style={{ textDecoration: "none" }}
                               to={`/posts/${e.titleURL}/${e.id}`}
                             >
-                              <div className="preview__author ml--1">
-                                <div className="author__image">
+                              <div className='preview__author ml--1'>
+                                <div className='author__image'>
                                   <img
                                     src={e.author.avatar}
                                     alt={`user photo ${e.author.name}`}
@@ -228,36 +237,36 @@ const LandingPage = () => {
                                 </div>
                                 <div
                                   className={`author__details ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                                   }`}
                                 >
                                   <p
                                     className={`author__name ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                      hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                                     }`}
                                   >
                                     {e.author.name}
                                   </p>
                                   <p
                                     className={`author__date ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                      hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                                     }`}
                                   >
                                     {date}
                                   </p>
                                 </div>
                               </div>
-                              <div className="authHeading02 ">
+                              <div className='authHeading02 '>
                                 <p
                                   className={`authorTitle02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                                   }`}
                                 >
                                   {e.title}
                                 </p>
                                 <p
                                   className={`authSubHed02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                                   }`}
                                 >
                                   {shortenedBody}
@@ -266,58 +275,74 @@ const LandingPage = () => {
                             </Link>
                             <div
                               className={`authDaTiSt02 ${
-                                hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
                               }`}
                             >
                               <span>{e.userBlogDate} ·</span>
-                              <span className="">{readingDuration}</span>
-                              <span className="mx-1 ">·</span>
+                              <span className=''>{readingDuration}</span>
+                              <span className='mx-1 '>·</span>
                               <span
                                 className={`mx-1 ${
                                   hoverClass[i]?.hoverClass
-                                    ? "userTagHover"
-                                    : "userBlogTag"
+                                    ? 'userTagHover'
+                                    : 'userBlogTag'
                                 }`}
                               >
                                 {e.tags[0].name}
                               </span>
-                              <span className="mx-1 ">&#9733;</span>
+                              <span className='mx-1 '>&#9733;</span>
                             </div>
                           </div>
-                          <div className="colis202">
-                            <img src={e.image} alt={i + " " + e.title} />
+                          <div className='colis202'>
+                            <img src={e.image} alt={i + ' ' + e.title} />
                           </div>
                         </div>
-                      );
+                      )
                     })
-                  : " "}
+                  : ' '}
               </div>
-              <div className="rightBlogSection">
-                <div className="allBlogTypes">
-                  <div className="allBlogTypesFirst">
+              <div className='rightBlogSection'>
+                <div className='allBlogTypes'>
+                  <div className='allBlogTypesFirst'>
                     <h6>DISCOVER MORE OF WHAT MATTERS TO YOU</h6>
-                    <div className="allspanTag">
+                    <div ref={cardsSectionRef} className='allspanTag'>
                       {isLoading ? (
                         <></>
                       ) : (
-                        tags.slice(0, 9).map((e, i) => {
-                          return (
+                        <>
+                          {tags.slice(0, 15).map((e, i) => (
                             <a
-                              style={{ textDecoration: "none" }}
+                              style={{ textDecoration: 'none' }}
                               href={`http://localhost:3000/tags/${e.name}`}
                               key={e._id + 2}
                             >
                               {e.name}
                             </a>
-                          );
-                        })
+                          ))}
+
+                          <button
+                            type='button'
+                            className='button prevButton'
+                            onClick={() => scroll(-400)}
+                          >
+                            <MdNavigateBefore className='buttonIcons' />
+                          </button>
+
+                          <button
+                            type='button'
+                            className='button nextButton'
+                            onClick={() => scroll(400)}
+                          >
+                            <MdNavigateNext className='buttonIcons' />
+                          </button>
+                        </>
                       )}
                     </div>
-                    <a className="allTopics" href="http://localhost:3000/tags">
+                    <a className='allTopics' href='http://localhost:3000/tags'>
                       See all tags
                     </a>
                   </div>
-                  <div className="allspanTag2">
+                  <div className='allspanTag2'>
                     <span>Help </span>
                     <span> Status </span>
                     <span> Writers </span>
@@ -333,10 +358,10 @@ const LandingPage = () => {
           </section>
         </>
       ) : (
-        " "
+        ' '
       )}
     </>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage
