@@ -17,12 +17,82 @@ const LandingPage = () => {
   const [tags, setTags] = useState([])
   const [hoverClass, setHoverClass] = useState([])
   const [trendingHover, setTrendingHover] = useState([])
+  const [idx, setIdx] = useState(0)
+  const [scroll, setScroll] = useState({ scrollLeft: false, scrollRight: true })
 
   let cardsSectionRef = React.useRef()
 
-  const scroll = (scrollOffset) => {
+  let parentContainerRef = React.useRef()
+
+  const scrollLeft = () => {
+    const movableContainerWidth = cardsSectionRef.current.clientWidth
+    const parentContainerWidth = parentContainerRef.current.clientWidth
+
     if (cardsSectionRef.current) {
-      cardsSectionRef.current.scrollLeft += scrollOffset
+      setIdx((prev) => {
+        if (prev === 0) {
+          setScroll((prev) => ({
+            ...prev,
+            scrollLeft: false
+          }))
+
+          return prev
+        } else {
+          prev--
+          cardsSectionRef.current.style.transform = `translateX(-${
+            parentContainerWidth * prev
+          }px)`
+          if (prev === 0) {
+            setScroll((prev) => ({
+              ...prev,
+              scrollLeft: false
+            }))
+          }
+          return prev
+        }
+      })
+
+      setScroll((prev) => ({
+        ...prev,
+        scrollRight: true
+      }))
+    }
+  }
+  const scrollRight = () => {
+    const movableContainerWidth = cardsSectionRef.current.clientWidth
+
+    const parentContainerWidth = parentContainerRef.current.clientWidth
+
+    if (cardsSectionRef.current) {
+      cardsSectionRef.current.scrollLeft += parentContainerWidth
+
+      setIdx((prev) => {
+        // console.log(prev)
+        if ((prev + 1) * parentContainerWidth >= movableContainerWidth)
+          return prev
+
+        if (
+          movableContainerWidth - (prev + 1) * parentContainerWidth <
+          parentContainerWidth
+        ) {
+          cardsSectionRef.current.style.transform = `translateX(-${
+            movableContainerWidth - parentContainerWidth
+          }px)`
+
+          setScroll((prev) => ({
+            ...prev,
+            scrollRight: false
+          }))
+        } else
+          cardsSectionRef.current.style.transform = `translateX(-${
+            (prev + 1) * parentContainerWidth
+          }px)`
+        setScroll((prev) => ({
+          ...prev,
+          scrollLeft: true
+        }))
+        return prev + 1
+      })
     }
   }
 
@@ -198,7 +268,52 @@ const LandingPage = () => {
           <hr className='hr-tag'></hr>
 
           <section className='blogSection'>
-            <p className='headingTitle-all-blogs'>EXPLORE!</p>
+            <div className='ctaSection'>
+              <p className='headingTitle-all-blogs'>EXPLORE!</p>
+              <h6>DISCOVER MORE OF WHAT MATTERS TO YOU</h6>
+              <div className='allBlogTypesFirst' ref={parentContainerRef}>
+                <div ref={cardsSectionRef} className='allspanTag'>
+                  {isLoading ? (
+                    <></>
+                  ) : (
+                    <>
+                      {tags.slice(0, 15).map((e, i) => (
+                        <a
+                          style={{ textDecoration: 'none' }}
+                          href={`http://localhost:3000/tags/${e.name}`}
+                          key={e._id + 2}
+                        >
+                          {e.name}
+                        </a>
+                      ))}
+                    </>
+                  )}
+                </div>
+                {/* <a className='allTopics' href='http://localhost:3000/tags'>
+                      See all tags
+                    </a> */}
+                <button
+                  type='button'
+                  className={`button prevButton ${
+                    !scroll.scrollLeft && `displayNone`
+                  }`}
+                  onClick={() => scrollLeft()}
+                >
+                  <MdNavigateBefore className='buttonIcons' />
+                </button>
+
+                <button
+                  type='button'
+                  className={`button nextButton ${
+                    !scroll.scrollRight && `displayNone`
+                  }`}
+                  onClick={() => scrollRight()}
+                >
+                  <MdNavigateNext className='buttonIcons' />
+                </button>
+              </div>
+            </div>
+
             <div className='allBlogs'>
               <div className='leftBlogSection'>
                 {addTask.length > 0
@@ -303,45 +418,6 @@ const LandingPage = () => {
               </div>
               <div className='rightBlogSection'>
                 <div className='allBlogTypes'>
-                  <div className='allBlogTypesFirst'>
-                    <h6>DISCOVER MORE OF WHAT MATTERS TO YOU</h6>
-                    <div ref={cardsSectionRef} className='allspanTag'>
-                      {isLoading ? (
-                        <></>
-                      ) : (
-                        <>
-                          {tags.slice(0, 15).map((e, i) => (
-                            <a
-                              style={{ textDecoration: 'none' }}
-                              href={`http://localhost:3000/tags/${e.name}`}
-                              key={e._id + 2}
-                            >
-                              {e.name}
-                            </a>
-                          ))}
-
-                          <button
-                            type='button'
-                            className='button prevButton'
-                            onClick={() => scroll(-400)}
-                          >
-                            <MdNavigateBefore className='buttonIcons' />
-                          </button>
-
-                          <button
-                            type='button'
-                            className='button nextButton'
-                            onClick={() => scroll(400)}
-                          >
-                            <MdNavigateNext className='buttonIcons' />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                    <a className='allTopics' href='http://localhost:3000/tags'>
-                      See all tags
-                    </a>
-                  </div>
                   <div className='allspanTag2'>
                     <span>Help </span>
                     <span> Status </span>
