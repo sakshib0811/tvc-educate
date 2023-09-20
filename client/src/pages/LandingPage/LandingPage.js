@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import './LandingPage.css'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
-import { useContext } from 'react'
-import { ThemeContexts } from '../../context/ThemeContexts'
-import { AuthorInfo } from '../../components/AuthorInfo/AuthorInfo'
-import { bodyShortener, formatDate, readingTime } from '../../utils'
-import { Carousel } from 'react-responsive-carousel'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
+import React, { useEffect, useState } from 'react';
+import './LandingPage.css';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useContext } from 'react';
+import { ThemeContexts } from '../../context/ThemeContexts';
+import { AuthorInfo } from '../../components/AuthorInfo/AuthorInfo';
+import { bodyShortener, formatDate, readingTime } from '../../utils';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 
 const LandingPage = () => {
-  const [addTask, setAddTask] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const { handleChangeTheme } = useContext(ThemeContexts)
-  const [tags, setTags] = useState([])
-  const [hoverClass, setHoverClass] = useState([])
-  const [trendingHover, setTrendingHover] = useState([])
-  const [idx, setIdx] = useState(0)
-  const [scroll, setScroll] = useState({ scrollLeft: false, scrollRight: true })
+  const [addTask, setAddTask] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { handleChangeTheme } = useContext(ThemeContexts);
+  const [tags, setTags] = useState([]);
+  const [hoverClass, setHoverClass] = useState([]);
+  const [trendingHover, setTrendingHover] = useState([]);
+  const [idx, setIdx] = useState(0);
+  const [scroll, setScroll] = useState({ scrollLeft: false, scrollRight: true });
 
-  let cardsSectionRef = React.useRef()
+  let cardsSectionRef = React.useRef();
 
-  let parentContainerRef = React.useRef()
+  let parentContainerRef = React.useRef();
 
   const scrollLeft = () => {
-    const movableContainerWidth = cardsSectionRef.current.clientWidth
-    const parentContainerWidth = parentContainerRef.current.clientWidth
+    const movableContainerWidth = cardsSectionRef.current.clientWidth;
+    const parentContainerWidth = parentContainerRef.current.clientWidth;
 
     if (cardsSectionRef.current) {
       setIdx((prev) => {
@@ -36,9 +36,9 @@ const LandingPage = () => {
             scrollLeft: false
           }))
 
-          return prev
+          return prev;
         } else {
-          prev--
+          prev--;
           cardsSectionRef.current.style.transform = `translateX(-${
             parentContainerWidth * prev
           }px)`
@@ -48,7 +48,7 @@ const LandingPage = () => {
               scrollLeft: false
             }))
           }
-          return prev
+          return prev;
         }
       })
 
@@ -59,9 +59,9 @@ const LandingPage = () => {
     }
   }
   const scrollRight = () => {
-    const movableContainerWidth = cardsSectionRef.current.clientWidth
+    const movableContainerWidth = cardsSectionRef.current.clientWidth;
 
-    const parentContainerWidth = parentContainerRef.current.clientWidth
+    const parentContainerWidth = parentContainerRef.current.clientWidth;
 
     if (cardsSectionRef.current) {
       cardsSectionRef.current.scrollLeft += parentContainerWidth
@@ -69,7 +69,7 @@ const LandingPage = () => {
       setIdx((prev) => {
         // console.log(prev)
         if ((prev + 1) * parentContainerWidth >= movableContainerWidth)
-          return prev
+          return prev;
 
         if (
           movableContainerWidth - (prev + 1) * parentContainerWidth <
@@ -77,49 +77,49 @@ const LandingPage = () => {
         ) {
           cardsSectionRef.current.style.transform = `translateX(-${
             movableContainerWidth - parentContainerWidth
-          }px)`
+          }px)`;
 
           setScroll((prev) => ({
             ...prev,
             scrollRight: false
-          }))
+          }));
         } else
           cardsSectionRef.current.style.transform = `translateX(-${
             (prev + 1) * parentContainerWidth
-          }px)`
+          }px)`;
         setScroll((prev) => ({
           ...prev,
           scrollLeft: true
-        }))
-        return prev + 1
+        }));
+        return prev + 1;
       })
     }
   }
 
   async function getPosts() {
     axios.get(`http://localhost:5000/api/posts`).then((res) => {
-      setAddTask(res.data.posts)
-      setIsLoading(false)
-      var arr = [...res.data.posts]
+      setAddTask(res.data.posts);
+      setIsLoading(false);
+      var arr = [...res.data.posts];
       for (let i = 0; i < arr.length; i++) {
-        var obj = arr[i]
-        obj = { ...obj, hover: false }
-        arr[i] = obj
+        var obj = arr[i];
+        obj = { ...obj, hover: false };
+        arr[i] = obj;
       }
-      setHoverClass(arr)
-      setTrendingHover(arr)
+      setHoverClass(arr);
+      setTrendingHover(arr);
     })
-  }
+  };
 
   async function getTags() {
     axios.get(`http://localhost:5000/api/tags`).then((res) => {
-      setTags(res.data.tags)
+      setTags(res.data.tags);
     })
-  }
+  };
 
   useEffect(() => {
-    getPosts()
-    getTags()
+    getPosts();
+    getTags();
   }, [])
 
   return (
@@ -437,7 +437,7 @@ const LandingPage = () => {
         ' '
       )}
     </>
-  )
-}
+  );
+};
 
 export default LandingPage
