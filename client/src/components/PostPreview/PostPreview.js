@@ -18,13 +18,13 @@ const PostPreview = (props) => {
 
   return (
     <div className='preview flow-content'>
-      {cover && (
+      {/* {cover && ( */}
         <PostImage
           link={`/posts/${titleURL}/${id}`}
           src={image}
           alt={`Cover image for ${title}`}
         />
-      )}
+      {/* )} */}
       <div className='preview__author'>
         <Avatar link={`/users/${author.id}`} src={author.avatar} />
         <AuthorInfo status='preview' author={author} date={createdAt} />

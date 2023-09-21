@@ -197,7 +197,7 @@ const LandingPage = () => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
                       var shortenedBody = bodyShortener(e.body);
-                      var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
+                      var hoverVal = hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog";
                       return (
                         <div
                           className="col4gy3row02"
@@ -228,19 +228,19 @@ const LandingPage = () => {
                                 </div>
                                 <div
                                   className={`author__details ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
                                   }`}
                                 >
                                   <p
                                     className={`author__name ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                      hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
                                     }`}
                                   >
                                     {e.author.name}
                                   </p>
                                   <p
                                     className={`author__date ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                      hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
                                     }`}
                                   >
                                     {date}
@@ -250,14 +250,14 @@ const LandingPage = () => {
                               <div className="authHeading02 ">
                                 <p
                                   className={`authorTitle02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
                                   }`}
                                 >
                                   {e.title}
                                 </p>
                                 <p
                                   className={`authSubHed02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
                                   }`}
                                 >
                                   {shortenedBody}
@@ -266,7 +266,7 @@ const LandingPage = () => {
                             </Link>
                             <div
                               className={`authDaTiSt02 ${
-                                hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
                               }`}
                             >
                               <span>{e.userBlogDate} ·</span>

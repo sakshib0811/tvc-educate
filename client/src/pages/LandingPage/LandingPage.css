@@ -298,6 +298,14 @@
   /* .col4gy3row02, .lp:hover{
     color: #fae903;
   } */
+  .lp-blog {
+    transition: all 0.6s ease-out;
+    color:#e14177;
+  }
+
+  .no-lp-blog {
+    color: #000000;
+  }
   .lp {
     transition: all 0.6s ease-out;
     color:#e14177;
