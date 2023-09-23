@@ -257,46 +257,52 @@ const LandingPage = () => {
                           setTrendingHover(arr)
                         }}
                       >
-                        <div className='colis10'>
+                        <div className='previewAuthorTrending'>
+                          <div className='author__image'>
+                            <img
+                              src={e.author.avatar}
+                              alt={`user photo ${e.author.name}`}
+                            />
+                          </div>
+                          <div
+                            className={`authorDetailsTrending ${trendingHover[i]?.hoverClass
+                              ? 'lp'
+                              : 'no-lp'
+                              }`}
+                          >
+                            <p
+                              className={`authorName ${trendingHover[i]?.hoverClass
+                                ? 'lp'
+                                : 'no-lp'
+                                }`}
+                            >
+                              {e.author.name}
+                            </p>
+                            <p
+                              className={`authorDate ${trendingHover[i]?.hoverClass
+                                ? 'lp'
+                                : 'no-lp'
+                                }`}
+                            >
+                              {date}
+                            </p>
+                          </div>
+                        </div>
+                        <img
+                          className='trendingImg'
+                          src={e.image}
+                          alt={`trending news image with title: ${e.title}`}
+                        />
+                        <div className='trendingCardTitle'>
                           <Link
                             onClick={() => handleChangeTheme(5)}
                             style={{ textDecoration: 'none' }}
                             to={`/posts/${e.titleURL}/${e.id}`}
                           >
-                            <div className='preview__author ml--1'>
-                              <div className='author__image'>
-                                <img
-                                  src={e.author.avatar}
-                                  alt={`user photo ${e.author.name}`}
-                                />
-                              </div>
-                              <div
-                                className={`author__details ${trendingHover[i]?.hoverClass
-                                  ? 'lp'
-                                  : 'no-lp'
-                                  }`}
-                              >
-                                <p
-                                  className={`author__name ${trendingHover[i]?.hoverClass
-                                    ? 'lp'
-                                    : 'no-lp'
-                                    }`}
-                                >
-                                  {e.author.name}
-                                </p>
-                                <p
-                                  className={`author__date ${trendingHover[i]?.hoverClass
-                                    ? 'lp'
-                                    : 'no-lp'
-                                    }`}
-                                >
-                                  {date}
-                                </p>
-                              </div>
-                            </div>
+
                             <div className='authHeading'>
                               <p
-                                className={`authorTitle ${trendingHover[i]?.hoverClass
+                                className={`trendingTitle authorTitle ${trendingHover[i]?.hoverClass
                                   ? 'lp'
                                   : 'no-lp'
                                   }`}
@@ -312,11 +318,11 @@ const LandingPage = () => {
                             </span>
                           </Link>
                         </div>
-                        <img
-                          className='trending-news-rep-img'
-                          src={e.image}
-                          alt={`trending news image with title: ${e.title}`}
-                        />
+                        <div className='trendingCta'>
+                          <div className='learnMoreTrending'>Learn More</div>
+                          <div className='shareTrending'>SHARE</div>
+                        </div>
+
                       </div>
                     )
                   })
@@ -467,9 +473,9 @@ const LandingPage = () => {
               <div className='rightBlogSection'>
                 <div className='allBlogTypes'>
                   <div className='quizCard'>
-                    
-                      <img className='quizCardImg' src='https://i.postimg.cc/xCVwb1yy/depositphotos-127600950-stock-photo-inscription-on-smartphone-screen.webp' />
-                      <div className='gradientBreak'></div>
+
+                    <img className='quizCardImg' src='https://i.postimg.cc/xCVwb1yy/depositphotos-127600950-stock-photo-inscription-on-smartphone-screen.webp' />
+                    <div className='gradientBreak'></div>
                     <div className='quizCta'>
                       <h2>Take the Online Quiz Now!</h2>
                       <div className='quizButton'>Click here</div>

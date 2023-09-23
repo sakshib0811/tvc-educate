@@ -225,17 +225,52 @@
   gap: 3rem;
   margin-top: 25px;
 }
-
 .col4gy3row {
-  padding: 10px 10px;
+  position: relative; /* Add relative positioning to the container */
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   border-style: outset;
-  border: #c4e2ff;
   border-radius: 4px;
   margin-bottom: 2rem;
+  border: 1px solid black;
+  flex-direction: column;
+  width: 350px;
+  height: 450px;
+  box-shadow: 1px 10px 20px #42494c;
 }
 
+.previewAuthorTrending {
+  background-color: #ebf2f5;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  height: 15%;
+  margin-top: 0;
+  left: 0;
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+  align-items: start;
+  border-radius: 5px 5px 0 0;
+}
+.authorDetailsTrending {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.author_image {
+  z-index: 10;
+}
+
+.trendingImg {
+  position: absolute;
+  width: 100%;
+  height: 60%;
+  top: 15%;
+  object-fit: cover;
+  left: 0;
+}
 .colis2 {
   /* position: relative; */
   top: -5px;
@@ -245,10 +280,52 @@
   margin-top: -20px;
 }
 
-.trending-news-rep-img {
-  height: 8rem;
-  width: 8rem;
-  margin-left: 2rem;
+.trendingCardTitle {
+  background-color: #ebf2f5;
+  width: 100%;
+  position: absolute;
+  top: 75%;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px;
+  height: 15%;
+  left: 0;
+}
+.trendingTitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.trendingCta {
+  background-color: #ebf2f5;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  gap: 15px;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #01427a;
+  top: 89%;
+  padding: 5px 10px;
+  font-weight: bolder;
+  transition: 0.6s ease;
+  border-radius: 0 0 5px 5px;
+}
+
+.learnMoreTrending,
+.shareTrending {
+  padding: 10px;
+  border-radius: 10px;
+
+  cursor: pointer; /* Add a pointer cursor for better UX */
+}
+
+.learnMoreTrending:hover,
+.shareTrending:hover {
+  background-color: #8dc0ed; /* Change the background color on hover */
 }
 
 .col4gy3row:hover {
@@ -359,7 +436,6 @@
   height: 450px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
-  
 }
 
 .quizCardImg {
@@ -403,7 +479,6 @@
 }
 
 .quizCard:hover .quizCta h2 {
-  
   text-decoration: underline;
 }
 
@@ -419,7 +494,7 @@
   );
 } */
 
-.quizCard:hover img{
+.quizCard:hover img {
   opacity: 0.5;
 }
 .quizCard:hover {
@@ -464,7 +539,7 @@
   padding: 0px 15px;
 }
 
-.numImg02 {
+.preview .numImg02 {
   border-radius: 5px;
   width: 5%;
 }
