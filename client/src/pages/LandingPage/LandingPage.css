@@ -226,7 +226,7 @@
   margin-top: 25px;
 }
 .col4gy3row {
-  position: relative; /* Add relative positioning to the container */
+  position: relative; 
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -320,12 +320,12 @@
   padding: 10px;
   border-radius: 10px;
 
-  cursor: pointer; /* Add a pointer cursor for better UX */
+  cursor: pointer;
 }
 
 .learnMoreTrending:hover,
 .shareTrending:hover {
-  background-color: #8dc0ed; /* Change the background color on hover */
+  background-color: #8dc0ed; 
 }
 
 .col4gy3row:hover {
@@ -638,8 +638,11 @@
 .allspanTag::-webkit-scrollbar {
   display: none;
 }
-
-.allspanTag a {
+.relevantPosts{
+  width: 50%;
+  height: 500px;
+}
+.ctaTags {
   display: flex;
   margin: 5px;
   font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -657,7 +660,7 @@
   justify-content: center;
 }
 
-.allspanTag a:hover {
+.ctaTags:hover {
   color: white;
   background: #e8106b;
 }
