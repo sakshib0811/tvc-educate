@@ -11,8 +11,7 @@ const { Server } = require("socket.io");
 require("dotenv").config();
 
 const postsRoutes = require("./routes/posts");
-const quizRoutes = require("./routes/quiz");
-const usersRoutes = require("./routes/users");  
+const usersRoutes = require("./routes/users");
 const commentsRoutes = require("./routes/comments");
 const tagsRoutes = require("./routes/tags");
 const HttpError = require("./models/http-error");
@@ -51,7 +50,7 @@ app.use(bodyParser.json());
 const io = new Server(httpServer, {
   cors: {
     origin: CLIENT_URL,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    methods: ["GET", "POST"],
   },
 });
 socketHandlers(io);
@@ -64,8 +63,6 @@ socketHandlers(io);
 //   })
 // );
 app.use(cors());
-
-app.use("/api/quizzes", quizRoutes);
 
 app.use("/api/posts", postsRoutes);
 

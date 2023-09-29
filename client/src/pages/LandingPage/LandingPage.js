@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from "react";
-import "./LandingPage.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useContext } from "react";
-import { ThemeContexts } from "../../context/ThemeContexts";
-import { AuthorInfo } from "../../components/AuthorInfo/AuthorInfo";
-import { bodyShortener, formatDate, readingTime } from "../../utils";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import React, { useEffect, useRef, useState } from 'react';
+import './LandingPage.css';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useContext } from 'react';
+import { ThemeContexts } from '../../context/ThemeContexts';
+import { AuthorInfo } from '../../components/AuthorInfo/AuthorInfo';
+import { bodyShortener, formatDate, readingTime } from '../../utils';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill
+} from 'react-icons/bs';
+import { SlCalender } from 'react-icons/sl';
+
+
 
 const LandingPage = () => {
   const [addTask, setAddTask] = useState([]);
@@ -16,6 +27,144 @@ const LandingPage = () => {
   const [tags, setTags] = useState([]);
   const [hoverClass, setHoverClass] = useState([]);
   const [trendingHover, setTrendingHover] = useState([]);
+  const [idx, setIdx] = useState(0);
+  const [scroll, setScroll] = useState({ scrollLeft: false, scrollRight: true });
+  const [filter, setFilter] = useState('');
+
+
+
+  const MutatedArrow = ({ className = '', onClick, prev = false }) => {
+    return prev ? (
+      <BsFillArrowLeftCircleFill
+        className={className}
+        onClick={onClick}
+        style={{
+          color: 'rgb(1, 66, 122)',
+          width: '35px',
+          position: 'absolute',
+          height: '35px',
+          left: '-50px'
+        }}
+      />
+    ) : (
+      <BsFillArrowRightCircleFill
+        className={className}
+        onClick={onClick}
+        style={{
+          color: 'rgb(1, 66, 122)',
+          width: '35px',
+          position: 'absolute',
+          height: '35px',
+          right: '-50px'
+        }}
+      />
+    )
+  };
+
+  const slideSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    className: 'carousel-container',
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true,
+    // centerPadding: '60px',
+    // autoplay: true,
+    autoplaySpeed: 2500,
+    // variableWidth: true,
+    // pauseOnHover: true,
+    swipeToSlide: true,
+    nextArrow: <MutatedArrow />,
+    prevArrow: <MutatedArrow prev='true' />,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 1
+        }
+      }
+    ]
+  };
+
+  let cardsSectionRef = React.useRef();
+
+  let parentContainerRef = React.useRef();
+
+  const scrollLeft = () => {
+    const movableContainerWidth = cardsSectionRef.current.clientWidth;
+    const parentContainerWidth = parentContainerRef.current.clientWidth;
+
+    if (cardsSectionRef.current) {
+      setIdx((prev) => {
+        if (prev === 0) {
+          setScroll((prev) => ({
+            ...prev,
+            scrollLeft: false
+          }));
+
+          return prev;
+        } else {
+          prev--;
+          cardsSectionRef.current.style.transform = `translateX(-${parentContainerWidth * prev
+            }px)`;
+          if (prev === 0) {
+            setScroll((prev) => ({
+              ...prev,
+              scrollLeft: false
+            }));
+          }
+          return prev;
+        }
+      });
+
+      setScroll((prev) => ({
+        ...prev,
+        scrollRight: true
+      }));
+    };
+  };
+  const scrollRight = () => {
+    const movableContainerWidth = cardsSectionRef.current.clientWidth;
+
+    const parentContainerWidth = parentContainerRef.current.clientWidth;
+
+    if (cardsSectionRef.current) {
+      cardsSectionRef.current.scrollLeft += parentContainerWidth;
+
+      setIdx((prev) => {
+        // console.log(prev)
+        if ((prev + 1) * parentContainerWidth >= movableContainerWidth)
+          return prev;
+
+        if (
+          movableContainerWidth - (prev + 1) * parentContainerWidth <
+          parentContainerWidth
+        ) {
+          cardsSectionRef.current.style.transform = `translateX(-${movableContainerWidth - parentContainerWidth
+            }px)`;
+
+          setScroll((prev) => ({
+            ...prev,
+            scrollRight: false
+          }));
+        } else
+          cardsSectionRef.current.style.transform = `translateX(-${(prev + 1) * parentContainerWidth
+            }px)`;
+        setScroll((prev) => ({
+          ...prev,
+          scrollLeft: true
+        }));
+        return prev + 1;
+      })
+    }
+  }
 
   async function getPosts() {
     axios.get(`http://localhost:5000/api/posts`).then((res) => {
@@ -30,177 +179,324 @@ const LandingPage = () => {
       setHoverClass(arr);
       setTrendingHover(arr);
     });
-  }
-
+  };
   async function getTags() {
     axios.get(`http://localhost:5000/api/tags`).then((res) => {
       setTags(res.data.tags);
     });
-  }
+  };
 
   useEffect(() => {
     getPosts();
     getTags();
   }, []);
 
+
+  // console.log(filter);
+
+
+  const filteredPosts = addTask.filter(post => post.tags.some(tag => tag.name === filter));
+
+  // console.log(filteredPosts);
+
+
+
   return (
     <>
       {!isLoading ? (
         <>
-          <section className="homeContainer">
-            <div className="homeSection">
-              <Carousel
-                className="carousel-container"
-                autoPlay
-                infiniteLoop={true}
-                style={{ borderRadius: "20px" }}
-                showThumbs={false}
-                showArrows={true}
-              >
+          <section className='homeContainer'>
+            <div className='homeSection'>
+              <Slider className='carousel-container' {...slideSettings}>
                 {addTask.length > 0
                   ? addTask.map((e, i) => {
-                      return (
-                        <div className="carousel-data-container">
-                          <img
-                            src={e.image}
-                            alt={i}
-                            style={{ width: "100%", opacity: "0.5" }}
-                          />
+                    var date = formatDate(e.date);
+
+                    return (
+                      <Link to={`/posts/${e.titleURL}/${e.id}`}>
+                        <div
+                          key={e._id}
+                          className='carousel-wrapper'
+                        >
+
+                          <img src={e.image} alt={i} />
+                          <div className='gradientBreak'></div>
                           <div
-                            className="img-cover"
-                            style={{
-                              width: "100%",
-                              height: "550px",
-                              backgroundColor: "rgba(0,0,0,0.5)",
-                              marginTop: "-550px",
-                            }}
+                            className='slideDescription'
                           >
-                            <p className="legend-carousel">
-                              {e.title}
-                              <br />
-                              <span>{`By ${e.author.name}`}</span>
+                            <span className='slideTag'>{e.tags[0].name}</span>
+                            <p className='slideTitle'>{e.title}</p>
+
+                            <span className='slideAuthor'>{`By ${e.author.name}`}</span>
+                            <span className='slideDate'>
+                              <SlCalender /> {date}{' '}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })
+                  : ''}
+              </Slider>
+            </div>
+          </section>
+          <hr className='hr-tag'></hr>
+
+          <section className='trendingSection'>
+            <div className='trendingPart'>
+              <p className='headingTitle-trending'>TRENDING ON TVC EDYOUCATE</p>
+              <div className='myRowFlex'>
+                {addTask.length > 0
+                  ? addTask.map((e, i) => {
+                    var date = formatDate(e.date);
+                    var readingDuration = readingTime(e.body);
+
+                    return (
+                      <div
+                        className={'col4gy3row'}
+                        key={e._id}
+                        onMouseEnter={() => {
+                          var arr = [...trendingHover];
+                          arr[i].hoverClass = true;
+                          setTrendingHover(arr);
+                        }}
+                        onMouseLeave={() => {
+                          var arr = [...trendingHover];
+                          arr[i].hoverClass = false;
+                          setTrendingHover(arr);
+                        }}
+                      >
+                        <div className='previewAuthorTrending'>
+                          <div className='author__image'>
+                            <img
+                              src={e.author.avatar}
+                              alt={`user photo ${e.author.name}`}
+                            />
+                          </div>
+                          <div
+                            className={`authorDetailsTrending ${trendingHover[i]?.hoverClass
+                              ? 'lp'
+                              : 'no-lp'
+                              }`}
+                          >
+                            <p
+                              className={`authorName ${trendingHover[i]?.hoverClass
+                                ? 'lp'
+                                : 'no-lp'
+                                }`}
+                            >
+                              {e.author.name}
+                            </p>
+                            <p
+                              className={`authorDate ${trendingHover[i]?.hoverClass
+                                ? 'lp'
+                                : 'no-lp'
+                                }`}
+                            >
+                              {date}
                             </p>
                           </div>
                         </div>
-                      );
-                    })
-                  : ""}
-              </Carousel>
-            </div>
-          </section>
-          <hr className="hr-tag"></hr>
+                        <img
+                          className='trendingImg'
+                          src={e.image}
+                          alt={`trending news image with title: ${e.title}`}
+                        />
+                        <div className='trendingCardTitle'>
+                          <Link
+                            onClick={() => handleChangeTheme(5)}
+                            style={{ textDecoration: 'none' }}
+                            to={`/posts/${e.titleURL}/${e.id}`}
+                          >
 
-          <section className="trendingSection">
-            <div className="trendingPart">
-              <p className="headingTitle-trending">TRENDING ON TVC EDYOUCATE</p>
-              <div className="myRowFlex">
-                {addTask.length > 0
-                  ? addTask.map((e, i) => {
-                      var date = formatDate(e.date);
-                      var readingDuration = readingTime(e.body);
-
-                      return (
-                        <div
-                          className={"col4gy3row"}
-                          key={e._id}
-                          onMouseEnter={() => {
-                            var arr = [...trendingHover];
-                            arr[i].hoverClass = true;
-                            setTrendingHover(arr);
-                          }}
-                          onMouseLeave={() => {
-                            var arr = [...trendingHover];
-                            arr[i].hoverClass = false;
-                            setTrendingHover(arr);
-                          }}
-                        >
-                          <div className="colis10">
-                            <Link
-                              onClick={() => handleChangeTheme(5)}
-                              style={{ textDecoration: "none" }}
-                              to={`/posts/${e.titleURL}/${e.id}`}
-                            >
-                              <div className="preview__author ml--1">
-                                <div className="author__image">
-                                  <img
-                                    src={e.author.avatar}
-                                    alt={`user photo ${e.author.name}`}
-                                  />
-                                </div>
-                                <div
-                                  className={`author__details ${
-                                    trendingHover[i]?.hoverClass
-                                      ? "lp"
-                                      : "no-lp"
+                            <div className='authHeading'>
+                              <p
+                                className={`trendingTitle authorTitle ${trendingHover[i]?.hoverClass
+                                  ? 'lp'
+                                  : 'no-lp'
                                   }`}
-                                >
-                                  <p
-                                    className={`author__name ${
-                                      trendingHover[i]?.hoverClass
-                                        ? "lp"
-                                        : "no-lp"
-                                    }`}
-                                  >
-                                    {e.author.name}
-                                  </p>
-                                  <p
-                                    className={`author__date ${
-                                      trendingHover[i]?.hoverClass
-                                        ? "lp"
-                                        : "no-lp"
-                                    }`}
-                                  >
-                                    {date}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="authHeading">
-                                <p
-                                  className={`authorTitle ${
-                                    trendingHover[i]?.hoverClass
-                                      ? "lp"
-                                      : "no-lp"
-                                  }`}
-                                >
-                                  {e.title}
-                                </p>
-                              </div>
-                              <span
-                                className={`${
-                                  trendingHover[i]?.hoverClass ? "lp" : "no-lp"
-                                }`}
                               >
-                                {readingDuration}
-                              </span>
-                            </Link>
-                          </div>
-                          <img
-                            className="trending-news-rep-img"
-                            src={e.image}
-                            alt={`trending news image with title: ${e.title}`}
-                          />
+                                {e.title}
+                              </p>
+                            </div>
+                            <span
+                              className={`${trendingHover[i]?.hoverClass ? 'lp' : 'no-lp'
+                                }`}
+                            >
+                              {readingDuration}
+                            </span>
+                          </Link>
                         </div>
-                      );
-                    })
-                  : " "}
+                        <div className='trendingCta'>
+                          <div className='learnMoreTrending'>Learn More</div>
+                          <div className='shareTrending'>SHARE</div>
+                        </div>
+
+                      </div>
+                    )
+                  })
+                  : ' '}
               </div>
             </div>
           </section>
-          <hr className="hr-tag"></hr>
+          <hr className='hr-tag'></hr>
 
-          <section className="blogSection">
-            <p className="headingTitle-all-blogs">EXPLORE!</p>
-            <div className="allBlogs">
-              <div className="leftBlogSection">
-                {addTask.length > 0
-                  ? addTask.map((e, i) => {
+          <section className='blogSection'>
+
+
+            <div className='allBlogs'>
+              <div className='leftBlogSection'>
+                <div className='ctaSection'>
+                  <p className='headingTitle-all-blogs'>EXPLORE!</p>
+                  <h6>DISCOVER MORE OF WHAT MATTERS TO YOU</h6>
+                  <div className='allBlogTypesFirst' ref={parentContainerRef}>
+                    <div ref={cardsSectionRef} className='allspanTag'>
+                      {isLoading ? (
+                        <></>
+                      ) : (
+                        <>
+                          <div className='ctaTags' onClick={() => {
+
+                            setFilter('');
+
+                          }}>all
+                          </div>
+                          {tags.slice(0, 15).map((e, i) => (
+
+
+                            <div className='ctaTags' key={e._id + 2} onClick={() => {
+
+                              setFilter(e.name)
+
+                            }}>{e.name}
+                            </div>
+
+
+                          ))}
+                        </>
+                      )}
+                    </div>
+
+                    <button
+                      type='button'
+                      className={`button prevButton ${!scroll.scrollLeft && `displayNone`
+                        }`}
+                      onClick={() => scrollLeft()}
+                    >
+                      <MdNavigateBefore className='buttonIcons' />
+                    </button>
+
+                    <button
+                      type='button'
+                      className={`button nextButton ${!scroll.scrollRight && `displayNone`
+                        }`}
+                      onClick={() => scrollRight()}
+                    >
+                      <MdNavigateNext className='buttonIcons' />
+                    </button>
+                  </div>
+                </div>
+
+                {filteredPosts.length > 0
+                  ? filteredPosts.map((e, i) => {
+                    var date = formatDate(e.date);
+                    var readingDuration = readingTime(e.body);
+                    var shortenedBody = bodyShortener(e.body);
+                    var hoverVal = hoverClass[i]?.hoverClass ? 'lp' : 'no-lp';
+                    return (
+                      <div
+                        className='col4gy3row02'
+                        key={e._id + 1}
+                        onMouseEnter={() => {
+                          var arr = [...hoverClass];
+                          arr[i].hoverClass = true;
+                          setHoverClass(arr);
+                        }}
+                        onMouseLeave={() => {
+                          var arr = [...hoverClass];
+                          arr[i].hoverClass = false;
+                          setHoverClass(arr);
+                        }}
+                      >
+                        <div className='colis1002'>
+                          <Link
+                            // onClick={() => handleChangeTheme(5)}
+                            // style={{ textDecoration: "none" }}
+                            to={`/posts/${e.titleURL}/${e.id}`}
+                          >
+                            <div className='preview__author ml--1'>
+                              <div className='author__image'>
+                                <img
+                                  src={e.author.avatar}
+                                  alt={`user photo ${e.author.name}`}
+                                />
+                              </div>
+                              <div
+                                className={`author__details ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                  }`}
+                              >
+                                <p
+                                  className={`author__name ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                    }`}
+                                >
+                                  {e.author.name}
+                                </p>
+                                <p
+                                  className={`author__date ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                    }`}
+                                >
+                                  {date}
+                                </p>
+                              </div>
+                            </div>
+                            <div className='authHeading02 '>
+                              <p
+                                className={`authorTitle02 ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                  }`}
+                              >
+                                {e.title}
+                              </p>
+                              <p
+                                className={`authSubHed02 ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                  }`}
+                              >
+                                {shortenedBody}
+                              </p>
+                            </div>
+                          </Link>
+                          <div
+                            className={`authDaTiSt02 ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                              }`}
+                          >
+                            <span>{e.userBlogDate} ·</span>
+                            <span className=''>{readingDuration}</span>
+                            <span className='mx-1 '>·</span>
+                            <span
+                              className={`mx-1 ${hoverClass[i]?.hoverClass
+                                ? 'userTagHover'
+                                : 'userBlogTag'
+                                }`}
+                            >
+                              {e.tags[0].name}
+                            </span>
+                            <span className='mx-1 '>&#9733;</span>
+                          </div>
+                        </div>
+                        <div className='colis202'>
+                          <img src={e.image} alt={i + ' ' + e.title} />
+                        </div>
+                      </div>
+                    )
+                  })
+                  : addTask.length > 0
+                    ? addTask.map((e, i) => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
                       var shortenedBody = bodyShortener(e.body);
-                      var hoverVal = hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog";
+                      var hoverVal = hoverClass[i]?.hoverClass ? 'lp' : 'no-lp';
                       return (
                         <div
-                          className="col4gy3row02"
+                          className='col4gy3row02'
                           key={e._id + 1}
                           onMouseEnter={() => {
                             var arr = [...hoverClass];
@@ -213,111 +509,89 @@ const LandingPage = () => {
                             setHoverClass(arr);
                           }}
                         >
-                          <div className="colis1002">
+                          <div className='colis1002'>
                             <Link
                               // onClick={() => handleChangeTheme(5)}
                               // style={{ textDecoration: "none" }}
                               to={`/posts/${e.titleURL}/${e.id}`}
                             >
-                              <div className="preview__author ml--1">
-                                <div className="author__image">
+                              <div className='preview__author ml--1'>
+                                <div className='author__image'>
                                   <img
                                     src={e.author.avatar}
                                     alt={`user photo ${e.author.name}`}
                                   />
                                 </div>
                                 <div
-                                  className={`author__details ${
-                                    hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
-                                  }`}
+                                  className={`author__details ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                    }`}
                                 >
                                   <p
-                                    className={`author__name ${
-                                      hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
-                                    }`}
+                                    className={`author__name ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                      }`}
                                   >
                                     {e.author.name}
                                   </p>
                                   <p
-                                    className={`author__date ${
-                                      hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
-                                    }`}
+                                    className={`author__date ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                      }`}
                                   >
                                     {date}
                                   </p>
                                 </div>
                               </div>
-                              <div className="authHeading02 ">
+                              <div className='authHeading02 '>
                                 <p
-                                  className={`authorTitle02 ${
-                                    hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
-                                  }`}
+                                  className={`authorTitle02 ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                    }`}
                                 >
                                   {e.title}
                                 </p>
                                 <p
-                                  className={`authSubHed02 ${
-                                    hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
-                                  }`}
+                                  className={`authSubHed02 ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                    }`}
                                 >
                                   {shortenedBody}
                                 </p>
                               </div>
                             </Link>
                             <div
-                              className={`authDaTiSt02 ${
-                                hoverClass[i]?.hoverClass ? "lp-blog" : "no-lp-blog"
-                              }`}
+                              className={`authDaTiSt02 ${hoverClass[i]?.hoverClass ? 'lp' : 'no-lp'
+                                }`}
                             >
                               <span>{e.userBlogDate} ·</span>
-                              <span className="">{readingDuration}</span>
-                              <span className="mx-1 ">·</span>
+                              <span className=''>{readingDuration}</span>
+                              <span className='mx-1 '>·</span>
                               <span
-                                className={`mx-1 ${
-                                  hoverClass[i]?.hoverClass
-                                    ? "userTagHover"
-                                    : "userBlogTag"
-                                }`}
+                                className={`mx-1 ${hoverClass[i]?.hoverClass
+                                  ? 'userTagHover'
+                                  : 'userBlogTag'
+                                  }`}
                               >
                                 {e.tags[0].name}
                               </span>
-                              <span className="mx-1 ">&#9733;</span>
+                              <span className='mx-1 '>&#9733;</span>
                             </div>
                           </div>
-                          <div className="colis202">
-                            <img src={e.image} alt={i + " " + e.title} />
+                          <div className='colis202'>
+                            <img src={e.image} alt={i + ' ' + e.title} />
                           </div>
                         </div>
-                      );
-                    })
-                  : " "}
+                      )
+                    }) : ''}
               </div>
-              <div className="rightBlogSection">
-                <div className="allBlogTypes">
-                  <div className="allBlogTypesFirst">
-                    <h6>DISCOVER MORE OF WHAT MATTERS TO YOU</h6>
-                    <div className="allspanTag">
-                      {isLoading ? (
-                        <></>
-                      ) : (
-                        tags.slice(0, 9).map((e, i) => {
-                          return (
-                            <a
-                              style={{ textDecoration: "none" }}
-                              href={`http://localhost:3000/tags/${e.name}`}
-                              key={e._id + 2}
-                            >
-                              {e.name}
-                            </a>
-                          );
-                        })
-                      )}
+              <div className='rightBlogSection'>
+                <div className='allBlogTypes'>
+                  <div className='quizCard'>
+
+                    <img className='quizCardImg' src='https://i.postimg.cc/xCVwb1yy/depositphotos-127600950-stock-photo-inscription-on-smartphone-screen.webp' />
+                    <div className='gradientBreak'></div>
+                    <div className='quizCta'>
+                      <h2>Take the Online Quiz Now!</h2>
+                      <div className='quizButton'>Click here</div>
                     </div>
-                    <a className="allTopics" href="http://localhost:3000/tags">
-                      See all tags
-                    </a>
                   </div>
-                  <div className="allspanTag2">
+                  <div className='allspanTag2'>
                     <span>Help </span>
                     <span> Status </span>
                     <span> Writers </span>
@@ -333,7 +607,7 @@ const LandingPage = () => {
           </section>
         </>
       ) : (
-        " "
+        ' '
       )}
     </>
   );

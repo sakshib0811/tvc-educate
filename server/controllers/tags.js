@@ -44,11 +44,10 @@ const getAllTags = async (req, res, next) => {
   let tags;
   try {
     tags = await Tag.find({});
-    res.json({ tags: tags?.map((tag) => tag.toObject({ getters: true })) });
   } catch (err) {
     return next(new HttpError('Could not fetch tags, please try again', 500));
   }
-  // res.json({ tags: tags?.map((tag) => tag.toObject({ getters: true })) });
+  res.json({ tags: tags.map((tag) => tag.toObject({ getters: true })) });
 };
 
 const getTagByName = async (req, res, next) => {
