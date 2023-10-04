@@ -226,7 +226,7 @@
   margin-top: 25px;
 }
 .col4gy3row {
-  position: relative; 
+  position: relative;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -325,7 +325,7 @@
 
 .learnMoreTrending:hover,
 .shareTrending:hover {
-  background-color: #8dc0ed; 
+  background-color: #8dc0ed;
 }
 
 .col4gy3row:hover {
@@ -347,7 +347,7 @@
 }
 
 .authorName {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -361,7 +361,7 @@
 }
 
 .authorDictp {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -375,7 +375,7 @@
 }
 
 .authorTitle {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 17px;
@@ -385,7 +385,7 @@
 }
 
 .authDaTiSt {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -407,6 +407,7 @@
 .allBlogs {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 5%;
 }
 
 .leftBlogSection {
@@ -433,6 +434,7 @@
   flex-direction: column;
   align-items: center;
   border: 1px solid #000000;
+  text-align: center;
   height: 450px;
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
@@ -451,6 +453,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding-left: 20px;
   background-color: #ebf2f5;
   width: 100%;
@@ -465,34 +468,33 @@
   transition: transform 0.3s ease-in-out;
 }
 .quizButton {
-  width: 160px;
-  text-align: center;
-  background: #01427a;
-  padding: 10px 10px;
+  background-color: #01427a;
+  padding: 10px 20px;
   border-radius: 10px;
-  color: white;
   text-transform: uppercase;
   font-size: 15px;
   font-weight: bold;
   letter-spacing: 2px;
   transition: transform 0.3s ease-in-out;
 }
-
+.quiz-btn-text {
+  color: white;
+}
 .quizCard:hover .quizCta h2 {
   text-decoration: underline;
 }
 
-/* .quizCard:hover .gradientBreak {
+.quizCard:hover .gradientBreak {
   transition: 0.6s ease-out;
-  background: rgb(103, 45, 71);
-  background: linear-gradient(
+  /* background: rgb(103, 45, 71); */
+  /* background: linear-gradient(
     90deg,
     rgba(103, 45, 71, 1) 0%,
     rgba(172, 35, 93, 1) 36%,
     rgba(224, 186, 202, 1) 71%,
     rgba(242, 55, 134, 1) 100%
-  );
-} */
+  ); */
+}
 
 .quizCard:hover img {
   opacity: 0.5;
@@ -502,9 +504,9 @@
 }
 
 .quizButton:hover {
-  /* background-color: #e8106b; */
+  background-color: #e8106b;
   border: 1px solid white;
-  text-decoration: underline;
+  /* text-decoration: underline; */
   transform: scale(1.1) translateX(5%);
 }
 
@@ -550,7 +552,7 @@
 }
 
 .authorName02 {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
@@ -564,7 +566,7 @@
 }
 
 .authorDictp02 {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
@@ -577,7 +579,7 @@
 }
 
 .authorTitle02 {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: bolder;
   font-size: 20px;
@@ -596,7 +598,7 @@
 
 .authSubHed02 {
   /* width: 90%; */
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -609,7 +611,7 @@
 }
 
 .authDaTiSt02 {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -638,14 +640,14 @@
 .allspanTag::-webkit-scrollbar {
   display: none;
 }
-.relevantPosts{
+.relevantPosts {
   width: 50%;
   height: 500px;
 }
 .ctaTags {
   display: flex;
   margin: 5px;
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #01427a;
   background: #ebf2f5;
   border-radius: 18px;
@@ -732,7 +734,7 @@
   padding-top: 20px;
 }
 .allspanTag2 span {
-  font-family: sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #757575;
   border-radius: 4px;
   cursor: pointer;
