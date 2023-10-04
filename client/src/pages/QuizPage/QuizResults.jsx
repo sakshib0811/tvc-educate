@@ -26,7 +26,7 @@ const QuizResults = () => {
           {questions.map((question, index) => (
             <div key={index} className="question-card">
               <p className="q-num">Question {index + 1}:</p>
-              <p>{question.text}</p>
+              <p className="q-text">{question.text}</p>
               <p className="correct">
                 Correct Answer: {question.correctAnswer}
               </p>

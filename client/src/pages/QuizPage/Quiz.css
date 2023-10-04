@@ -36,7 +36,7 @@
 .categories {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem 1.5rem;
+  gap: 0.5rem 1.75rem;
   padding: 1rem;
   text-align: center;
 }
@@ -44,9 +44,9 @@
   background-color: #8dc0ed;
   color: #022d53;
   margin-bottom: 1.25rem;
-  padding: 1rem 0.3rem;
+  padding: 1.75rem 0.5rem;
   width: 100%;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   cursor: pointer;
   transition-duration: 300ms;
   text-align: center;
@@ -73,18 +73,19 @@
   color: #01427a;
 }
 .quiz-num {
-  font-size: 1.25rem;
-  margin-bottom: 1.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
 }
 .option-card {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: 0.5rem 1.5rem;
 }
 .quiz-option {
   background-color: #8dc0ed;
   margin-bottom: 1.25rem;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -116,6 +117,7 @@
 }
 .quiz-button {
   text-align: center;
+  margin-top: 1.75rem;
 }
 .quiz-button > button {
   padding: 1.1rem 1.4rem;
@@ -154,7 +156,7 @@
   font-weight: 600;
 }
 .feedback-card > h3 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   text-align: left;
   margin-bottom: 1rem;
@@ -170,13 +172,16 @@
 }
 .question-card:hover {
   transform: scale(1.02);
-  border: 1px solid gray;
+  border: 2px solid gray;
 }
 .question-card > p {
   margin-bottom: 0.25rem;
 }
 .q-num {
   font-size: 1.5rem;
+}
+.q-text {
+  font-size: 1.55rem;
 }
 .correct,
 .answer {
@@ -185,6 +190,7 @@
 
 .result-button {
   text-align: center;
+  margin-top: 3.5rem;
 }
 .result-button > button {
   background-color: #01427a;
