@@ -196,7 +196,7 @@ const LandingPage = () => {
 
   const approvedPosts=addTask.filter(post=>post.approved===true)
 
-  console.log(approvedPosts)
+  // console.log(approvedPosts)
   const filteredPosts = approvedPosts.filter(post => post.tags.some(tag => tag.name === filter));
 
   // console.log(filteredPosts);
@@ -210,8 +210,8 @@ const LandingPage = () => {
           <section className='homeContainer'>
             <div className='homeSection'>
               <Slider className='carousel-container' {...slideSettings}>
-                {approvedPosts.length > 0
-                  ? approvedPosts.map((e, i) => {
+                {approvedPosts.length > 3
+                  ? approvedPosts.slice(0,8).map((e, i) => {
                     var date = formatDate(e.date);
 
                     return (
@@ -363,7 +363,7 @@ const LandingPage = () => {
 
                           }}>all
                           </div>
-                          {tags.slice(0, 15).map((e, i) => (
+                          {tags.slice(0,30 ).map((e, i) => (
 
 
                             <div className='ctaTags' key={e._id + 2} onClick={() => {
