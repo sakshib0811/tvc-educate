@@ -194,8 +194,10 @@ const LandingPage = () => {
 
   // console.log(filter);
 
+  const approvedPosts=addTask.filter(post=>post.approved===true)
 
-  const filteredPosts = addTask.filter(post => post.tags.some(tag => tag.name === filter));
+  console.log(approvedPosts)
+  const filteredPosts = approvedPosts.filter(post => post.tags.some(tag => tag.name === filter));
 
   // console.log(filteredPosts);
 
@@ -203,13 +205,13 @@ const LandingPage = () => {
 
   return (
     <>
-      {!isLoading ? (
+      {!isLoading ? ( 
         <>
           <section className='homeContainer'>
             <div className='homeSection'>
               <Slider className='carousel-container' {...slideSettings}>
-                {addTask.length > 0
-                  ? addTask.map((e, i) => {
+                {approvedPosts.length > 0
+                  ? approvedPosts.map((e, i) => {
                     var date = formatDate(e.date);
 
                     return (
@@ -246,8 +248,8 @@ const LandingPage = () => {
             <div className='trendingPart'>
               <p className='headingTitle-trending'>TRENDING ON TVC EDYOUCATE</p>
               <div className='myRowFlex'>
-                {addTask.length > 0
-                  ? addTask.map((e, i) => {
+                {approvedPosts.length > 0
+                  ? approvedPosts.map((e, i) => {
                     var date = formatDate(e.date);
                     var readingDuration = readingTime(e.body);
 
@@ -488,8 +490,8 @@ const LandingPage = () => {
                       </div>
                     )
                   })
-                  : addTask.length > 0
-                    ? addTask.map((e, i) => {
+                  : approvedPosts.length > 0
+                    ? approvedPosts.map((e, i) => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
                       var shortenedBody = bodyShortener(e.body);

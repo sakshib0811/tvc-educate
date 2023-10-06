@@ -32,6 +32,7 @@ const postSchema = new Schema({
   //The ref option is what tells Mongoose which model to use during population (It will populate post with the author)
   comments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Comment' }],
   author: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+  approved:{type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Post', postSchema); //returns a constructor function
