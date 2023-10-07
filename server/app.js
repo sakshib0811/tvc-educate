@@ -22,10 +22,11 @@ const {
   DB_PASSWORD,
   DB_NAME,
   COOKIE_KEY,
-  PORT,
   NODE_ENV,
   CLIENT_URL,
 } = process.env;
+
+const PORT = process.env.PORT || 5000;
 
 const httpServer = createServer(app);
 
