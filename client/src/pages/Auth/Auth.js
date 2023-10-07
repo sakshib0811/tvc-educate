@@ -123,16 +123,16 @@ const Auth = ({ newUser }) => {
       <ErrorModal error={error} onClose={clearError} />
       <div className="container container-auth">
         <Welcome />
-        <div className="auth__social">
-          <GLogin onLogin={handleGoogleAuth} />
+        {/* <div className="auth__social">
+          <GLogin onLogin={handleGoogleAuth} /> */}
           {/* <GHLogin onLogin={handleGithubAuth} />
           <FBLogin onLogin={handleFBAuth} />
           <TwitterLogin /> */}
-        </div>
+        {/* </div> */}
 
         <form className="form__auth">
           <div className="form__options">
-            <p>Or</p>
+            {/* <p>Or</p> */}
             <h2>
               {newUser
                 ? "Create a New Account"

@@ -139,7 +139,6 @@ const LandingPage = () => {
       cardsSectionRef.current.scrollLeft += parentContainerWidth;
 
       setIdx((prev) => {
-        // console.log(prev)
         if ((prev + 1) * parentContainerWidth >= movableContainerWidth)
           return prev;
 
@@ -191,25 +190,18 @@ const LandingPage = () => {
     getTags();
   }, []);
 
-
-  // console.log(filter);
-
-
-  const filteredPosts = addTask.filter(post => post.tags.some(tag => tag.name === filter));
-
-  // console.log(filteredPosts);
-
-
+  const approvedPosts=addTask.filter(post=>post.approved===true)
+  const filteredPosts = approvedPosts.filter(post => post.tags.some(tag => tag.name === filter));
 
   return (
     <>
-      {!isLoading ? (
+      {!isLoading ? ( 
         <>
           <section className='homeContainer'>
             <div className='homeSection'>
               <Slider className='carousel-container' {...slideSettings}>
-                {addTask.length > 0
-                  ? addTask.map((e, i) => {
+                {approvedPosts.length > 3
+                  ? approvedPosts.slice(0,8).map((e, i) => {
                     var date = formatDate(e.date);
 
                     return (
@@ -246,8 +238,8 @@ const LandingPage = () => {
             <div className='trendingPart'>
               <p className='headingTitle-trending'>TRENDING ON TVC EDYOUCATE</p>
               <div className='myRowFlex'>
-                {addTask.length > 0
-                  ? addTask.map((e, i) => {
+                {approvedPosts.length > 0
+                  ? approvedPosts.map((e, i) => {
                     var date = formatDate(e.date);
                     var readingDuration = readingTime(e.body);
 
@@ -361,7 +353,7 @@ const LandingPage = () => {
 
                           }}>all
                           </div>
-                          {tags.slice(0, 15).map((e, i) => (
+                          {tags.slice(0,30 ).map((e, i) => (
 
 
                             <div className='ctaTags' key={e._id + 2} onClick={() => {
@@ -488,8 +480,8 @@ const LandingPage = () => {
                       </div>
                     )
                   })
-                  : addTask.length > 0
-                    ? addTask.map((e, i) => {
+                  : approvedPosts.length > 0
+                    ? approvedPosts.map((e, i) => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
                       var shortenedBody = bodyShortener(e.body);

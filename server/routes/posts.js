@@ -18,6 +18,8 @@ const {
   ununicornPost,
   unbookmarkPost,
   bookmarkPost,
+  approvePost,
+  removePost
 } = postsControllers;
 
 router.get('/', getAllPosts);
@@ -27,6 +29,10 @@ router.get('/user/:userId', getPostsByUserId);
 router.get('/:titleURL/:postId', getPostById);
 
 router.get('/search?', getSearchResults);
+
+router.patch('/:titleURL/:postId/approve', approvePost);
+
+router.delete('/:titleURL/:postId/delete', removePost);
 
 router.use(checkAuth);
 
@@ -54,6 +60,9 @@ router.patch(
   ],
   updatePost
 );
+
+
+
 
 router.delete('/:titleURL/:postId', deletePost);
 
