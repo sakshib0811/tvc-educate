@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Posts from '../../components/Post/Posts';
-import RightSideBar from '../../components/RightSideBar/RightSideBar';
-import LeftSideBar from '../../components/LeftSideBar/LeftSideBar';
-import useHttpClient from '../../hooks/useHttpClient';
-import { AuthContext } from '../../context/auth';
-import useAuth from '../../hooks/useAuth';
+import React, { useState, useEffect, useContext } from "react";
+import Posts from "../../components/Post/Posts";
+import RightSideBar from "../../components/RightSideBar/RightSideBar";
+import LeftSideBar from "../../components/LeftSideBar/LeftSideBar";
+import useHttpClient from "../../hooks/useHttpClient";
+import { AuthContext } from "../../context/auth";
+import useAuth from "../../hooks/useAuth";
 
 const Home = () => {
   const [tags, setTags] = useState([]);
@@ -34,14 +34,16 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const responseData = await sendReq(
-          `http://localhost:5000/api/tags`
-        );
+        const responseData = await sendReq(`http://localhost:5000/api/tags`);
         setTags(responseData.tags);
         setLoading(true);
         console.log(responseData);
         var currentUserData = localStorage?.userData;
-        console.log(currentUserData ? JSON.parse(localStorage?.userData): "no one is here");
+        console.log(
+          currentUserData
+            ? JSON.parse(localStorage?.userData)
+            : "no one is here"
+        );
       } catch (err) {
         console.log(err);
       }
@@ -50,11 +52,9 @@ const Home = () => {
   }, [sendReq]);
 
   return (
-    <div className='container-layout'>
-      <div className='container-sidebar'>
-        <LeftSideBar />
-      </div>
+    <div className="container-layout">
       <Posts cover={true} />
+
       {loading ? <RightSideBar tags={tags} isLoading={loading} /> : ""}
     </div>
   );

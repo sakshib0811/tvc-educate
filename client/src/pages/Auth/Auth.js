@@ -112,7 +112,9 @@ const Auth = ({ newUser }) => {
       }
       login(responseData.user);
       console.log(token, isLoggedIn);
+
       history.push("/");
+      window.location.reload();
     } catch (err) {}
   };
 

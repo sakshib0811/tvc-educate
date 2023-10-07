@@ -5,7 +5,14 @@ RIGHT SIDEBAR
 .sidebar--right {
   display: none;
   flex-direction: column;
-  width: 50%;
+  /* background-color: rebeccapurple; */
+  margin-left: 2rem;
+  padding: 2rem;
+  box-shadow: 2px 2px 2px 2px rgb(155, 153, 153);
+ 
+  
+ 
+  
 }
 
 .news,

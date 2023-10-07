@@ -64,6 +64,7 @@ TAGS
   font-size: 1.6rem;
 }
 
+
 @media (min-width: 768px) {
   .container-sidebar {
     display: flex;
