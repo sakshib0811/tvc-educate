@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { baseURL } from "../../utils";
 
 const MiniPostList = (props) => {
   const [post, setPost] = useState([]);
   async function fetchTopPost() {
-    fetch(`http://localhost:5000/api/posts/${props.tag}/${props.posts}`)
+    fetch(`${baseURL}/posts/${props.tag}/${props.posts}`)
       .then((res) => {
         setPost(res.data);
         console.log(res);

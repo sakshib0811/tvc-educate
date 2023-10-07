@@ -7,12 +7,12 @@ export const canModifyComment = (currentUserId, authorId) =>
 export const canReply = (currentUserId) => !!currentUserId;
 export const isReplying = (activeComment, commentId) =>
   activeComment &&
-  activeComment.type === 'replying' &&
+  activeComment.type === "replying" &&
   activeComment.id === commentId;
 
 export const isEditing = (activeComment, commentId) =>
   activeComment &&
-  activeComment.type === 'editing' &&
+  activeComment.type === "editing" &&
   activeComment.id === commentId;
 
 export const readingTime = (body) => {
@@ -42,15 +42,15 @@ export const getReplies = (comments, commentId) => {
 };
 
 export const formatDate = (date) => {
-  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  const options = { year: "numeric", month: "short", day: "numeric" };
   const today = new Date(date);
 
-  return today.toLocaleDateString('en-US', options);
+  return today.toLocaleDateString("en-US", options);
 };
 
 export const getRandomColor = () => {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
+  const letters = "0123456789ABCDEF";
+  let color = "#";
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
@@ -81,10 +81,11 @@ export const bodyShortener = (str) => {
   let res = "";
   //return res;
   let n = str.length > 100 ? 100 : str.length;
-  for(let i = 0; i < n ; i++)
-  {
+  for (let i = 0; i < n; i++) {
     res += str[i];
   }
   res += "....";
   return res;
-}
+};
+
+export const baseURL = "https://tvc-educate.onrender.com/api";

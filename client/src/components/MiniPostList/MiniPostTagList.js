@@ -2,21 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const MiniPostList = (props) => {
-  const [post, setPost] = useState([]);
-  async function fetchTopPost() {
-    fetch(`http://localhost:5000/api/posts/${props.tag}/${props.posts}`)
-      .then((res) => {
-        setPost(res.data);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  useEffect(() => {
-    fetchTopPost();
-  }, []);
   if (props.posts?.length === 0) {
     return <div>No posts found!</div>;
   }
