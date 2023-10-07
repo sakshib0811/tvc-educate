@@ -237,7 +237,7 @@ const LandingPage = () => {
               <p className="headingTitle-trending">TRENDING ON TVC EDYOUCATE</p>
               <div className="myRowFlex">
                 {approvedPosts.length > 0
-                  ? approvedPosts.map((e, i) => {
+                  ? approvedPosts.slice(0, 6).map((e, i) => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
 
