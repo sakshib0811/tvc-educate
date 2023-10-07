@@ -1,6 +1,7 @@
 import React from "react";
 import "./Footer.css";
-
+import { CiFacebook, CiLinkedin } from 'react-icons/ci'
+import { BsInstagram, BsTwitter } from 'react-icons/bs'
 const Footer = () => {
   return (
     <footer>
@@ -24,3 +25,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
