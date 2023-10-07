@@ -139,7 +139,6 @@ const LandingPage = () => {
       cardsSectionRef.current.scrollLeft += parentContainerWidth;
 
       setIdx((prev) => {
-        // console.log(prev)
         if ((prev + 1) * parentContainerWidth >= movableContainerWidth)
           return prev;
 
@@ -191,17 +190,8 @@ const LandingPage = () => {
     getTags();
   }, []);
 
-
-  // console.log(filter);
-
   const approvedPosts=addTask.filter(post=>post.approved===true)
-
-  // console.log(approvedPosts)
   const filteredPosts = approvedPosts.filter(post => post.tags.some(tag => tag.name === filter));
-
-  // console.log(filteredPosts);
-
-
 
   return (
     <>

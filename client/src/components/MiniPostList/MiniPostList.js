@@ -7,7 +7,7 @@ const MiniPostList = (props) => {
     fetch(`http://localhost:5000/api/posts/${props.tag}/${props.posts}`)
     .then((res)=> {
       setPost(res.data);
-      console.log(res);
+      // console.log(res);
     })
     .catch((err)=>{
       console.log(err);

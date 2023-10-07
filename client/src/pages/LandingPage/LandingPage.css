@@ -1,5 +1,5 @@
 .homeContainer {
-  height: 650px;
+  height: 600px;
   display: inline-block;
   margin-top: -1rem;
   background: #ebf2f5;
@@ -13,7 +13,7 @@
 
 .homeSection {
   height: 100%;
-  padding-top: 20px;
+  padding-top: 25px;
   padding-left: 80px;
   padding-right: 80px;
   padding-bottom: 20px;
@@ -86,7 +86,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
