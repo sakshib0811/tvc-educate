@@ -17,6 +17,9 @@ import Footer from './components/Footer/Footer';
 import { AuthContext } from './context/auth';
 import { BrowserRouter as Router } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
+import QuizHome from './pages/QuizPage/QuizHome';
+import QuestionPage from './pages/QuizPage/QuestionPage';
+import QuizResults from './pages/QuizPage/QuizResults';
 
 
 const MainRouter = ({ token }) => {
@@ -66,6 +69,15 @@ const MainRouter = ({ token }) => {
           <Route path='/posts/:titleURL/:postId/edit' exact>
             <EditPost />
           </Route>
+          <Route path='/quiz'>
+            <QuizHome />
+          </Route>
+          <Route path="/quiz/:category" exact>
+            <QuestionPage />
+          </Route>
+          <Route path="/results" exact>
+            <QuizResults />
+          </Route>
           <Redirect to='/auth' />
         </Switch>
         <Footer />
@@ -104,6 +116,15 @@ const MainRouter = ({ token }) => {
           <Route path='/posts/:titleURL/:postId' exact>
             <Post />
           </Route>
+          {/* <Route path='/quiz' exact>
+            <QuizHome />
+          </Route>
+          <Route path="/quiz/:category" exact>
+            <QuestionPage />
+          </Route>
+          <Route path="/results" exact>
+            <QuizResults />
+          </Route> */}
           <Redirect to='/auth' />
         </Switch>
         <Footer />

@@ -588,19 +588,12 @@ const LandingPage = () => {
                     <div className='gradientBreak'></div>
                     <div className='quizCta'>
                       <h2>Take the Online Quiz Now!</h2>
-                      <div className='quizButton'>Click here</div>
+                      <div className='quizButton'>
+                        <Link to="/quiz">
+                          <p className='quiz-btn-text'>Click here</p></Link></div>
                     </div>
                   </div>
-                  <div className='allspanTag2'>
-                    <span>Help </span>
-                    <span> Status </span>
-                    <span> Writers </span>
-                    <span> Blog </span>
-                    <span> Careers </span>
-                    <span> Privacy </span>
-                    <span> Terms</span>
-                    <span> About</span>
-                  </div>
+
                 </div>
               </div>
             </div>
