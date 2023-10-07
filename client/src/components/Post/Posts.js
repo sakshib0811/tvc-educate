@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import ErrorModal from "../../components/Modal/ErrorModal";
 import useHttpClient from "../../hooks/useHttpClient";
 import PostList from "../PostList/PostList";
+import { baseURL } from "../../utils/index";
 const Posts = ({ cover }) => {
   const [loadedPosts, setLoadedPosts] = useState([]);
   const { isLoading, sendReq, error, clearError } = useHttpClient();
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const responseData = await sendReq(
-          //`${process.env.REACT_APP_BASE_URL}/posts`
-          "http://localhost:5000/api/posts"
-        );
+        const responseData = await sendReq(`${baseURL}/posts`);
         setLoadedPosts(responseData.posts);
       } catch (err) {
         console.log(err);

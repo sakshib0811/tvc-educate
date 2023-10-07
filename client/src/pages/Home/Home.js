@@ -5,6 +5,7 @@ import LeftSideBar from "../../components/LeftSideBar/LeftSideBar";
 import useHttpClient from "../../hooks/useHttpClient";
 import { AuthContext } from "../../context/auth";
 import useAuth from "../../hooks/useAuth";
+import { baseURL } from "../../utils";
 
 const Home = () => {
   const [tags, setTags] = useState([]);
@@ -34,7 +35,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const responseData = await sendReq(`http://localhost:5000/api/tags`);
+        const responseData = await sendReq(`${baseURL}/tags`);
         setTags(responseData.tags);
         setLoading(true);
         console.log(responseData);

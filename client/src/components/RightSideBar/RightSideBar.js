@@ -4,6 +4,7 @@ import SkeletonPostList from "../Skeleton/SkeletonPostList";
 import "./RightSideBar.css";
 import MiniPostArticleList from "../MiniPostList/MiniPostArticleList";
 import useHttpClient from "../../hooks/useHttpClient";
+import { baseURL } from "../../utils";
 
 const RightSideBar = ({ tags, isLoading }) => {
   //const newsTag = tags.filter((tag) => tag.name === 'news')[0];
@@ -18,7 +19,7 @@ const RightSideBar = ({ tags, isLoading }) => {
       try {
         const responseData = await sendReq(
           //`${process.env.REACT_APP_BASE_URL}/posts`
-          "http://localhost:5000/api/posts"
+          `${baseURL}/posts`
         );
         setLoadedPosts(responseData.posts.slice(0, 5));
         console.log("Posts from Sidebar>>>>", responseData.posts.slice(0, 5));
