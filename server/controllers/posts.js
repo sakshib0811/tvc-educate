@@ -108,6 +108,64 @@ const createPost = async (req, res, next) => {
   });
 };
 
+const approvePost = async (req, res, next) => {
+  const { postId } = req.params;
+
+  let post;
+  try {
+    post = await Post.findById(postId);
+  } catch (err) {
+    return next(new HttpError('Could not find the post to approve', 500));
+  }
+
+  if (!post) {
+    return next(new HttpError('Post not found', 404));
+  }
+
+  // Check if the post is already approved
+  if (post.approved) {
+    return next(new HttpError('Post is already approved', 422));
+  }
+
+  // Update the 'approved' field to true
+  post.approved = true;
+
+  try {
+    await post.save();
+  } catch (err) {
+    return next(new HttpError('Could not approve the post, please try again', 500));
+  }
+
+  res.status(200).json({ message: 'Post approved successfully' });
+};
+
+
+
+const removePost = async (req, res, next) => {
+  const { titleURL, postId } = req.params;
+  let post;
+  
+  try {
+    // Find the post to delete based on titleURL and postId
+    post = await Post.findOne({ titleURL, _id: postId });
+  } catch (err) {
+    return next(new HttpError('Could not find the post to delete', 500));
+  }
+
+  if (!post) {
+    return next(new HttpError('Post not found', 404));
+  }
+
+  try {
+    // Delete the post from the database
+    await post.remove();
+  } catch (err) {
+    return next(new HttpError('Could not delete the post, please try again', 500));
+  }
+
+  res.status(200).json({ message: 'Post deleted successfully' });
+};
+
 const updatePost = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -342,3 +400,5 @@ exports.unicornPost = unicornPost;
 exports.ununicornPost = ununicornPost;
 exports.getBookmarks = getBookmarks;
 exports.getSearchResults = getSearchResults;
+exports.approvePost = approvePost;
+exports.removePost= removePost;

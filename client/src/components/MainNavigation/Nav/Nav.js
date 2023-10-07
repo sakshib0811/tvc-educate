@@ -79,7 +79,7 @@ const Nav = ({ children, onSearchIconClick }) => {
       </div>
       <nav className="nav">
         <div className="link-container">
-          <NavLink className="link" to="/" exact>
+          <NavLink className="link" to="/home" exact>
             Home
           </NavLink>
         </div>
@@ -88,11 +88,11 @@ const Nav = ({ children, onSearchIconClick }) => {
             Tags
           </NavLink>
         </div>
-        <div className="link-container">
+        {/* <div className="link-container">
           <NavLink className="link" to="/FAQ" exact>
             FAQ
           </NavLink>
-        </div>
+        </div> */}
         <div className="link-container">
           <NavLink className="link" to="/About" exact>
             About

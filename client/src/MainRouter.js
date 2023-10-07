@@ -23,6 +23,7 @@ import QuizResults from './pages/QuizPage/QuizResults';
 
 
 const MainRouter = ({ token }) => {
+  console.log(token);
   let routes;
   const { isLoggedIn } = useContext(AuthContext);
   if (isLoggedIn) {
@@ -31,10 +32,11 @@ const MainRouter = ({ token }) => {
         <MainNavigation />
         <Switch>
           <Route path='/' exact>
-            <Home />
+            <LandingPage />
+            
           </Route>
           <Route path='/home' exact>
-            <LandingPage />
+            <Home />
           </Route>
           <Route path='/users/:userId' exact>
             <UserProfile />
@@ -90,10 +92,11 @@ const MainRouter = ({ token }) => {
 
         <Switch>
           <Route path='/' exact>
-            <Home />
+            <LandingPage />
           </Route>
           <Route path='/home' exact>
-            <LandingPage />
+            
+            <Home />
           </Route>
           <Route path='/auth/new-user' exact>
             <Auth newUser={true} />

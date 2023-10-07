@@ -50,7 +50,7 @@ app.use(bodyParser.json());
 const io = new Server(httpServer, {
   cors: {
     origin: CLIENT_URL,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PATCH","DELETE","PUT", "HEAD"],
   },
 });
 socketHandlers(io);
