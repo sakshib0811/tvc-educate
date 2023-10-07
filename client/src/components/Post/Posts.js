@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import ErrorModal from '../../components/Modal/ErrorModal';
-import useHttpClient from '../../hooks/useHttpClient';
-import PostList from '../PostList/PostList';
+import React, { useState, useEffect } from "react";
+import ErrorModal from "../../components/Modal/ErrorModal";
+import useHttpClient from "../../hooks/useHttpClient";
+import PostList from "../PostList/PostList";
 const Posts = ({ cover }) => {
   const [loadedPosts, setLoadedPosts] = useState([]);
   const { isLoading, sendReq, error, clearError } = useHttpClient();
@@ -13,7 +13,9 @@ const Posts = ({ cover }) => {
           "http://localhost:5000/api/posts"
         );
         setLoadedPosts(responseData.posts);
-      } catch (err) {console.log(err);}
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchPosts();
   }, [sendReq]);

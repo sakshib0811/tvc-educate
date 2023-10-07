@@ -101,8 +101,19 @@ NAV
   font-size: 1.6rem;
   font-weight: 400;
   margin-left: auto;
+  justify-content: center;
+  align-items: center;
 }
-
+.link-container{
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 10px;
+}
+.link{
+  margin-left: 10px;
+}
 .nav__list {
   list-style: none;
   padding: 0;
@@ -157,6 +168,12 @@ NAV
 
 .search-icon {
   cursor: pointer;
+}
+
+@media(max-width:769px){
+  .nav{
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {

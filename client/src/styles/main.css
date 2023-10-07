@@ -95,11 +95,15 @@ img {
 
 .container-layout {
   display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 128rem;
+  flex-direction: row;
+  /* align-items: center; */
+  justify-content: center;
+  /* align-items: flex-start; */
+  /* justify-content: center; */
+  /* gap: 2rem; */
+  /* margin: 0 auto; */
+  /* max-width: 128rem; */
+  /* background-color: red; */
 }
 
 .results__heading,
