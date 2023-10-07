@@ -116,7 +116,7 @@ const MainRouter = ({ token }) => {
           <Route path='/posts/:titleURL/:postId' exact>
             <Post />
           </Route>
-          <Route path='/quiz' exact>
+          {/* <Route path='/quiz' exact>
             <QuizHome />
           </Route>
           <Route path="/quiz/:category" exact>
@@ -124,7 +124,7 @@ const MainRouter = ({ token }) => {
           </Route>
           <Route path="/results" exact>
             <QuizResults />
-          </Route>
+          </Route> */}
           <Redirect to='/auth' />
         </Switch>
         <Footer />
