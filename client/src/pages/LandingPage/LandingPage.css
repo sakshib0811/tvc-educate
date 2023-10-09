@@ -746,3 +746,51 @@
 .displayNone {
   display: none;
 }
+@media screen and (max-width: 1080px) {
+  .blogSection {
+    max-width: 95%;
+  }
+  .allBlogs {
+    display: flex;
+    flex-direction: column;
+  }
+  .leftBlogSection {
+    width: 90%;
+    margin: 5% auto 5% auto;
+  }
+  .rightBlogSection {
+    width: 90%;
+    margin: 5% auto 5% auto;
+  }
+  .quizCard:hover {
+    transform: none;
+  }
+  .quizButton:hover {
+    background-color: #e8106b;
+    border: 1px solid white;
+  }
+}
+@media screen and (max-width: 540px) {
+  .col4gy3row02 {
+    display: flex;
+    flex-direction: column;
+    /* margin-bottom: 40px; */
+    justify-content: space-between;
+    margin-top: 4rem;
+  }
+  .colis1002 {
+    padding: 30px 10px;
+  }
+
+  /* .preview .numImg02 {
+  border-radius: 5px;
+  width: 5%;
+} */
+  .colis202 {
+    text-align: center;
+  }
+  .colis202 img {
+    width: 350px;
+    height: 350px;
+  }
+}
