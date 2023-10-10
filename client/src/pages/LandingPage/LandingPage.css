@@ -111,6 +111,7 @@
   padding: 10px 5px 5px 10px;
   color: #01427a;
   gap: 5px;
+  width: 100%;
 
 }
 
@@ -127,7 +128,7 @@
 }
 
 .carouselImage {
-  width: inherit;
+  width: 100%;
   height: 60%;
   object-fit: cover;
   border-radius: 10px 10px 0px 0px;

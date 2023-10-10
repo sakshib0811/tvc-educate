@@ -225,8 +225,8 @@ const LandingPage = () => {
                           </span>
                         </div>
                       </div>
-
-                    </Link>);
+                      </Link>
+                    );
                 }) : ""}</Slider>
             </div>
           </section>
