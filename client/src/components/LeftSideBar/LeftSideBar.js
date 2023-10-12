@@ -22,7 +22,7 @@ const LeftSideBar = () => {
           <About />
           <ul className="sidebar__list">
             <li className="list__item hvr-bg-lt">
-              <NavLink to="/" exact>
+              <NavLink to="/home" exact>
                 <i>
                   <FcHome />
                 </i>
