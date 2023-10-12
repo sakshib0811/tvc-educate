@@ -17,6 +17,7 @@ import {
   BsFillArrowRightCircleFill,
 } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
+import { UtilityContext } from "../../App";
 
 const LandingPage = () => {
   const [addTask, setAddTask] = useState([]);
@@ -31,6 +32,8 @@ const LandingPage = () => {
     scrollRight: true,
   });
   const [filter, setFilter] = useState("");
+  const { isMobile } = React.useContext(UtilityContext);
+  console.log(isMobile);
 
   const MutatedArrow = ({ className = "", onClick, prev = false }) => {
     return prev ? (
@@ -60,41 +63,15 @@ const LandingPage = () => {
     );
   };
 
-  const slideSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    className: "carousel-container",
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: true,
-    // centerPadding: '60px',
-    // autoplay: true,
-    autoplaySpeed: 2500,
-    // variableWidth: true,
-    // pauseOnHover: true,
-    swipeToSlide: true,
-    nextArrow: <MutatedArrow />,
-    prevArrow: <MutatedArrow prev="true" />,
-    responsive: [
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
+
 
   let cardsSectionRef = React.useRef();
 
   let parentContainerRef = React.useRef();
+
+  let cardsSectionRefTrendingSection = React.useRef();
+
+  let parentContainerRefTrendingSection = React.useRef();
 
   const scrollLeft = () => {
     const movableContainerWidth = cardsSectionRef.current.clientWidth;
@@ -111,9 +88,8 @@ const LandingPage = () => {
           return prev;
         } else {
           prev--;
-          cardsSectionRef.current.style.transform = `translateX(-${
-            parentContainerWidth * prev
-          }px)`;
+          cardsSectionRef.current.style.transform = `translateX(-${parentContainerWidth * prev
+            }px)`;
           if (prev === 0) {
             setScroll((prev) => ({
               ...prev,
@@ -146,18 +122,16 @@ const LandingPage = () => {
           movableContainerWidth - (prev + 1) * parentContainerWidth <
           parentContainerWidth
         ) {
-          cardsSectionRef.current.style.transform = `translateX(-${
-            movableContainerWidth - parentContainerWidth
-          }px)`;
+          cardsSectionRef.current.style.transform = `translateX(-${movableContainerWidth - parentContainerWidth
+            }px)`;
 
           setScroll((prev) => ({
             ...prev,
             scrollRight: false,
           }));
         } else
-          cardsSectionRef.current.style.transform = `translateX(-${
-            (prev + 1) * parentContainerWidth
-          }px)`;
+          cardsSectionRef.current.style.transform = `translateX(-${(prev + 1) * parentContainerWidth
+            }px)`;
         setScroll((prev) => ({
           ...prev,
           scrollLeft: true,
@@ -197,133 +171,159 @@ const LandingPage = () => {
     post.tags.some((tag) => tag.name === filter)
   );
 
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+    swipeToSlide: true,
+    nextArrow: <MutatedArrow />,
+    prevArrow: <MutatedArrow prev="true" />,
+    className: 'carouselContainer',
+    responsive: [
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 580,
+        settings: {
+          slidesToShow: 1,
+        }
+      },
+    ]
+
+  };
+
   return (
     <>
       {!isLoading ? (
         <>
           <section className="homeContainer">
             <div className="homeSection">
-              <Slider className="carousel-container" {...slideSettings}>
-                {approvedPosts.length > 3
-                  ? approvedPosts.slice(0, 8).map((e, i) => {
-                      var date = formatDate(e.date);
+              <Slider {...settings}>
+                {approvedPosts.length > 0 ? approvedPosts.slice(0, 8).map((post, idx) => {
+                  var date = formatDate(post.date);
+                  return (
+                    <Link to={`/posts/${post.titleURL}/${post.id}`}>
+                      <div key={idx} className="carouselWrapper">
+                        <img src={post.image} className="carouselImage" alt="carousel" />
+                        <div className="gradientBreak" />
+                        <div className="slideDescription">
+                          <span className="slideTag">#{post.tags[0].name}</span>
+                          <p className="slideTitle">{post.title}</p>
 
-                      return (
-                        <Link to={`/posts/${e.titleURL}/${e.id}`}>
-                          <div key={e._id} className="carousel-wrapper">
-                            <img src={e.image} alt={i} />
-                            <div className="gradientBreak"></div>
-                            <div className="slideDescription">
-                              <span className="slideTag">{e.tags[0].name}</span>
-                              <p className="slideTitle">{e.title}</p>
-
-                              <span className="slideAuthor">{`By ${e.author.name}`}</span>
-                              <span className="slideDate">
-                                <SlCalender /> {date}{" "}
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      );
-                    })
-                  : ""}
-              </Slider>
+                          <span className="slideAuthor">{`By ${post.author.name}`}</span>
+                          <span className="slideDate">
+                            <SlCalender /> {date}{" "}
+                          </span>
+                        </div>
+                      </div>
+                      </Link>
+                    );
+                }) : ""}</Slider>
             </div>
           </section>
           <hr className="hr-tag"></hr>
 
           <section className="trendingSection">
             <div className="trendingPart">
-              <p className="headingTitle-trending">TRENDING ON TVC EDYOUCATE</p>
+              <p className="headingTitle-trending">TRENDING ON TVC EDUCATE</p>
               <div className="myRowFlex">
                 {approvedPosts.length > 0
-                  ? approvedPosts.map((e, i) => {
-                      var date = formatDate(e.date);
-                      var readingDuration = readingTime(e.body);
+                  ? approvedPosts.slice(0, 6).map((e, i) => {
+                    var date = formatDate(e.date);
+                    var readingDuration = readingTime(e.body);
 
-                      return (
-                        <div
-                          className={"col4gy3row"}
-                          key={e._id}
-                          onMouseEnter={() => {
-                            var arr = [...trendingHover];
-                            arr[i].hoverClass = true;
-                            setTrendingHover(arr);
-                          }}
-                          onMouseLeave={() => {
-                            var arr = [...trendingHover];
-                            arr[i].hoverClass = false;
-                            setTrendingHover(arr);
-                          }}
-                        >
-                          <div className="previewAuthorTrending">
-                            <div className="author__image">
-                              <img
-                                src={e.author.avatar}
-                                alt={`user photo ${e.author.name}`}
-                              />
-                            </div>
-                            <div
-                              className={`authorDetailsTrending ${
-                                trendingHover[i]?.hoverClass ? "lp" : "no-lp"
+                    return (
+                      <div
+                        className={"col4gy3row"}
+                        key={e._id}
+                        onMouseEnter={() => {
+                          var arr = [...trendingHover];
+                          arr[i].hoverClass = true;
+                          setTrendingHover(arr);
+                        }}
+                        onMouseLeave={() => {
+                          var arr = [...trendingHover];
+                          arr[i].hoverClass = false;
+                          setTrendingHover(arr);
+                        }}
+                      >
+                        <div className="previewAuthorTrending">
+                          <div className="author__image">
+                            <img
+                              src={e.author.avatar}
+                              alt={`user img ${e.author.name}`}
+                            />
+                          </div>
+                          <div
+                            className={`authorDetailsTrending ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"
                               }`}
+                          >
+                            <p
+                              className={`authorName ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"
+                                }`}
                             >
-                              <p
-                                className={`authorName ${
-                                  trendingHover[i]?.hoverClass ? "lp" : "no-lp"
+                              {e.author.name}
+                            </p>
+                            <p
+                              className={`authorDate ${trendingHover[i]?.hoverClass ? "lp" : "no-lp"
                                 }`}
-                              >
-                                {e.author.name}
-                              </p>
-                              <p
-                                className={`authorDate ${
-                                  trendingHover[i]?.hoverClass ? "lp" : "no-lp"
-                                }`}
-                              >
-                                {date}
-                              </p>
-                            </div>
-                          </div>
-                          <img
-                            className="trendingImg"
-                            src={e.image}
-                            alt={`trending news image with title: ${e.title}`}
-                          />
-                          <div className="trendingCardTitle">
-                            <Link
-                              onClick={() => handleChangeTheme(5)}
-                              style={{ textDecoration: "none" }}
-                              to={`/posts/${e.titleURL}/${e.id}`}
                             >
-                              <div className="authHeading">
-                                <p
-                                  className={`trendingTitle authorTitle ${
-                                    trendingHover[i]?.hoverClass
-                                      ? "lp"
-                                      : "no-lp"
-                                  }`}
-                                >
-                                  {e.title}
-                                </p>
-                              </div>
-                              <span
-                                className={`${
-                                  trendingHover[i]?.hoverClass ? "lp" : "no-lp"
-                                }`}
-                              >
-                                {readingDuration}
-                              </span>
-                            </Link>
-                          </div>
-                          <div className="trendingCta">
-                            <div className="learnMoreTrending">Learn More</div>
-                            <div className="shareTrending">SHARE</div>
+                              {date}
+                            </p>
                           </div>
                         </div>
-                      );
-                    })
+                        <img
+                          className="trendingImg"
+                          src={e.image}
+                          alt={`trending news img with title: ${e.title}`}
+                        />
+                        <div className="trendingCardTitle">
+                          <Link
+                            onClick={() => handleChangeTheme(5)}
+                            style={{ textDecoration: "none" }}
+                            to={`/posts/${e.titleURL}/${e.id}`}
+                          >
+                            <div className="authHeading">
+                              <p
+                                className={`trendingTitle authorTitle ${trendingHover[i]?.hoverClass
+                                  ? "lp"
+                                  : "no-lp"
+                                  }`}
+                              >
+                                {e.title}
+                              </p>
+                            </div>
+                            <span
+                              className={`${trendingHover[i]?.hoverClass ? "lp" : "no-lp"
+                                }`}
+                            >
+                              {readingDuration}
+                            </span>
+                          </Link>
+                        </div>
+                        <div className="trendingCta">
+                          <Link to={`/posts/${e.titleURL}/${e.id}`}>
+                            <div className="learnMoreTrending">
+                              Learn More
+                            </div>
+                          </Link>
+                          <div className="shareTrending">SHARE</div>
+                        </div>
+                      </div>
+                    );
+                  })
                   : " "}
               </div>
+
             </div>
           </section>
           <hr className="hr-tag"></hr>
@@ -365,9 +365,8 @@ const LandingPage = () => {
 
                     <button
                       type="button"
-                      className={`button prevButton ${
-                        !scroll.scrollLeft && `displayNone`
-                      }`}
+                      className={`button prevButton ${!scroll.scrollLeft && `displayNone`
+                        }`}
                       onClick={() => scrollLeft()}
                     >
                       <MdNavigateBefore className="buttonIcons" />
@@ -375,9 +374,8 @@ const LandingPage = () => {
 
                     <button
                       type="button"
-                      className={`button nextButton ${
-                        !scroll.scrollRight && `displayNone`
-                      }`}
+                      className={`button nextButton ${!scroll.scrollRight && `displayNone`
+                        }`}
                       onClick={() => scrollRight()}
                     >
                       <MdNavigateNext className="buttonIcons" />
@@ -387,104 +385,97 @@ const LandingPage = () => {
 
                 {filteredPosts.length > 0
                   ? filteredPosts.map((e, i) => {
-                      var date = formatDate(e.date);
-                      var readingDuration = readingTime(e.body);
-                      var shortenedBody = bodyShortener(e.body);
-                      var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
-                      return (
-                        <div
-                          className="col4gy3row02"
-                          key={e._id + 1}
-                          onMouseEnter={() => {
-                            var arr = [...hoverClass];
-                            arr[i].hoverClass = true;
-                            setHoverClass(arr);
-                          }}
-                          onMouseLeave={() => {
-                            var arr = [...hoverClass];
-                            arr[i].hoverClass = false;
-                            setHoverClass(arr);
-                          }}
-                        >
-                          <div className="colis1002">
-                            <Link
-                              // onClick={() => handleChangeTheme(5)}
-                              // style={{ textDecoration: "none" }}
-                              to={`/posts/${e.titleURL}/${e.id}`}
-                            >
-                              <div className="preview__author ml--1">
-                                <div className="author__image">
-                                  <img
-                                    src={e.author.avatar}
-                                    alt={`user photo ${e.author.name}`}
-                                  />
-                                </div>
-                                <div
-                                  className={`author__details ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
-                                >
-                                  <p
-                                    className={`author__name ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                  >
-                                    {e.author.name}
-                                  </p>
-                                  <p
-                                    className={`author__date ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                  >
-                                    {date}
-                                  </p>
-                                </div>
+                    var date = formatDate(e.date);
+                    var readingDuration = readingTime(e.body);
+                    var shortenedBody = bodyShortener(e.body);
+                    var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
+                    return (
+                      <div
+                        className="col4gy3row02"
+                        key={e._id + 1}
+                        onMouseEnter={() => {
+                          var arr = [...hoverClass];
+                          arr[i].hoverClass = true;
+                          setHoverClass(arr);
+                        }}
+                        onMouseLeave={() => {
+                          var arr = [...hoverClass];
+                          arr[i].hoverClass = false;
+                          setHoverClass(arr);
+                        }}
+                      >
+                        <div className="colis1002">
+                          <Link
+                            // onClick={() => handleChangeTheme(5)}
+                            // style={{ textDecoration: "none" }}
+                            to={`/posts/${e.titleURL}/${e.id}`}
+                          >
+                            <div className="preview__author ml--1">
+                              <div className="author__image">
+                                <img
+                                  src={e.author.avatar}
+                                  alt={`user photo ${e.author.name}`}
+                                />
                               </div>
-                              <div className="authHeading02 ">
-                                <p
-                                  className={`authorTitle02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                              <div
+                                className={`author__details ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
                                   }`}
-                                >
-                                  {e.title}
-                                </p>
-                                <p
-                                  className={`authSubHed02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
-                                >
-                                  {shortenedBody}
-                                </p>
-                              </div>
-                            </Link>
-                            <div
-                              className={`authDaTiSt02 ${
-                                hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                              }`}
-                            >
-                              <span>{e.userBlogDate} ·</span>
-                              <span className="">{readingDuration}</span>
-                              <span className="mx-1 ">·</span>
-                              <span
-                                className={`mx-1 ${
-                                  hoverClass[i]?.hoverClass
-                                    ? "userTagHover"
-                                    : "userBlogTag"
-                                }`}
                               >
-                                {e.tags[0].name}
-                              </span>
-                              <span className="mx-1 ">&#9733;</span>
+                                <p
+                                  className={`author__name ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    }`}
+                                >
+                                  {e.author.name}
+                                </p>
+                                <p
+                                  className={`author__date ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    }`}
+                                >
+                                  {date}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div className="colis202">
-                            <img src={e.image} alt={i + " " + e.title} />
+                            <div className="authHeading02 ">
+                              <p
+                                className={`authorTitle02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                  }`}
+                              >
+                                {e.title}
+                              </p>
+                              <p
+                                className={`authSubHed02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                  }`}
+                              >
+                                {shortenedBody}
+                              </p>
+                            </div>
+                          </Link>
+                          <div
+                            className={`authDaTiSt02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                              }`}
+                          >
+                            <span>{e.userBlogDate} ·</span>
+                            <span className="">{readingDuration}</span>
+                            <span className="mx-1 ">·</span>
+                            <span
+                              className={`mx-1 ${hoverClass[i]?.hoverClass
+                                ? "userTagHover"
+                                : "userBlogTag"
+                                }`}
+                            >
+                              {e.tags[0].name}
+                            </span>
+                            <span className="mx-1 ">&#9733;</span>
                           </div>
                         </div>
-                      );
-                    })
+                        <div className="colis202">
+                          <img src={e.image} alt={i + " " + e.title} />
+                        </div>
+                      </div>
+                    );
+                  })
                   : approvedPosts.length > 0
-                  ? approvedPosts.map((e, i) => {
+                    ? approvedPosts.map((e, i) => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
                       var shortenedBody = bodyShortener(e.body);
@@ -514,25 +505,22 @@ const LandingPage = () => {
                                 <div className="author__image">
                                   <img
                                     src={e.author.avatar}
-                                    alt={`user photo ${e.author.name}`}
+                                    alt={`user profile ${e.author.name}`}
                                   />
                                 </div>
                                 <div
-                                  className={`author__details ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
+                                  className={`author__details ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    }`}
                                 >
                                   <p
-                                    className={`author__name ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
+                                    className={`author__name ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                      }`}
                                   >
                                     {e.author.name}
                                   </p>
                                   <p
-                                    className={`author__date ${
-                                      hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
+                                    className={`author__date ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                      }`}
                                   >
                                     {date}
                                   </p>
@@ -540,35 +528,31 @@ const LandingPage = () => {
                               </div>
                               <div className="authHeading02 ">
                                 <p
-                                  className={`authorTitle02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
+                                  className={`authorTitle02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    }`}
                                 >
                                   {e.title}
                                 </p>
                                 <p
-                                  className={`authSubHed02 ${
-                                    hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
+                                  className={`authSubHed02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                    }`}
                                 >
                                   {shortenedBody}
                                 </p>
                               </div>
                             </Link>
                             <div
-                              className={`authDaTiSt02 ${
-                                hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                              }`}
+                              className={`authDaTiSt02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
+                                }`}
                             >
                               <span>{e.userBlogDate} ·</span>
                               <span className="">{readingDuration}</span>
                               <span className="mx-1 ">·</span>
                               <span
-                                className={`mx-1 ${
-                                  hoverClass[i]?.hoverClass
-                                    ? "userTagHover"
-                                    : "userBlogTag"
-                                }`}
+                                className={`mx-1 ${hoverClass[i]?.hoverClass
+                                  ? "userTagHover"
+                                  : "userBlogTag"
+                                  }`}
                               >
                                 {e.tags[0].name}
                               </span>
@@ -581,13 +565,14 @@ const LandingPage = () => {
                         </div>
                       );
                     })
-                  : ""}
+                    : ""}
               </div>
               <div className="rightBlogSection">
                 <div className="allBlogTypes">
                   <div className="quizCard">
                     <img
                       className="quizCardImg"
+                      alt="quiz profile"
                       src="https://i.postimg.cc/xCVwb1yy/depositphotos-127600950-stock-photo-inscription-on-smartphone-screen.webp"
                     />
                     <div className="gradientBreak"></div>

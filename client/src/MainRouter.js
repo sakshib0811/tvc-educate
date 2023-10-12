@@ -71,7 +71,7 @@ const MainRouter = ({ token }) => {
           <Route path='/posts/:titleURL/:postId/edit' exact>
             <EditPost />
           </Route>
-          <Route path='/quiz'>
+          <Route path='/quiz' exact>
             <QuizHome />
           </Route>
           <Route path="/quiz/:category" exact>
