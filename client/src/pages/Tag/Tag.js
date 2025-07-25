@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useHttpClient } from '../../hooks/useHttpClient';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import PostList from '../../components/PostList/PostList';
-
+import { baseURL } from '../../utils';
 const Tag = () => {
   const { sendReq, isLoading, error, clearError } = useHttpClient();
   const [loadedPosts, setLoadedPosts] = useState([]);
@@ -13,7 +13,7 @@ const Tag = () => {
     const fetchPosts = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/tags/${tagName}`
+          `${baseURL}/tags/${tagName}`
         );
         setLoadedPosts(responseData.tag.posts);
       } catch (err) {}

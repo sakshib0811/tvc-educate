@@ -1,17 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
-import { AuthContext } from "../../context/auth";
+// import { AuthContext } from "../../context/auth";
 import { useHttpClient } from "../../hooks/useHttpClient";
-import GLogin from "../../components/Auth/GLogin";
-import GHLogin from "../../components/Auth/GHLogin";
+// import GLogin from "../../components/Auth/GLogin";
+// import GHLogin from "../../components/Auth/GHLogin";
 import useForm from "../../hooks/useForm";
 import { loginForm, signupForm } from "../../utils/formConfig";
-import { appendData } from "../../utils";
+import { appendData, baseURL } from "../../utils";
 import Welcome from "../../components/Auth/Welcome";
 import "./Auth.css";
 import ErrorModal from "../../components/Modal/ErrorModal";
-import FBLogin from "../../components/Auth/FBLogin";
-import TwitterLogin from "../../components/Auth/TwitterLogin";
+// import FBLogin from "../../components/Auth/FBLogin";
+// import TwitterLogin from "../../components/Auth/TwitterLogin";
 import useAuth from "../../hooks/useAuth";
 
 const Auth = ({ newUser }) => {
@@ -37,10 +37,10 @@ const Auth = ({ newUser }) => {
   const { sendReq, error, clearError } = useHttpClient();
 
   //handle google auth
-  const handleGoogleAuth = async (googleData) => {
+ /* const handleGoogleAuth = async (googleData) => {
     //getting tokenID from GLogin
     const responseData = await sendReq(
-      `${process.env.REACT_APP_BASE_URL}/users/auth/google`,
+      `${baseURL}/users/auth/google`,
       "POST",
       JSON.stringify({
         tokenId: googleData.tokenId,
@@ -53,12 +53,12 @@ const Auth = ({ newUser }) => {
     user = { ...user, token: googleData.tokenId };
     login(user); //log the user in
     history.push("/");
-  };
+  };*/
 
   // const handleGithubAuth = async (githubData) => {
   //   const { code } = githubData;
   //   const responseData = await sendReq(
-  //     `${process.env.REACT_APP_BASE_URL}/users/auth/github`,
+  //     `${baseURL}/users/auth/github`,
   //     'POST',
   //     JSON.stringify({ code }),
   //     {
@@ -73,7 +73,7 @@ const Auth = ({ newUser }) => {
 
   // const handleFBAuth = async (fbData) => {
   //   const responseData = await sendReq(
-  //     `${process.env.REACT_APP_BASE_URL}/users/auth/facebook`,
+  //     `${baseURL}/users/auth/facebook`,
   //     'POST',
   //     JSON.stringify({
   //       accessToken: fbData.accessToken,
@@ -96,13 +96,13 @@ const Auth = ({ newUser }) => {
       if (newUser) {
         const formData = appendData(formValues);
         responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/users/signup`,
+          `${baseURL}/users/signup`,
           "POST",
           formData
         );
       } else {
         responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/users/login`,
+          `${baseURL}/users/login`,
           "POST",
           JSON.stringify(formValues),
           {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHttpClient } from '../../hooks/useHttpClient';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import TagList from './TagList';
+import { baseURL } from '../../utils';
 import './Tags.css';
 
 const Tags = () => {
@@ -12,7 +13,7 @@ const Tags = () => {
     const fetchTags = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/tags/`
+          `${baseURL}/tags/`
         );
         setLoadedTags(responseData.tags);
       } catch (err) {}

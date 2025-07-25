@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Posts from "../../components/Post/Posts";
 import RightSideBar from "../../components/RightSideBar/RightSideBar";
-import LeftSideBar from "../../components/LeftSideBar/LeftSideBar";
+// import LeftSideBar from "../../components/LeftSideBar/LeftSideBar";
 import useHttpClient from "../../hooks/useHttpClient";
-import { AuthContext } from "../../context/auth";
-import useAuth from "../../hooks/useAuth";
+// import { AuthContext } from "../../context/auth";
+// import useAuth from "../../hooks/useAuth";
 import { baseURL } from "../../utils";
 
 const Home = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { sendReq, isLoading } = useHttpClient();
-  const { user } = useAuth();
+  const { sendReq } = useHttpClient();
+  // const { user } = useAuth();
   // const { login } = useContext(AuthContext);
 
   // useEffect(() => {

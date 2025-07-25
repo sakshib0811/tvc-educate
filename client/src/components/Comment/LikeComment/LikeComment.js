@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/auth';
 import useHttpClient from '../../../hooks/useHttpClient';
-import { checkInArray } from '../../../utils';
+import { checkInArray, baseURL } from '../../../utils';
 import ErrorModal from '../../Modal/ErrorModal';
 import { LikeCommentButton } from './LikeCommentButton';
 
@@ -25,7 +25,7 @@ export const LikeComment = ({ likes, commentId, setShowModal }) => {
     setLiked((isLiked) => !isLiked);
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/comments/${commentId}/${action}`,
+        `${baseURL}/comments/${commentId}/${action}`,
         'PUT',
         JSON.stringify({ userId: currentUser.userId, commentId /* action */ }),
         {

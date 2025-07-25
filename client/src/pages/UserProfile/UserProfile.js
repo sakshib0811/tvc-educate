@@ -10,7 +10,7 @@ import { UserInfo } from '../../components/User/UserInfo/UserInfo';
 import { UserSideBar } from '../../components/User/UserSideBar/UserSideBar';
 import { AuthContext } from '../../context/auth';
 import SkeletonElement from '../../components/Skeleton/SkeletonElement';
-import { renderRepeatedSkeletons } from '../../utils';
+import { renderRepeatedSkeletons, baseURL } from '../../utils';
 import Shimmer from '../../components/Skeleton/Shimmer';
 
 const UserProfile = () => {
@@ -28,7 +28,7 @@ const UserProfile = () => {
     const fetchUser = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/users/${userId}`
+          `${baseURL}/users/${userId}`
         );
         setUser(responseData.user);
         // setPosts(responseData.posts);

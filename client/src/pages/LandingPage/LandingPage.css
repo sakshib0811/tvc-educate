@@ -5,7 +5,6 @@
   background: #ebf2f5;
   padding-bottom: 2rem;
   width: 100%;
-
 }
 
 .hr-tag {
@@ -403,7 +402,7 @@
   display: flex;
   padding: 10px;
   gap: 10px;
-  align-items: start;
+  align-items: flex-start;
   border-radius: 5px 5px 0 0;
 }
 

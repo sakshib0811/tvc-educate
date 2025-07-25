@@ -5,6 +5,7 @@ import Notification from '../../components/Notification/Notification';
 import './Notifications.css';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import SkeletonPostList from '../../components/Skeleton/SkeletonPostList';
+import { baseURL } from '../../utils';
 
 const Notifications = ({ user, userFollowStats }) => {
   const { currentUser } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const Notifications = ({ user, userFollowStats }) => {
     const fetchNotifications = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/users/${currentUser.userId}/notifications`,
+          `${baseURL}/users/${currentUser.userId}/notifications`,
           'GET',
           null,
           {

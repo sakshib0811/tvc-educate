@@ -5,6 +5,7 @@ import useHttpClient from '../../../hooks/useHttpClient';
 import ErrorModal from '../../Modal/ErrorModal';
 import CommentForm from './CommentForm';
 import { CommentContext } from '../Comments';
+import { baseURL } from '../../../utils';
 
 export const NewComment = ({ replyId }) => {
   const { setActiveComment, setComments, postId, postAuthor } =
@@ -23,7 +24,7 @@ export const NewComment = ({ replyId }) => {
     };
     try {
       const newComment = await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/comments`,
+        `${baseURL}/comments`,
         'POST',
         JSON.stringify(reqData),
         {

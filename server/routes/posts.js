@@ -26,7 +26,7 @@ router.get('/', getAllPosts);
 
 router.get('/user/:userId', getPostsByUserId);
 
-router.get('/:titleURL/:postId', getPostById);
+router.get('/:postId', getPostById);
 
 router.get('/search?', getSearchResults);
 

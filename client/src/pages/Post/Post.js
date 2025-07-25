@@ -7,23 +7,25 @@ import PostAuthor from '../../components/Post/PostAuthor/PostAuthor';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import AuthModal from '../../components/Modal/AuthModal';
 import { SkeletonPage } from '../../components/Skeleton/SkeletonPage';
-
+import { baseURL } from '../../utils';
 const Post = (props) => {
   const [post, setPost] = useState({});
   const { isLoading, sendReq, error, clearError } = useHttpClient();
   const { postId, titleURL } = useParams();
   const [showModal, setShowModal] = useState(false);
-
+   
   let { author } = post;
-
+  console.log(titleURL, postId);
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/posts/${titleURL}/${postId}`
+          `${baseURL}/posts/${postId}`
         );
         setPost(responseData.post);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchPost();
   }, [sendReq, postId, titleURL]);

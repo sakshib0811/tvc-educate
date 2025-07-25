@@ -5,7 +5,7 @@ import useSearch from '../../hooks/useSearch.js';
 const SearchBar = (props) => {
   const { search } = useSearch();
   const [value, setValue] = useState('');
-  const [showSearch, setShowSearch] = useState(true);
+  // const [showSearch, setShowSearch] = useState(true);
 
   //handle input change for search bar
   const onInputChange = (evt) => {

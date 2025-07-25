@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/auth';
 import useForm from '../../hooks/useForm';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import SkeletonForm from '../../components/Skeleton/SkeletonForm';
+import { baseURL } from '../../utils';
 
 import {
   editProfileForm,
@@ -28,7 +29,7 @@ const EditUserProfile = () => {
     const fetchUser = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/users/${userId}`
+          `${baseURL}/users/${userId}`
         );
         // if (currentUser.userId !== responseData.user.id) {
         //   history.push("/");
@@ -46,7 +47,7 @@ const EditUserProfile = () => {
     const formData = appendData(formValues);
     try {
       const responseData = await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/users/${userId}`,
+        `${baseURL}/users/${userId}`,
         'PATCH',
         formData,
         {

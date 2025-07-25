@@ -7,6 +7,7 @@ import { AuthContext } from '../../context/auth';
 import useHttpClient from '../../hooks/useHttpClient';
 import DeletionModal from '../Modal/DeletionModal';
 import ErrorModal from '../Modal/ErrorModal';
+import { baseURL } from '../../utils';
 
 export const DeletePost = ({ authorId }) => {
   const { sendReq, error, clearError } = useHttpClient();
@@ -31,7 +32,7 @@ export const DeletePost = ({ authorId }) => {
   const handleDelete = async () => {
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/posts/${titleURL}/${postId}`,
+        `${baseURL}/posts/${titleURL}/${postId}`,
         'DELETE',
         JSON.stringify({ author: currentUserId }),
         {

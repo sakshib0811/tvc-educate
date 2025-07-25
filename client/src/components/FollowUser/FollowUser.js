@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/auth';
 import { SocketContext } from '../../context/socket';
 import useHttpClient from '../../hooks/useHttpClient';
-import { checkInArray } from '../../utils';
+import { checkInArray, baseURL } from '../../utils';
 import './FollowUser.css';
 
 export const FollowUser = ({
@@ -38,7 +38,7 @@ export const FollowUser = ({
     const reqData = { userId: currentUserId, followId };
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/users/${action}`,
+        `${baseURL}/users/${action}`,
         'PUT',
         JSON.stringify(reqData),
         {

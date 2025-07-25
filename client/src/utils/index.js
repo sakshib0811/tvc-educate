@@ -88,4 +88,4 @@ export const bodyShortener = (str) => {
   return res;
 };
 
-export const baseURL = "https://tvc-educate.onrender.com/api";
+export const baseURL = "http://localhost:5000/api";

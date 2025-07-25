@@ -4,7 +4,7 @@ import { useHttpClient } from '../../hooks/useHttpClient';
 import { AuthContext } from '../../context/auth';
 import useForm from '../../hooks/useForm';
 import { editPostForm, prefillEditPostForm } from '../../utils/formConfig';
-import { appendData } from '../../utils';
+import { appendData, baseURL } from '../../utils';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import SkeletonForm from '../../components/Skeleton/SkeletonForm';
 
@@ -23,7 +23,7 @@ const EditPost = () => {
     const fetchPost = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/posts/${titleURL}/${postId}`
+          `${baseURL}/posts/${titleURL}/${postId}`
         );
         prefillEditPostForm(responseData.post);
         if (currentUser.userId !== responseData.post.author.id) {
@@ -42,7 +42,7 @@ const EditPost = () => {
     formData.append('author', currentUser.userId);
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/posts/${titleURL}/${postId}`,
+        `${baseURL}/posts/${titleURL}/${postId}`,
         'PATCH',
         formData,
         {

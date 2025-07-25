@@ -4,6 +4,7 @@ import useHttpClient from '../../../hooks/useHttpClient';
 import ErrorModal from '../../Modal/ErrorModal';
 import CommentForm from '../NewComment/CommentForm';
 import { CommentContext } from '../Comments';
+import { baseURL } from '../../../utils';
 
 export const EditComment = ({ commentId, commentBody, setShowModal }) => {
   const { setActiveComment, comments, setComments } =
@@ -18,7 +19,7 @@ export const EditComment = ({ commentId, commentBody, setShowModal }) => {
     //update comment from backend
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/comments/${commentId}`,
+        `${baseURL}/comments/${commentId}`,
         'PATCH',
         JSON.stringify({ body, author: currentUser.userId }),
         {

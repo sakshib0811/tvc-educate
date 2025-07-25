@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/auth";
 import useHttpClient from "../../hooks/useHttpClient";
-import { checkInArray } from "../../utils";
+import { checkInArray, baseURL } from "../../utils";
 
 export const FollowTag = ({ followers, tagId, setShowModal }) => {
   const auth = useContext(AuthContext);
@@ -25,7 +25,7 @@ export const FollowTag = ({ followers, tagId, setShowModal }) => {
     const reqData = { userId: currentUserId, tagId };
     try {
       const responseData = await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/tags/${tagId}/${action}`,
+        `${baseURL}/tags/${tagId}/${action}`,
         "PUT",
         JSON.stringify(reqData),
         {

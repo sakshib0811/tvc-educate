@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, createContext } from 'react';
 import { useHttpClient } from '../../hooks/useHttpClient';
 import Comment from './Comment';
 import { AuthContext } from '../../context/auth';
-import { getReplies } from '../../utils';
+import { baseURL, getReplies } from '../../utils';
 import ErrorModal from '../Modal/ErrorModal';
 import { NewComment } from './NewComment/NewComment';
 import './Comments.css';
@@ -21,7 +21,7 @@ const Comments = ({ postAuthor, postId }) => {
     const fetchComments = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/comments/${postId}`
+          `${baseURL}/comments/${postId}`
         );
         setComments(responseData.comments);
       } catch (err) {}

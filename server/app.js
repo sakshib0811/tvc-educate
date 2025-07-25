@@ -24,6 +24,7 @@ const {
   COOKIE_KEY,
   NODE_ENV,
   CLIENT_URL,
+  CLIENT_URL_UI
 } = process.env;
 
 const PORT = process.env.PORT || 5000;
@@ -50,7 +51,7 @@ app.use(bodyParser.json());
 
 const io = new Server(httpServer, {
   cors: {
-    origin: CLIENT_URL,
+    origin: 'http://localhost:3001/',
     methods: ["GET", "POST","PATCH","DELETE","PUT", "HEAD"],
   },
 });
@@ -95,7 +96,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.4ttdhna.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`,
+    `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.4ttdhna.mongodb.net/`,
     {
       useUnifiedTopology: true,
       useNewUrlParser: true,

@@ -13,7 +13,7 @@ const RightSideBar = ({ tags, isLoading }) => {
   console.log(webdevTag.posts);
 
   const [loadedPosts, setLoadedPosts] = useState([]);
-  const { sendReq, error, clearError } = useHttpClient();
+  const { sendReq } = useHttpClient();
   useEffect(() => {
     const fetchPosts = async () => {
       try {

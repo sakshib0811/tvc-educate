@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../../../context/auth';
 import { SocketContext } from '../../../../context/socket';
-import { checkInArray } from '../../../../utils';
+import { checkInArray, baseURL } from '../../../../utils';
 import useHttpClient from '../../../../hooks/useHttpClient';
 
 const usePostReaction = (likes, unicorns, bookmarks, id, author) => {
@@ -20,7 +20,7 @@ const usePostReaction = (likes, unicorns, bookmarks, id, author) => {
   const reactOnPost = async (action, postId) => {
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/posts/${postId}/${action}`,
+        `${baseURL}/posts/${postId}/${action}`,
         'PUT',
         JSON.stringify({ userId: currentUser.userId, postId }),
         {

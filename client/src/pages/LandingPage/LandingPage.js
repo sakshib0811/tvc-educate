@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./LandingPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { ThemeContexts } from "../../context/ThemeContexts";
-import { AuthorInfo } from "../../components/AuthorInfo/AuthorInfo";
+// import { AuthorInfo } from "../../components/AuthorInfo/AuthorInfo";
 import { baseURL, bodyShortener, formatDate, readingTime } from "../../utils";
-import { Carousel } from "react-responsive-carousel";
+// import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Slider from "react-slick";
@@ -27,6 +27,7 @@ const LandingPage = () => {
   const [hoverClass, setHoverClass] = useState([]);
   const [trendingHover, setTrendingHover] = useState([]);
   const [idx, setIdx] = useState(0);
+  console.log(idx);
   const [scroll, setScroll] = useState({
     scrollLeft: false,
     scrollRight: true,
@@ -69,12 +70,12 @@ const LandingPage = () => {
 
   let parentContainerRef = React.useRef();
 
-  let cardsSectionRefTrendingSection = React.useRef();
+  // let cardsSectionRefTrendingSection = React.useRef();
 
-  let parentContainerRefTrendingSection = React.useRef();
+  // let parentContainerRefTrendingSection = React.useRef();
 
   const scrollLeft = () => {
-    const movableContainerWidth = cardsSectionRef.current.clientWidth;
+    // const movableContainerWidth = cardsSectionRef.current.clientWidth;
     const parentContainerWidth = parentContainerRef.current.clientWidth;
 
     if (cardsSectionRef.current) {
@@ -142,7 +143,8 @@ const LandingPage = () => {
   };
 
   async function getPosts() {
-    axios.get(`${baseURL}/posts`).then((res) => {
+    try {
+    axios.get(`${baseURL}/posts/`).then((res) => {
       setAddTask(res.data.posts);
       setIsLoading(false);
       var arr = [...res.data.posts];
@@ -154,6 +156,9 @@ const LandingPage = () => {
       setHoverClass(arr);
       setTrendingHover(arr);
     });
+  } catch(err) {
+    console.log(err);
+  }
   }
   async function getTags() {
     axios.get(`${baseURL}/tags`).then((res) => {
@@ -211,7 +216,7 @@ const LandingPage = () => {
                 {approvedPosts.length > 0 ? approvedPosts.slice(0, 8).map((post, idx) => {
                   var date = formatDate(post.date);
                   return (
-                    <Link to={`/posts/${post.titleURL}/${post.id}`}>
+                    <Link to={`/posts/${post.id}`}>
                       <div key={idx} className="carouselWrapper">
                         <img src={post.image} className="carouselImage" alt="carousel" />
                         <div className="gradientBreak" />
@@ -290,7 +295,7 @@ const LandingPage = () => {
                           <Link
                             onClick={() => handleChangeTheme(5)}
                             style={{ textDecoration: "none" }}
-                            to={`/posts/${e.titleURL}/${e.id}`}
+                            to={`/posts/${e.id}`}
                           >
                             <div className="authHeading">
                               <p
@@ -311,7 +316,7 @@ const LandingPage = () => {
                           </Link>
                         </div>
                         <div className="trendingCta">
-                          <Link to={`/posts/${e.titleURL}/${e.id}`}>
+                          <Link to={`/posts/${e.id}`}>
                             <div className="learnMoreTrending">
                               Learn More
                             </div>
@@ -388,7 +393,7 @@ const LandingPage = () => {
                     var date = formatDate(e.date);
                     var readingDuration = readingTime(e.body);
                     var shortenedBody = bodyShortener(e.body);
-                    var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
+                    // var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
                     return (
                       <div
                         className="col4gy3row02"
@@ -408,13 +413,13 @@ const LandingPage = () => {
                           <Link
                             // onClick={() => handleChangeTheme(5)}
                             // style={{ textDecoration: "none" }}
-                            to={`/posts/${e.titleURL}/${e.id}`}
+                            to={`/posts/${e.id}`}
                           >
                             <div className="preview__author ml--1">
                               <div className="author__image">
                                 <img
                                   src={e.author.avatar}
-                                  alt={`user photo ${e.author.name}`}
+                                  alt={`user ${e.author.name}`}
                                 />
                               </div>
                               <div
@@ -479,7 +484,7 @@ const LandingPage = () => {
                       var date = formatDate(e.date);
                       var readingDuration = readingTime(e.body);
                       var shortenedBody = bodyShortener(e.body);
-                      var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
+                      // var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
                       return (
                         <div
                           className="col4gy3row02"
@@ -499,7 +504,7 @@ const LandingPage = () => {
                             <Link
                               // onClick={() => handleChangeTheme(5)}
                               // style={{ textDecoration: "none" }}
-                              to={`/posts/${e.titleURL}/${e.id}`}
+                              to={`/posts/${e.id}`}
                             >
                               <div className="preview__author ml--1">
                                 <div className="author__image">

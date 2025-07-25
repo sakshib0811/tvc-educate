@@ -36,13 +36,16 @@ const getPostById = async (req, res, next) => {
     //findById works directly on the contructor fn
   } catch (err) {
     //stop execution in case of error
+    console.log(err);
     return next(new HttpError('Something went wrong with the server', 500));
   }
   if (!post) {
+    console.log("post not found for this ID");
     return next(new HttpError('Could not find post for the provided ID', 404));
   }
   //post is a special mongoose obj; convert it to normal JS obj using toObject
   //get rid of "_" in "_id" using { getters: true }
+  console.log("post found", post);
   res.json({ post: post.toObject({ getters: true }) });
 };
 

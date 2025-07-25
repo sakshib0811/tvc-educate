@@ -4,6 +4,7 @@ import ErrorModal from '../../components/Modal/ErrorModal';
 import useHttpClient from '../../hooks/useHttpClient';
 import PostList from '../../components/PostList/PostList';
 import { AuthContext } from '../../context/auth';
+import { baseURL } from '../../utils';
 
 const ReadingList = () => {
   const [loadedPosts, setLoadedPosts] = useState([]);
@@ -14,7 +15,7 @@ const ReadingList = () => {
     const fetchPosts = async () => {
       try {
         const responseData = await sendReq(
-          `${process.env.REACT_APP_BASE_URL}/users/${userId}/bookmarks`,
+          `${baseURL}/users/${userId}/bookmarks`,
           'GET',
           null,
           {

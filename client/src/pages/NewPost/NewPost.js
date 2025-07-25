@@ -4,7 +4,7 @@ import useForm from '../../hooks/useForm';
 import { AuthContext } from '../../context/auth';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { newPostForm } from '../../utils/formConfig';
-import { appendData, renderRepeatedSkeletons } from '../../utils';
+import { appendData, renderRepeatedSkeletons, baseURL } from '../../utils';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import SkeletonElement from '../../components/Skeleton/SkeletonElement';
 
@@ -24,7 +24,7 @@ const NewPost = () => {
     formData.append('author', currentUser.userId);
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/posts`,
+        `${baseURL}/posts`,
         'POST',
         formData,
         {

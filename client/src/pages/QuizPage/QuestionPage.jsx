@@ -44,7 +44,7 @@ const QuestionPage = () => {
       }
     });
     setScore(totalScore);
-
+    console.log(score);
     history.push(`/results`, {
       category,
       questions,

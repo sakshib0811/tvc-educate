@@ -15,7 +15,7 @@ const AppProviders = ({ children }) => {
 
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io(process.env.REACT_APP_SOCKET_IO_URL);
+      socket.current = io(`http://localhost:5000`);
     }
 
     if (socket.current && userId) {

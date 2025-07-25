@@ -1,4 +1,3 @@
-import { FaDev } from '@react-icons/all-files/fa/FaDev';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { GuestNavLinks } from '../MainNavigation/NavLinks/GuestNavLinks';

@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import { useHttpClient } from './useHttpClient';
 import { SearchContext } from '../context/search';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { baseURL } from '../utils';
 
 const useSearch = () => {
   const { setSearchValue, setSearchResults } = useContext(SearchContext);
@@ -29,7 +30,7 @@ const useSearch = () => {
     const query = queryString.stringify(params);
     try {
       const responseData = await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/posts/search?${query}`
+        `${baseURL}/posts/search?${query}`
       );
       return responseData.posts;
     } catch (err) {

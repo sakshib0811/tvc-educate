@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import useHttpClient from './useHttpClient';
+// import useHttpClient from './useHttpClient';
 
 let logoutTimer;
 
@@ -9,7 +9,7 @@ const useAuth = () => {
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState({});
-  const { sendReq } = useHttpClient();
+  // const { sendReq } = useHttpClient();
 
   //useCallback((uid, token, expirationDate)
   const login = useCallback((user, expirationDate) => {

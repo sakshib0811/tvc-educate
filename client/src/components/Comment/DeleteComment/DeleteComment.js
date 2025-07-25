@@ -4,6 +4,7 @@ import useHttpClient from '../../../hooks/useHttpClient';
 import ErrorModal from '../../Modal/ErrorModal';
 import { CommentContext } from '../Comments';
 import { DeleteCommentButton } from './DeleteCommentButton';
+import { baseURL } from '../../../utils';
 
 export const DeleteComment = ({ commentId, authorId }) => {
   const { setActiveComment, comments, setComments } =
@@ -19,7 +20,7 @@ export const DeleteComment = ({ commentId, authorId }) => {
 
     try {
       await sendReq(
-        `${process.env.REACT_APP_BASE_URL}/comments/${commentId}`,
+        `${baseURL}/comments/${commentId}`,
         'DELETE',
         JSON.stringify({ author: currentUserId }),
         {

@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaDev } from "@react-icons/all-files/fa/FaDev";
+// import { FaDev } from "@react-icons/all-files/fa/FaDev";
 import NavLinks from "../NavLinks/NavLinks";
 import "./Nav.css";
 import { SocketContext } from "../../../context/socket";
 import SideDrawer from "../SideDrawer/SideDrawer";
 import { AuthContext } from "../../../context/auth";
 import { useHttpClient } from "../../../hooks/useHttpClient";
-import { Link, NavLink } from "react-router-dom";
-import { FcHome } from "@react-icons/all-files/fc/FcHome";
-import { FcReading } from "@react-icons/all-files/fc/FcReading";
-import { FaTags } from "@react-icons/all-files/fa/FaTags";
-import { FcIdea } from "@react-icons/all-files/fc/FcIdea";
-// import { FaDev } from "@react-icons/all-files/fa/FaDev";
-import { GrContact } from "@react-icons/all-files/gr/GrContact";
+import { NavLink } from "react-router-dom";
+import { baseURL } from "../../../utils";
+// import { FcHome } from "@react-icons/all-files/fc/FcHome";
+// import { FcReading } from "@react-icons/all-files/fc/FcReading";
+// import { FaTags } from "@react-icons/all-files/fa/FaTags";
+// import { FcIdea } from "@react-icons/all-files/fc/FcIdea";
+// import { GrContact } from "@react-icons/all-files/gr/GrContact";
 
 const Nav = ({ children, onSearchIconClick }) => {
   const { currentUser } = useContext(AuthContext);
@@ -41,7 +41,7 @@ const Nav = ({ children, onSearchIconClick }) => {
       const fetchUnreadNotifications = async () => {
         try {
           const responseData = await sendReq(
-            `${process.env.REACT_APP_BASE_URL}/users/${userId}/notifications/unread`,
+            `${baseURL}/users/${userId}/notifications/unread`,
             "GET",
             null,
             {
