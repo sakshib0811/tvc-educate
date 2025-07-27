@@ -7,7 +7,7 @@ import './SkeletonElement.css';
 const SkeletonArticle = ({ type, firstEl }) => {
   const miniArticle = type === 'mini' || !firstEl;
   return (
-    <div className='skeleton-wrapper'>
+    <div key={firstEl} className='skeleton-wrapper'>
       <div className='skeleton-article'>
         {miniArticle ? (
           <SkeletonElement type='title' />

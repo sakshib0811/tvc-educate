@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import queryString from 'query-string';
 import { useHttpClient } from './useHttpClient';
-import { SearchContext } from '../context/search';
+import { SearchContext } from '../context/search/SearchContext';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { baseURL } from '../utils';
 

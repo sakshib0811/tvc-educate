@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import Avatar from '../../Avatar/Avatar';
-import { AuthContext } from '../../../context/auth';
+import { AuthContext } from '../../../context/auth/AuthContext';
 import Comments from '../../Comment/Comments';
 import { DeletePost } from '../DeletePost';
 import { PostTags } from '../../PostTags/PostTags';

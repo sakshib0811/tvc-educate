@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./LandingPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useContext } from "react";
 import { ThemeContexts } from "../../context/ThemeContexts";
-// import { AuthorInfo } from "../../components/AuthorInfo/AuthorInfo";
 import { baseURL, bodyShortener, formatDate, readingTime } from "../../utils";
-// import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import Slider from "react-slick";
@@ -17,7 +14,6 @@ import {
   BsFillArrowRightCircleFill,
 } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
-import { UtilityContext } from "../../App";
 
 const LandingPage = () => {
   const [addTask, setAddTask] = useState([]);
@@ -27,14 +23,11 @@ const LandingPage = () => {
   const [hoverClass, setHoverClass] = useState([]);
   const [trendingHover, setTrendingHover] = useState([]);
   const [idx, setIdx] = useState(0);
-  console.log(idx);
   const [scroll, setScroll] = useState({
     scrollLeft: false,
     scrollRight: true,
   });
   const [filter, setFilter] = useState("");
-  const { isMobile } = React.useContext(UtilityContext);
-  console.log(isMobile);
 
   const MutatedArrow = ({ className = "", onClick, prev = false }) => {
     return prev ? (
@@ -64,111 +57,88 @@ const LandingPage = () => {
     );
   };
 
-
-
-  let cardsSectionRef = React.useRef();
-
-  let parentContainerRef = React.useRef();
-
-  // let cardsSectionRefTrendingSection = React.useRef();
-
-  // let parentContainerRefTrendingSection = React.useRef();
+  const cardsSectionRef = React.useRef();
+  const parentContainerRef = React.useRef();
 
   const scrollLeft = () => {
-    // const movableContainerWidth = cardsSectionRef.current.clientWidth;
     const parentContainerWidth = parentContainerRef.current.clientWidth;
 
     if (cardsSectionRef.current) {
       setIdx((prev) => {
         if (prev === 0) {
-          setScroll((prev) => ({
-            ...prev,
-            scrollLeft: false,
-          }));
-
+          setScroll((prev) => ({ ...prev, scrollLeft: false }));
           return prev;
         } else {
-          prev--;
-          cardsSectionRef.current.style.transform = `translateX(-${parentContainerWidth * prev
-            }px)`;
-          if (prev === 0) {
-            setScroll((prev) => ({
-              ...prev,
-              scrollLeft: false,
-            }));
+          const newIndex = prev - 1;
+          cardsSectionRef.current.style.transform = `translateX(-${parentContainerWidth * newIndex}px)`;
+          if (newIndex === 0) {
+            setScroll((prev) => ({ ...prev, scrollLeft: false }));
           }
-          return prev;
+          return newIndex;
         }
       });
 
-      setScroll((prev) => ({
-        ...prev,
-        scrollRight: true,
-      }));
+      setScroll((prev) => ({ ...prev, scrollRight: true }));
     }
   };
+
   const scrollRight = () => {
     const movableContainerWidth = cardsSectionRef.current.clientWidth;
-
     const parentContainerWidth = parentContainerRef.current.clientWidth;
 
     if (cardsSectionRef.current) {
-      cardsSectionRef.current.scrollLeft += parentContainerWidth;
-
       setIdx((prev) => {
-        if ((prev + 1) * parentContainerWidth >= movableContainerWidth)
-          return prev;
+        const nextIdx = prev + 1;
 
-        if (
-          movableContainerWidth - (prev + 1) * parentContainerWidth <
-          parentContainerWidth
-        ) {
-          cardsSectionRef.current.style.transform = `translateX(-${movableContainerWidth - parentContainerWidth
-            }px)`;
+        if (nextIdx * parentContainerWidth >= movableContainerWidth) return prev;
 
-          setScroll((prev) => ({
-            ...prev,
-            scrollRight: false,
-          }));
-        } else
-          cardsSectionRef.current.style.transform = `translateX(-${(prev + 1) * parentContainerWidth
-            }px)`;
-        setScroll((prev) => ({
-          ...prev,
-          scrollLeft: true,
-        }));
-        return prev + 1;
+        if (movableContainerWidth - nextIdx * parentContainerWidth < parentContainerWidth) {
+          cardsSectionRef.current.style.transform = `translateX(-${movableContainerWidth - parentContainerWidth}px)`;
+          setScroll((prev) => ({ ...prev, scrollRight: false }));
+        } else {
+          cardsSectionRef.current.style.transform = `translateX(-${nextIdx * parentContainerWidth}px)`;
+        }
+
+        setScroll((prev) => ({ ...prev, scrollLeft: true }));
+        return nextIdx;
       });
     }
   };
 
-  async function getPosts() {
-    try {
-    axios.get(`${baseURL}/posts/`).then((res) => {
-      setAddTask(res.data.posts);
-      setIsLoading(false);
-      var arr = [...res.data.posts];
-      for (let i = 0; i < arr.length; i++) {
-        var obj = arr[i];
-        obj = { ...obj, hover: false };
-        arr[i] = obj;
-      }
-      setHoverClass(arr);
-      setTrendingHover(arr);
-    });
-  } catch(err) {
-    console.log(err);
-  }
-  }
-  async function getTags() {
-    axios.get(`${baseURL}/tags`).then((res) => {
-      setTags(res.data.tags);
-    });
-  }
-
   useEffect(() => {
-    getPosts();
-    getTags();
+    let isMounted = true;
+
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get(`${baseURL}/posts/`);
+        if (!isMounted) return;
+
+        setAddTask(res.data.posts);
+        setIsLoading(false);
+
+        const enrichedPosts = res.data.posts.map((obj) => ({ ...obj, hover: false }));
+        setHoverClass(enrichedPosts);
+        setTrendingHover(enrichedPosts);
+      } catch (err) {
+        if (isMounted) console.error("Failed to fetch posts:", err);
+      }
+    };
+
+    const fetchTags = async () => {
+      try {
+        const res = await axios.get(`${baseURL}/tags`);
+        if (isMounted) setTags(res.data.tags);
+      } catch (err) {
+        if (isMounted) console.error("Failed to fetch tags:", err);
+      }
+    };
+
+    fetchPosts();
+    fetchTags();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const approvedPosts = addTask.filter((post) => post.approved === true);
@@ -188,23 +158,23 @@ const LandingPage = () => {
     swipeToSlide: true,
     nextArrow: <MutatedArrow />,
     prevArrow: <MutatedArrow prev="true" />,
-    className: 'carouselContainer',
+    className: "carouselContainer",
     responsive: [
       {
         breakpoint: 800,
         settings: {
           slidesToShow: 2,
-        }
+        },
       },
       {
         breakpoint: 580,
         settings: {
           slidesToShow: 1,
-        }
+        },
       },
-    ]
-
+    ],
   };
+
 
   return (
     <>
@@ -216,8 +186,8 @@ const LandingPage = () => {
                 {approvedPosts.length > 0 ? approvedPosts.slice(0, 8).map((post, idx) => {
                   var date = formatDate(post.date);
                   return (
-                    <Link to={`/posts/${post.id}`}>
-                      <div key={idx} className="carouselWrapper">
+                    <Link key={idx} to={`/posts/${post.id}`}>
+                      <div className="carouselWrapper">
                         <img src={post.image} className="carouselImage" alt="carousel" />
                         <div className="gradientBreak" />
                         <div className="slideDescription">
@@ -249,7 +219,7 @@ const LandingPage = () => {
                     return (
                       <div
                         className={"col4gy3row"}
-                        key={e._id}
+                        key={e._id + i}
                         onMouseEnter={() => {
                           var arr = [...trendingHover];
                           arr[i].hoverClass = true;
@@ -397,7 +367,7 @@ const LandingPage = () => {
                     return (
                       <div
                         className="col4gy3row02"
-                        key={e._id + 1}
+                        key={e._id + idx}
                         onMouseEnter={() => {
                           var arr = [...hoverClass];
                           arr[i].hoverClass = true;

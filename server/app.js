@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const passport = require("passport");
+// const passport = require("passport");
 const cookieSession = require("cookie-session");
 const path = require("path");
 const { createServer } = require("http");
@@ -45,25 +45,14 @@ app.use(
 
 app.use(bodyParser.json());
 
-//app.use(passport.initialize());
-//app.use(passport.session());
-//require('./config/passport-twitter');
-
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:3001/',
+    origin: 'http://localhost:3000',
     methods: ["GET", "POST","PATCH","DELETE","PUT", "HEAD"],
   },
 });
 socketHandlers(io);
 
-// app.use(
-//   cors({
-//     origin: CLIENT_URL, // allow to server to accept request from different origin (client)
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials: true, // allow session cookie from browser to pass through
-//   })
-// );
 app.use(cors());
 
 app.use("/api/posts", postsRoutes);
@@ -100,8 +89,6 @@ mongoose
     {
       useUnifiedTopology: true,
       useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
     }
   )
   .then(() => {
@@ -112,3 +99,4 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+

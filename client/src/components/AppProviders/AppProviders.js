@@ -1,53 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
-import { AuthContext } from '../../context/auth';
-import { SearchContext } from '../../context/search';
-import { SocketContext } from '../../context/socket';
-import useAuth from '../../hooks/useAuth';
+import React from 'react';
 import '../../styles/main.css';
+import AuthProvider from '../../context/auth/AuthProvider';
+import SearchProvider from '../../context/search/SearchProvider';
+import SocketProvider from '../../context/socket/SocketProvider';
 
 const AppProviders = ({ children }) => {
-  const { token, login, logout, userId, user, setUser } = useAuth();
-  const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-
-  const socket = useRef();
-
-  useEffect(() => {
-    if (!socket.current) {
-      socket.current = io(`http://localhost:5000`);
-    }
-
-    if (socket.current && userId) {
-      socket.current.emit('join', {
-        userId: userId,
-      });
-    }
-  }, [socket, userId]);
-
   return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn: !!token,
-        login,
-        logout,
-        currentUser: user,
-        setUser,
-      }}
-    >
-      <SearchContext.Provider
-        value={{
-          searchValue,
-          setSearchValue,
-          searchResults,
-          setSearchResults,
-        }}
-      >
-        <SocketContext.Provider value={{ socket }}>
+    <AuthProvider>
+      <SearchProvider>
+        <SocketProvider>
           {children}
-        </SocketContext.Provider>
-      </SearchContext.Provider>
-    </AuthContext.Provider>
+        </SocketProvider>
+      </SearchProvider>
+    </AuthProvider>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, createContext } from 'react';
 import { useHttpClient } from '../../hooks/useHttpClient';
 import Comment from './Comment';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import { baseURL, getReplies } from '../../utils';
 import ErrorModal from '../Modal/ErrorModal';
 import { NewComment } from './NewComment/NewComment';

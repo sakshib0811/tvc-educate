@@ -48,7 +48,7 @@ const RightSideBar = ({ tags, isLoading }) => {
             </h1>
 
             {tags?.slice(0, 5).map((tag, index) => {
-              return <MiniPostList tag={tag.name} posts={tag.posts} />;
+              return <MiniPostList key={index} tag={tag.name} posts={tag.posts} />;
             })}
           </div>
 

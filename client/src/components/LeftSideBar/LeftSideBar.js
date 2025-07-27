@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../../context/auth";
+import { AuthContext } from "../../context/auth/AuthContext";
 import { FcHome } from "@react-icons/all-files/fc/FcHome";
 import { FcReading } from "@react-icons/all-files/fc/FcReading";
 import { FaTags } from "@react-icons/all-files/fa/FaTags";
-// import { FcIdea } from "@react-icons/all-files/fc/FcIdea";
-import { FaDev } from "@react-icons/all-files/fa/FaDev";
+import { FcAbout } from "react-icons/fc";
 import { GrContact } from "@react-icons/all-files/gr/GrContact";
 import About from "../About/About";
 import "./LeftSideBar.css";
@@ -58,7 +57,7 @@ const LeftSideBar = () => {
             <li className="list__item hvr-bg-lt">
               <NavLink to="/About" exact>
                 <i>
-                  <FaDev />
+                  <FcAbout />
                 </i>
                 About
               </NavLink>

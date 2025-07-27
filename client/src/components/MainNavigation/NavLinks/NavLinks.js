@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FiSearch } from '@react-icons/all-files/fi/FiSearch';
-import { AuthContext } from '../../../context/auth';
+import { AuthContext } from '../../../context/auth/AuthContext';
 import { LoggedInNavLinks } from './LoggedInNavLinks';
 import { GuestNavLinks } from './GuestNavLinks';
 

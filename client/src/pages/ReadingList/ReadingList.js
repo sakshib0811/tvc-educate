@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import useHttpClient from '../../hooks/useHttpClient';
 import PostList from '../../components/PostList/PostList';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import { baseURL } from '../../utils';
 
 const ReadingList = () => {

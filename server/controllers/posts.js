@@ -292,12 +292,12 @@ const bookmarkPost = async (req, res, next) => {
       },
       { new: true }
     );
+    res.status(200).json({
+      post: post.toObject({ getters: true }),
+    });
   } catch (err) {
     return next(new HttpError('Could not bookmark post', 500));
   }
-  res.status(200).json({
-    post: post.toObject({ getters: true }),
-  });
 };
 
 const unbookmarkPost = async (req, res, next) => {

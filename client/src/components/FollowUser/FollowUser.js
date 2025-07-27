@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../context/auth';
-import { SocketContext } from '../../context/socket';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { SocketContext } from '../../context/socket/SocketContext';
 import useHttpClient from '../../hooks/useHttpClient';
 import { checkInArray, baseURL } from '../../utils';
 import './FollowUser.css';

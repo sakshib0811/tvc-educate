@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/auth";
+import { AuthContext } from "../../context/auth/AuthContext";
 import PreviewReactions from "../PostPreview/PreviewReactions";
 import Avatar from "../Avatar/Avatar";
 import { PostTags } from "../PostTags/PostTags";
@@ -13,7 +13,7 @@ const PostPreview = (props) => {
   const { currentUser } = useContext(AuthContext);
   const userId = currentUser && currentUser.userId;
 
-  const { title, id, image, author, date, titleURL, tags, cover } = props;
+  const { title, id, image, author, date, tags, cover } = props;
   const createdAt = formatDate(date);
 
   return (
@@ -24,13 +24,13 @@ const PostPreview = (props) => {
       </div>
       {cover && (
         <PostImage
-          link={`/posts/${titleURL}/${id}`}
+          link={`/posts/${id}`}
           src={image}
           alt={`Cover image for ${title}`}
         />
       )}
       <div className="preview__details flow-content">
-        <Link to={`/posts/${titleURL}/${id}`} className="title-link">
+        <Link to={`/posts/${id}`} className="title-link">
           <h2>{title}</h2>
         </Link>
         <PostTags tags={tags} />

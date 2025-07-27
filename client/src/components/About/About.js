@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/auth";
+import { AuthContext } from "../../context/auth/AuthContext";
 import { GuestNavLinks } from "../MainNavigation/NavLinks/GuestNavLinks";
 import "./About.css";
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useHttpClient } from '../../hooks/useHttpClient';
 import useForm from '../../hooks/useForm';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { newPostForm } from '../../utils/formConfig';
 import { appendData, renderRepeatedSkeletons, baseURL } from '../../utils';

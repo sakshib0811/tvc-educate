@@ -3,7 +3,7 @@ import {
   useHistory,
   useParams,
 } from 'react-router-dom/cjs/react-router-dom.min';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import useHttpClient from '../../hooks/useHttpClient';
 import DeletionModal from '../Modal/DeletionModal';
 import ErrorModal from '../Modal/ErrorModal';

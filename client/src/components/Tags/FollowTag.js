@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/auth";
+import { AuthContext } from "../../context/auth/AuthContext";
 import useHttpClient from "../../hooks/useHttpClient";
 import { checkInArray, baseURL } from "../../utils";
 

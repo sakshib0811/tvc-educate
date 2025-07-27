@@ -14,7 +14,7 @@ const PostList = (props) => {
               return (
                 <PostPreview
                   cover={true}
-                  key={post.id}
+                  key={post.id + i}
                   id={post.id}
                   title={post.title}
                   body={post.body}

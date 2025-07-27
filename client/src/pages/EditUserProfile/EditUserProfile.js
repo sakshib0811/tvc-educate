@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useHttpClient } from '../../hooks/useHttpClient';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import useForm from '../../hooks/useForm';
 import ErrorModal from '../../components/Modal/ErrorModal';
 import SkeletonForm from '../../components/Skeleton/SkeletonForm';

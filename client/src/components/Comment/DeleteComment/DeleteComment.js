@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../../context/auth';
+import { AuthContext } from '../../../context/auth/AuthContext';
 import useHttpClient from '../../../hooks/useHttpClient';
 import ErrorModal from '../../Modal/ErrorModal';
 import { CommentContext } from '../Comments';

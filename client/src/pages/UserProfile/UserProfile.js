@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useHttpClient } from '../../hooks/useHttpClient';
 import PostList from '../../components/PostList/PostList';
@@ -8,7 +8,7 @@ import AuthModal from '../../components/Modal/AuthModal';
 import Avatar from '../../components/Avatar/Avatar';
 import { UserInfo } from '../../components/User/UserInfo/UserInfo';
 import { UserSideBar } from '../../components/User/UserSideBar/UserSideBar';
-import { AuthContext } from '../../context/auth';
+import useAuth from '../../hooks/useAuth';
 import SkeletonElement from '../../components/Skeleton/SkeletonElement';
 import { renderRepeatedSkeletons, baseURL } from '../../utils';
 import Shimmer from '../../components/Skeleton/Shimmer';
@@ -19,7 +19,7 @@ const UserProfile = () => {
   const [showModal, setShowModal] = useState(false);
   const { isLoading, sendReq, error, clearError } = useHttpClient();
   const { userId } = useParams();
-  const { currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useAuth();
   const currentUserId = currentUser && currentUser.userId;
 
   const { posts } = user;

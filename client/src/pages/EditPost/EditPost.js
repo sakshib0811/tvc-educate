@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useHttpClient } from '../../hooks/useHttpClient';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import useForm from '../../hooks/useForm';
 import { editPostForm, prefillEditPostForm } from '../../utils/formConfig';
 import { appendData, baseURL } from '../../utils';

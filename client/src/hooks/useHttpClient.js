@@ -4,6 +4,9 @@ export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  // In order to prevent memory leak, track if component is still mounted
+  const isMounted = useRef(true);
+
   //what if the req is on the way and when we switch the page =>
   //we're trying to update state on a component that has unmounted => error
   //we need to cancel the ongoing http req
@@ -16,7 +19,7 @@ export const useHttpClient = () => {
   const sendReq = useCallback(
     async (url, method = 'GET', body = null, headers = {}, credentials) => {
       if (method === 'GET') {
-        setIsLoading(true);
+        if ( isMounted.current ) setIsLoading(true);
       }
       const httpAbortCtrl = new AbortController();
       //add the AbortController API to activeHttpReqs array
@@ -45,11 +48,13 @@ export const useHttpClient = () => {
           //400 or 500 status code
           throw new Error(responseData.message);
         }
-        setIsLoading(false);
+        if (isMounted.current) setIsLoading(false);
         return responseData; //for our component
       } catch (err) {
-        setError(err.message || 'Something went wrong...');
-        setIsLoading(false);
+        if (isMounted.current) {
+          setError(err.message || 'Something went wrong...');
+          setIsLoading(false);
+        }
         throw err;
       }
     },
@@ -57,7 +62,7 @@ export const useHttpClient = () => {
   );
 
   const clearError = () => {
-    setError(null);
+    if (isMounted.current) setError(null);
   };
 
   useEffect(() => {
@@ -65,6 +70,7 @@ export const useHttpClient = () => {
     //using this custom hook unmounts
     return () => {
       //abort the request
+      isMounted.current = false;
       activeHttpReqs.current.forEach((abortCtrl) => abortCtrl.abort());
     };
   }, []);

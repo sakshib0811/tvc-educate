@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../../context/auth';
+import { AuthContext } from '../../../context/auth/AuthContext';
 import { LikeIcon } from '../../Icons/Icons';
 
 export const LikePost = ({ likes, handleReaction, isLiked, setShowModal }) => {

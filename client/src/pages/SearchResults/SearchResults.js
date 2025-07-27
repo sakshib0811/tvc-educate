@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PostList from '../../components/PostList/PostList';
-import { SearchContext } from '../../context/search';
+import { SearchContext } from '../../context/search/SearchContext';
 import useHttpClient from '../../hooks/useHttpClient';
 
 const SearchResults = (props) => {

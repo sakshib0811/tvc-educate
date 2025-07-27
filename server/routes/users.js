@@ -1,25 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const passport = require('passport');
+// const passport = require('passport');
 const usersControllers = require('../controllers/users');
 const notificationsControllers = require('../controllers/notifications');
 const postsControllers = require('../controllers/posts');
 const { fileUpload } = require('../middleware/file-upload');
 const checkAuth = require('../middleware/check-auth');
 require('dotenv').config;
-const { CLIENT_URL } = process.env;
+// const { CLIENT_URL } = process.env;
 
 const {
   getUserById,
   signup,
   login,
-  googleLogin,
-  // githubLogin,
-  // fbLogin,
-  // twitterLogin,
-  // twitterFailure,
-  // twitterLogout,
   updateUser,
   followUser,
   unfollowUser,
@@ -42,29 +36,7 @@ router.post(
   signup
 );
 
-router.post('/auth/google', googleLogin);
-
-// router.post('/auth/github', githubLogin);
-
-// router.post('/auth/facebook', fbLogin);
-
-// router.get('/auth/twitter/success', twitterLogin);
-
-// router.get('/auth/twitter/failed', twitterFailure);
-
-// router.get('/auth/twitter/logout', twitterLogout);
-
 router.post('/login', login);
-
-//router.get('/auth/twitter', passport.authenticate('twitter'));
-
-router.get(
-  '/auth/twitter/callback',
-  passport.authenticate('twitter', {
-    successRedirect: CLIENT_URL,
-    failureRedirect: '/auth/twitter/failed',
-  })
-);
 
 router.use(checkAuth);
 

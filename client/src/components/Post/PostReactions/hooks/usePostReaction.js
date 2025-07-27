@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react';
-import { AuthContext } from '../../../../context/auth';
-import { SocketContext } from '../../../../context/socket';
+import { AuthContext } from '../../../../context/auth/AuthContext';
+import { SocketContext } from '../../../../context/socket/SocketContext';
 import { checkInArray, baseURL } from '../../../../utils';
 import useHttpClient from '../../../../hooks/useHttpClient';
 
-const usePostReaction = (likes, unicorns, bookmarks, id, author) => {
+const usePostReaction = (likes, bookmarks, id, author) => {
   const { currentUser } = useContext(AuthContext);
   const currentUserId = currentUser && currentUser.userId;
   const { current } = useContext(SocketContext).socket;
@@ -13,7 +13,6 @@ const usePostReaction = (likes, unicorns, bookmarks, id, author) => {
 
   const [state, setState] = useState({
     isLiked: checkInArray(likes, currentUserId),
-    isUnicorned: checkInArray(unicorns, currentUserId),
     isBookmarked: checkInArray(bookmarks, currentUserId),
   });
 
@@ -28,7 +27,7 @@ const usePostReaction = (likes, unicorns, bookmarks, id, author) => {
           Authorization: `Bearer ${currentUser.token}`,
         }
       );
-    } catch (err) {}
+    } catch (err) {console.log(err);}
   };
 
   const updateReactionArr = (arr, effect) => {

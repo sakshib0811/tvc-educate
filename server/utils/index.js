@@ -15,9 +15,11 @@ const uploadToCloudinary = async (file) => {
     const uploadedResponse = await cloudinary.uploader.upload(file64.content, {
       upload_preset: 'ml_default',
     });
+
     return uploadedResponse.url;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

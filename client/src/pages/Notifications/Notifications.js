@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHttpClient } from '../../hooks/useHttpClient';
-import { AuthContext } from '../../context/auth';
+import { AuthContext } from '../../context/auth/AuthContext';
 import Notification from '../../components/Notification/Notification';
 import './Notifications.css';
 import ErrorModal from '../../components/Modal/ErrorModal';
