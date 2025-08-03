@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from "react";
 import "./LandingPage.css";
 import { Link } from "react-router-dom";
 import { ThemeContexts } from "../../context/ThemeContexts";
-import { baseURL, bodyShortener, formatDate, readingTime } from "../../utils";
+import { bodyShortener, formatDate, readingTime } from "../../utils";
 import { useData } from "../../context/data/DataContext";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
@@ -17,7 +17,7 @@ import { SlCalender } from "react-icons/sl";
 
 const LandingPage = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [hoverClass, setHoverClass] = useState([]);
+ // const [hoverClass, setHoverClass] = useState([]);
   const [trendingHover, setTrendingHover] = useState([]);
   const [idx, setIdx] = useState(0);
   const [scroll, setScroll] = useState({
@@ -27,7 +27,7 @@ const LandingPage = () => {
   const [filter, setFilter] = useState("");
 
   const { handleChangeTheme } = useContext(ThemeContexts);
-  const { posts, tags, isLoading, error, getApprovedPosts, getPostsByTag } = useData();
+  const { tags, isLoading, error, getApprovedPosts, getPostsByTag } = useData();
   
   const cardsSectionRef = useRef();
   const parentContainerRef = useRef();
@@ -188,10 +188,10 @@ const LandingPage = () => {
         <div className="homeSection">
           <Slider {...settings}>
             {approvedPosts.length > 0 ? 
-              approvedPosts.slice(0, 8).map((post, idx) => {
+              approvedPosts.slice(0, 8).map((post, index) => {
                 const date = formatDate(post.date);
                 return (
-                  <Link key={post.id || idx} to={`/posts/${post.id}`}>
+                  <Link key={(post.id + idx) || index} to={`/posts/${post.id}`}>
                     <div className="carouselWrapper">
                       <img 
                         src={post.image} 

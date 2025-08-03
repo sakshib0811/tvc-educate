@@ -10,7 +10,7 @@ import Loader from './components/UniversalLoader/Loader.js';
 import LandingPage from './pages/LandingPage/LandingPage.js';
 import Auth from './pages/Auth/Auth.js';
 import Post from './pages/Post/Post.js';
-import ChangePassword from './pages/ChangePassword/ChangePassword.jsx';
+import ChangePassword from './pages/ChangePassword/ChangePassword.js';
 // Lazy-loaded components
 const NewPost = lazy(() => import('./pages/NewPost/NewPost.js'));
 const EditPost = lazy(() => import('./pages/EditPost/EditPost.js'));

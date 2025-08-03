@@ -23,7 +23,6 @@ const ChangePassword = () => {
   }, [isLoggedIn, history]);
 
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('');
@@ -45,15 +44,18 @@ const ChangePassword = () => {
         }
       );
       
+      // If we get here, the request was successful
+      // Use response message if available, otherwise use default
+      setStatus(response?.message || 'Password changed successfully!');
 
-      setStatus('Password changed successfully!');
+      // Clear the form
       setOldPassword('');
       setNewPassword('');
-    } catch (err) {
-      console.error('Password change error:', err);
-      setStatus(
-        err?.response?.data?.message || 'Failed to change password.'
-      );
+    } catch (error) {
+      // Error handling is already done by useHttpClient
+      // But you can add additional handling here if needed
+      console.error('Password change failed:', error);
+      // Don't clear form on error
     } finally {
       setIsLoading(false);
     }
@@ -66,9 +68,10 @@ const ChangePassword = () => {
   return (
     <>
       <ErrorModal error={error} onClose={clearError} />
-      <div className="max-w-md mx-auto mt-20 px-4">
+      <div className="container container-auth">
         <h2 className="text-2xl font-bold mb-6">Change Password</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="form__auth">
+        <div className="form__options">
           <div>
             <label className="block text-sm font-medium">Old Password</label>
             <input
@@ -95,7 +98,8 @@ const ChangePassword = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
+            className="btn btn__auth btn__auth--mode"
+            style={{marginTop: '1rem'}}
           >
             {isLoading ? 'Changing Password...' : 'Change Password'}
           </button>
@@ -104,6 +108,7 @@ const ChangePassword = () => {
               {status}
             </p>
           )}
+          </div>
         </form>
       </div>
     </>
