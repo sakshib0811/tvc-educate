@@ -73,7 +73,7 @@ const MainRouter = () => {
 
           {/* Protected routes */}
           <ProtectedRoute path="/home" exact component={Home} />
-          <ProtectedRoute path="/:userId/change-password" exact component={ChangePassword} />
+          <ProtectedRoute path="/users/:userId/change-password" exact component={ChangePassword} />
           <ProtectedRoute path="/users/:userId/edit" exact component={EditUserProfile} />
           <ProtectedRoute path="/users/:userId/readinglist" exact component={ReadingList} />
           <ProtectedRoute path="/users/:userId/notifications" exact component={Notifications} />

@@ -44,9 +44,13 @@ const getAllTags = async (req, res, next) => {
   let tags;
   try {
     tags = await Tag.find({});
+    console.log(`Found ${tags.length} tags`);
   } catch (err) {
+    console.error('Error fetching tags:', err);
     return next(new HttpError('Could not fetch tags, please try again', 500));
   }
+  
+  // Always return an array, even if empty
   res.json({ tags: tags.map((tag) => tag.toObject({ getters: true })) });
 };
 

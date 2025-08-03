@@ -19,9 +19,14 @@ const getAllPosts = async (req, res, next) => {
       .sort({ date: 'desc' })
       .populate('author')
       .populate('tags');
+    
+    console.log(`Found ${posts.length} posts`);
   } catch (err) {
+    console.error('Error fetching posts:', err);
     return next(new HttpError('Could not fetch posts, please try again', 500));
   }
+  
+  // Always return an array, even if empty
   res.json({ posts: posts.map((post) => post.toObject({ getters: true })) });
 };
 
@@ -78,6 +83,7 @@ const createPost = async (req, res, next) => {
     return next(new HttpError('Invalid inputs passed, please try again!', 422));
   }
 
+  let session;
   try {
     const imageUrl = await uploadToCloudinary(req.file);
 
@@ -101,7 +107,7 @@ const createPost = async (req, res, next) => {
     await createTags(JSON.parse(tags), createdPost);
 
     // Use transaction to ensure post and user update are atomic
-    const session = await mongoose.startSession();
+    session = await mongoose.startSession();
     session.startTransaction();
 
     await createdPost.save({ session });
@@ -109,7 +115,6 @@ const createPost = async (req, res, next) => {
     await user.save({ session });
 
     await session.commitTransaction();
-    session.endSession();
 
     const populatedPost = await createdPost.populate('author');
 
@@ -119,7 +124,14 @@ const createPost = async (req, res, next) => {
 
   } catch (err) {
     console.error('[ERROR: createPost]', err);
+    if (session) {
+      await session.abortTransaction();
+    }
     return next(new HttpError('Creating post failed, please try again', 500));
+  } finally {
+    if (session) {
+      session.endSession();
+    }
   }
 };
 

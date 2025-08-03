@@ -11,21 +11,6 @@ const useSearch = () => {
   const { sendReq } = useHttpClient();
   const history = useHistory();
 
-  const search = async (value) => {
-    if (value) {
-      setSearchValue(value);
-      try {
-        const data = await list({ search: value || undefined });
-        setSearchResults(data);
-        history.push(`/search/?query=${value}`);
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      setSearchResults([]);
-    }
-  };
-
   const list = async (params) => {
     const query = queryString.stringify(params);
     try {
@@ -34,9 +19,27 @@ const useSearch = () => {
       );
       return responseData.posts;
     } catch (err) {
-      console.log(err);
+      console.error('Search error:', err);
+      return [];
     }
   };
+
+  const search = async (value) => {
+    if (value && value.trim()) {
+      setSearchValue(value);
+      try {
+        const data = await list({ search: value.trim() });
+        setSearchResults(data || []);
+        history.push(`/search/?query=${encodeURIComponent(value.trim())}`);
+      } catch (err) {
+        console.error('Search error:', err);
+        setSearchResults([]);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+
   return { search };
 };
 

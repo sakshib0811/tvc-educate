@@ -7,6 +7,8 @@ import {
   maxLengthRule,
   minLengthRule,
   requiredRule,
+  passwordStrengthRule,
+  emailFormatRule,
 } from './inputValidationRules';
 
 const createFormFieldConfig = (
@@ -96,8 +98,9 @@ export const signupForm = {
     ...createFormFieldConfig('Email', 'email', 'email'),
     validationRules: [
       requiredRule('email'),
+      emailFormatRule(),
       minLengthRule('email', 10),
-      maxLengthRule('email', 25),
+      maxLengthRule('email', 50),
     ],
     key: '2',
   },
@@ -105,8 +108,7 @@ export const signupForm = {
     ...createFormFieldConfig('Password', 'password', 'password'),
     validationRules: [
       requiredRule('password'),
-      minLengthRule('password', 6),
-      maxLengthRule('password', 20),
+      passwordStrengthRule(),
     ],
     key: '3',
   },

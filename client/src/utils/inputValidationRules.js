@@ -32,9 +32,40 @@ export function minLengthRule(inputName, minCharacters) {
 
 export function maxLengthRule(inputName, maxCharacters) {
   return createValidationRule(
-    'minLength',
+    'maxLength',
     `${inputName} cannot contain more than ${maxCharacters} characters`,
     (inputValue, formObj) => inputValue.length <= maxCharacters
+  );
+}
+
+export function passwordStrengthRule() {
+  return createValidationRule(
+    'passwordStrength',
+    'Password must contain at least 8 characters, including uppercase, lowercase, number, and special character',
+    (inputValue, formObj) => {
+      const minLength = 8;
+      const hasUpperCase = /[A-Z]/.test(inputValue);
+      const hasLowerCase = /[a-z]/.test(inputValue);
+      const hasNumbers = /\d/.test(inputValue);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(inputValue);
+      
+      return inputValue.length >= minLength && 
+             hasUpperCase && 
+             hasLowerCase && 
+             hasNumbers && 
+             hasSpecialChar;
+    }
+  );
+}
+
+export function emailFormatRule() {
+  return createValidationRule(
+    'emailFormat',
+    'Please enter a valid email address',
+    (inputValue, formObj) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(inputValue);
+    }
   );
 }
 

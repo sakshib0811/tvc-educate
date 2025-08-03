@@ -105,8 +105,18 @@ const login = async (req, res, next) => {
 };
 
 const changePassword = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new HttpError('Invalid inputs passed, please check your data', 422));
+  }
+
   const { oldPassword, newPassword } = req.body;
   const { userId } = req.params;
+
+  // Security check: ensure user can only change their own password
+  if (req.userData.userId !== userId) {
+    return next(new HttpError('You can only change your own password', 403));
+  }
 
   try {
     const user = await User.findById(userId);
@@ -121,6 +131,7 @@ const changePassword = async (req, res, next) => {
 
     res.status(200).json({ message: 'Password changed successfully' });
   } catch (err) {
+    console.error('Change password error:', err);
     return next(new HttpError('Could not change password, try again', 500));
   }
 };

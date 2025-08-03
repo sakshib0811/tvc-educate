@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ErrorModal from "../../components/Modal/ErrorModal";
-import useHttpClient from "../../hooks/useHttpClient";
 import PostList from "../PostList/PostList";
-import { baseURL } from "../../utils/index";
-const Posts = ({ cover }) => {
-  const [loadedPosts, setLoadedPosts] = useState([]);
-  const { isLoading, sendReq, error, clearError } = useHttpClient();
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const responseData = await sendReq(`${baseURL}/posts`);
-        setLoadedPosts(responseData.posts);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchPosts();
-  }, [sendReq]);
+import { useData } from "../../context/data/DataContext";
 
+const Posts = ({ cover }) => {
+  const { posts, isLoading, error } = useData();
+  
   return (
     <>
-      <ErrorModal error={error} onClose={clearError} />
-      {loadedPosts && (
-        <PostList isLoading={isLoading} items={loadedPosts} cover={cover} />
-      )}
+      <ErrorModal error={error} onClose={() => {}} />
+      <PostList isLoading={isLoading} items={posts} cover={cover} />
     </>
   );
 };

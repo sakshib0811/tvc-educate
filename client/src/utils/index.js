@@ -24,10 +24,13 @@ export const readingTime = (body) => {
 export const appendData = (data) => {
   const formData = new FormData();
   for (let [key, value] of Object.entries(data)) {
+    if (value === null || value === undefined) {
+      continue; // Skip null/undefined values
+    }
     if (Array.isArray(value)) {
       value = JSON.stringify(value);
     }
-    formData.append(`${key}`, value);
+    formData.append(key, value);
   }
   return formData;
 };

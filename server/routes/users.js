@@ -49,7 +49,10 @@ router.get('/:userId/bookmarks', getBookmarks);
 
 router.patch('/:userId', fileUpload.single('avatar'), updateUser);
 
-router.patch('/:userId/change-password', changePassword);
+router.patch('/:userId/change-password', [
+  check('oldPassword').not().isEmpty(),
+  check('newPassword').isLength({ min: 6 }),
+], changePassword);
 
 router.put('/follow', followUser);
 

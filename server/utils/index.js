@@ -24,19 +24,18 @@ const uploadToCloudinary = async (file) => {
 };
 
 const createJWTtoken = (id, email) => {
-  let jwtToken;
   try {
-    jwtToken = jwt.sign(
+    const jwtToken = jwt.sign(
       //takes payload (the data you want to encode)
       { userId: id, email: email },
       JWT_KEY,
       { expiresIn: '1h' } //token expires in 1 hr
     );
+    return jwtToken;
   } catch (err) {
-    console.log(err); //return err ('Signup failed, please try again', 500)
-    //'Login failed, please try again', 500)
+    console.error('JWT token creation error:', err);
+    throw new Error('Failed to create authentication token');
   }
-  return jwtToken;
 };
 
 exports.uploadToCloudinary = uploadToCloudinary;

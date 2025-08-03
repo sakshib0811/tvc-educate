@@ -10,7 +10,7 @@ const commentSchema = new Schema({
   parentPost: { type: mongoose.Types.ObjectId, required: true, ref: "Post" },
   parentId: { type: mongoose.Types.ObjectId, ref: "Comment", default: null },
   author: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
-  likes: [{ type: mongoose.Types.ObjectId, required: true, ref: "User" }],
+  likes: [{ type: mongoose.Types.ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model("Comment", commentSchema); //returns a constructor function

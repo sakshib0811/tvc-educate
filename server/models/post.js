@@ -17,7 +17,7 @@ const postSchema = new Schema({
     type: String,
     required: true,
   },
-  tags: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Tag' }],
+  tags: [{ type: mongoose.Types.ObjectId, ref: 'Tag' }],
   date: { type: Date, default: Date.now },
   titleURL: {
     type: String,
@@ -30,7 +30,7 @@ const postSchema = new Schema({
   //mongoose.Types.ObjectId tells mongoose it's a real mongoose id
   //'ref' establishes connection between postSchema and userSchema
   //The ref option is what tells Mongoose which model to use during population (It will populate post with the author)
-  comments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Comment' }],
+  comments: [{ type: mongoose.Types.ObjectId, ref: 'Comment' }],
   author: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
   approved:{type: Boolean, default: false}
 });

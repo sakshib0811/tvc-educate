@@ -1,4 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import apiCache from '../utils/cache';
+import performanceMonitor from '../utils/performance';
 
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,13 +19,28 @@ export const useHttpClient = () => {
   //wrapped sendReq in a 'useCallback' hook to prevent it from being re-created every render
   //and avoid infinite loops
   const sendReq = useCallback(
-    async (url, method = 'GET', body = null, headers = {}, credentials) => {
-      if (method === 'GET') {
-        if ( isMounted.current ) setIsLoading(true);
+    async (url, method = 'GET', body = null, headers = {}, credentials, useCache = true) => {
+      const startTime = performance.now();
+      
+      // Check cache for GET requests
+      if (method === 'GET' && useCache) {
+        const cachedData = apiCache.get(url);
+        if (cachedData) {
+          const endTime = performance.now();
+          performanceMonitor.trackRenderTime('API Cache Hit', endTime - startTime);
+          return cachedData;
+        }
       }
+
+      if (method === 'GET') {
+        if (isMounted.current) setIsLoading(true);
+      }
+      
+      performanceMonitor.trackApiCall();
       const httpAbortCtrl = new AbortController();
       //add the AbortController API to activeHttpReqs array
       activeHttpReqs.current.push(httpAbortCtrl);
+      
       try {
         const response = await fetch(url, {
           method,
@@ -36,8 +53,9 @@ export const useHttpClient = () => {
 
         //remove abortCtrl from the array of controllers once the req completes
         activeHttpReqs.current = activeHttpReqs.current.filter(
-          (reqCtrl) => reqCtrl !== !httpAbortCtrl
+          (reqCtrl) => reqCtrl !== httpAbortCtrl
         );
+        
         //fetch returns a response with error msg ? => still a response
         //the error does not make it to the catch block
         //auth.login() runs when it shouldn't
@@ -48,7 +66,17 @@ export const useHttpClient = () => {
           //400 or 500 status code
           throw new Error(responseData.message);
         }
+
+        // Cache successful GET responses
+        if (method === 'GET' && useCache) {
+          apiCache.set(url, {}, responseData);
+        }
+
         if (isMounted.current) setIsLoading(false);
+        
+        const endTime = performance.now();
+        performanceMonitor.trackRenderTime('API Request', endTime - startTime);
+        
         return responseData; //for our component
       } catch (err) {
         if (isMounted.current) {
@@ -65,6 +93,21 @@ export const useHttpClient = () => {
     if (isMounted.current) setError(null);
   };
 
+  const clearCache = useCallback(() => {
+    apiCache.clear();
+  }, []);
+
+  const invalidateCache = useCallback((url, params = {}) => {
+    apiCache.delete(url, params);
+  }, []);
+
+  const getPerformanceStats = useCallback(() => {
+    return {
+      ...performanceMonitor.getSummary(),
+      cacheStats: apiCache.getStats(),
+    };
+  }, []);
+
   useEffect(() => {
     //'cleanup' fn that runs before the next time useEffect runs again and also when component
     //using this custom hook unmounts
@@ -74,8 +117,18 @@ export const useHttpClient = () => {
       activeHttpReqs.current.forEach((abortCtrl) => abortCtrl.abort());
     };
   }, []);
+  
   //component using the hook needs access to these
-  return { isLoading, error, sendReq, clearError, setError };
+  return { 
+    isLoading, 
+    error, 
+    sendReq, 
+    clearError, 
+    setError, 
+    clearCache, 
+    invalidateCache,
+    getPerformanceStats 
+  };
 };
 
 export default useHttpClient;

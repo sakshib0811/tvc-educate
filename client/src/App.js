@@ -3,6 +3,7 @@ import "./styles/main.css";
 import AppProviders from "./components/AppProviders/AppProviders";
 import MainRouter from "./MainRouter";
 import useMediaQuery from "./hooks/useMediaQuery";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 export const UtilityContext = React.createContext({ isMobile: false });
 
@@ -13,11 +14,13 @@ const App = () => {
   // const isTablet = useMediaQuery('(max-width: 800px)');
 
   return (
-    <UtilityContext.Provider value={{ isMobile }}>
-      <AppProviders>
-        <MainRouter />
-      </AppProviders>
-    </UtilityContext.Provider>
+    <ErrorBoundary>
+      <UtilityContext.Provider value={{ isMobile }}>
+        <AppProviders>
+          <MainRouter />
+        </AppProviders>
+      </UtilityContext.Provider>
+    </ErrorBoundary>
   );
 };
 

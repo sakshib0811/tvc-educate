@@ -6,7 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "prod": "NODE_ENV=production node app.js",
+    "pm2:start": "pm2 start app.js --name tvc-educate-server",
+    "pm2:stop": "pm2 stop tvc-educate-server",
+    "pm2:restart": "pm2 restart tvc-educate-server",
+    "pm2:logs": "pm2 logs tvc-educate-server",
+    "pm2:monit": "pm2 monit"
   },
   "author": "Netversify",
   "license": "ISC",
@@ -20,8 +26,10 @@
     "datauri": "^4.1.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^6.7.0",
     "express-validator": "^6.12.0",
     "google-auth-library": "^7.10.2",
+    "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.8.7",
     "mongoose-unique-validator": "^4.0.1",
@@ -30,9 +38,15 @@
     "passport-twitter": "^0.1.5",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
-    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0"
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0",
+    "winston": "^3.17.0",
+    "xss": "^1.0.14"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }

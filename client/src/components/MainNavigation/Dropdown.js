@@ -19,7 +19,7 @@ export const Dropdown = ({ showMenu, currentUser, handleLogout }) => {
           >
             <div>{currentUser?.name}</div>
             <small className='u-name-id'>
-              {currentUserEmail?.split('.')[0]}
+              {currentUserEmail ?? 'your email'}
             </small>
           </button>
         </li>
@@ -57,7 +57,7 @@ export const Dropdown = ({ showMenu, currentUser, handleLogout }) => {
           <button
             className='btn dropdown__btn'
             onMouseDown={()=>{
-              handleRedirect(`/${currentUser && currentUser.userId}/change-password`)
+              handleRedirect(`/users/${currentUser && currentUser.userId}/change-password`)
             }}
           >
             Change Password

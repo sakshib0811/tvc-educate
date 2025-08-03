@@ -29,20 +29,42 @@ const emitNotification = (io, receiverId, payload) => {
 
 const socketHandlers = (io) => {
   io.on("connection", (socket) => {
+    console.log(`User connected: ${socket.id}`);
+    
     socket.on("join", async ({ userId }) => {
       const updatedUsers = await addUser(userId, socket.id);
+      console.log(`User ${userId} joined with socket ${socket.id}`);
 
-      const sendConnectedUsers = () => {
-        socket.emit("connectedUsers", {
-          users: updatedUsers.filter((u) => u.userId !== userId),
-        });
-      };
+      // Send initial connected users list
+      socket.emit("connectedUsers", {
+        users: updatedUsers.filter((u) => u.userId !== userId),
+      });
 
-      sendConnectedUsers(); // emit once immediately
-      const intervalId = setInterval(sendConnectedUsers, 10000);
+      // Only send periodic updates if there are other users and reduce frequency
+      let intervalId = null;
+      if (updatedUsers.length > 1) {
+        intervalId = setInterval(() => {
+          const currentUsers = users.filter((u) => u.userId !== userId);
+          if (currentUsers.length > 0) {
+            socket.emit("connectedUsers", { users: currentUsers });
+          } else {
+            // Clear interval if no other users
+            if (intervalId) {
+              clearInterval(intervalId);
+              intervalId = null;
+            }
+          }
+        }, 300000); // Increased to 5 minutes (300 seconds)
+      }
+
+      // Store interval ID on socket for cleanup
+      socket.intervalId = intervalId;
 
       socket.on("disconnect", () => {
-        clearInterval(intervalId);
+        console.log(`User ${userId} disconnected: ${socket.id}`);
+        if (socket.intervalId) {
+          clearInterval(socket.intervalId);
+        }
         removeUser(socket.id);
       });
     });
@@ -81,6 +103,15 @@ const socketHandlers = (io) => {
           date: new Date().toISOString(),
         });
       }
+    });
+
+    // Handle disconnection
+    socket.on("disconnect", () => {
+      console.log(`Socket disconnected: ${socket.id}`);
+      if (socket.intervalId) {
+        clearInterval(socket.intervalId);
+      }
+      removeUser(socket.id);
     });
   });
 };

@@ -1,38 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MiniPostList from "../MiniPostList/MiniPostTagList";
 import SkeletonPostList from "../Skeleton/SkeletonPostList";
 import "./RightSideBar.css";
 import MiniPostArticleList from "../MiniPostList/MiniPostArticleList";
-import useHttpClient from "../../hooks/useHttpClient";
-import { baseURL } from "../../utils";
+import { useData } from "../../context/data/DataContext";
 
 const RightSideBar = ({ tags, isLoading }) => {
-  //const newsTag = tags.filter((tag) => tag.name === 'news')[0];
-  //const discussTag = tags.filter((tag) => tag.name === 'discuss')[0];
-  const webdevTag = tags.filter((tag) => tag.name === "react")[0];
-  console.log(webdevTag.posts);
-
-  const [loadedPosts, setLoadedPosts] = useState([]);
-  const { sendReq } = useHttpClient();
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const responseData = await sendReq(
-          //`${process.env.REACT_APP_BASE_URL}/posts`
-          `${baseURL}/posts`
-        );
-        setLoadedPosts(responseData.posts.slice(0, 5));
-        console.log("Posts from Sidebar>>>>", responseData.posts.slice(0, 5));
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchPosts();
-  }, [sendReq]);
+  const { getApprovedPosts } = useData();
+  const approvedPosts = getApprovedPosts();
+  const topPosts = approvedPosts.slice(0, 5);
 
   return (
     <div className="sidebar">
-      {!isLoading ? (
+      {isLoading ? (
         <SkeletonPostList type="mini" />
       ) : (
         <div>
@@ -48,7 +28,7 @@ const RightSideBar = ({ tags, isLoading }) => {
             </h1>
 
             {tags?.slice(0, 5).map((tag, index) => {
-              return <MiniPostList key={index} tag={tag.name} posts={tag.posts} />;
+              return <MiniPostList key={index} tag={tag.name} posts={tag.posts || []} />;
             })}
           </div>
 
@@ -68,7 +48,7 @@ const RightSideBar = ({ tags, isLoading }) => {
               Top Rated Post of the day
             </h1>
 
-            {loadedPosts?.map((post, index) => {
+            {topPosts?.map((post, index) => {
               return <MiniPostArticleList loadedPosts={post} key={index} />;
             })}
           </div>

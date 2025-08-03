@@ -4,25 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 let logoutTimer;
 
 const useAuth = () => {
-  const [token, setToken] = useState(false);
+  const [token, setToken] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState({});
   // const { sendReq } = useHttpClient();
 
-  //useCallback((uid, token, expirationDate)
   const login = useCallback((user, expirationDate) => {
-    // setToken(token);
-    // setUserId(uid);
-    // console.log(user.token, user.userId);
     setToken(user.token);
     setUserId(user.userId);
     setUser(user);
     setIsLoggedIn(true);
+    
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
     setTokenExpirationDate(tokenExpirationDate);
+    
     localStorage.setItem(
       'userData',
       JSON.stringify({
@@ -41,36 +39,42 @@ const useAuth = () => {
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
-    setUser(null);
+    setUser({});
     setTokenExpirationDate(null);
     setIsLoggedIn(false);
     localStorage.removeItem('userData');
   }, []);
 
   useEffect(() => {
-    if (token && tokenExpirationDate instanceof Date) {
-      const remainingTime =
-        tokenExpirationDate.getTime() - new Date().getTime();
-      logoutTimer = setTimeout(logout, remainingTime);
+    if (token && tokenExpirationDate) {
+      const remainingTime = tokenExpirationDate.getTime() - new Date().getTime();
+      if (remainingTime > 0) {
+        logoutTimer = setTimeout(logout, remainingTime);
+      } else {
+        logout();
+      }
     } else {
-        clearTimeout(logoutTimer);
-        if (token) logout();
+      clearTimeout(logoutTimer);
     }
   }, [token, logout, tokenExpirationDate]);
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem('userData'));
-    if (storedData && (new Date(storedData.expiration) > new Date())) {
-      //console.log("I did execute");
-      login(
-        // storedData.userId,
-        // storedData.token,
-        storedData,
-        new Date(storedData.expiration)
-      );
-    
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData && parsedData.token && new Date(parsedData.expiration) > new Date()) {
+          login(parsedData, new Date(parsedData.expiration));
+        } else {
+          localStorage.removeItem('userData');
+        }
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+        localStorage.removeItem('userData');
+      }
     }
-  }, [login]); // [] => only run once when the cmp is mounted first time
+  }, [login]);
+
   return { token, login, logout, userId, user, setUser, isLoggedIn };
 };
 

@@ -1,4 +1,3 @@
-const { v4: uuid } = require('uuid');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const HttpError = require('../models/http-error');
@@ -70,17 +69,21 @@ const createComment = async (req, res, next) => {
     date,
   });
 
+  let session;
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
+    session = await mongoose.startSession();
+    session.startTransaction();
+    
     createdComment = await Comment.populate(createdComment, { path: 'author' });
     post.comments.push(createdComment);
     user.comments.push(createdComment);
-    createdComment.likes.push(author);
-    await createdComment.save({ session: sess });
-    await post.save({ session: sess });
-    await user.save({ session: sess });
-    await sess.commitTransaction();
+    
+    await createdComment.save({ session });
+    await post.save({ session });
+    await user.save({ session });
+    
+    await session.commitTransaction();
+    
     if (post.author.toString() !== userId) {
       await commentNotification(
         userId, //sender
@@ -90,9 +93,16 @@ const createComment = async (req, res, next) => {
       );
     }
   } catch (err) {
+    if (session) {
+      await session.abortTransaction();
+    }
     return next(
       new HttpError('Creating comment failed, please try again', 500)
     );
+  } finally {
+    if (session) {
+      session.endSession();
+    }
   }
   res.status(201).json({ comment: createdComment.toObject({ getters: true }) });
 };
@@ -146,28 +156,38 @@ const deleteComment = async (req, res, next) => {
     );
   }
 
+  let session;
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await comment.remove({ session: sess });
-    comment.author.comments.pull(comment);
-    comment.parentPost.comments.pull(comment);
-    await comment.author.save({ session: sess });
-    await comment.parentPost.save({ session: sess });
+    session = await mongoose.startSession();
+    session.startTransaction();
+    
+    await Comment.findByIdAndDelete(commentId, { session });
+    comment.author.comments.pull(commentId);
+    comment.parentPost.comments.pull(commentId);
+    await comment.author.save({ session });
+    await comment.parentPost.save({ session });
+    
     await removeCommentNotification(
       comment.author.id,
       comment.parentPost.id,
       commentId,
       comment.parentPost.author
     );
-    await sess.commitTransaction();
+    
+    await session.commitTransaction();
   } catch (err) {
+    if (session) {
+      await session.abortTransaction();
+    }
     return next(
       new HttpError('Deleting comment failed, please try again', 500)
     );
-    return next(error);
+  } finally {
+    if (session) {
+      session.endSession();
+    }
   }
-  res.status(201).json({ message: 'Deleted comment' });
+  res.status(200).json({ message: 'Deleted comment' });
 };
 
 const likeComment = async (req, res, next) => {
