@@ -112,7 +112,8 @@ export const signupForm = {
   },
   avatar: {
     ...createFormFieldConfig('Avatar', 'avatar', 'file'),
-    validationRules: [requiredRule('avatar')],
+    validationRules: [],
+    valid: true,
     key: '1',
   },
 };

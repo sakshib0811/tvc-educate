@@ -10,6 +10,7 @@ import Loader from './components/UniversalLoader/Loader.js';
 import LandingPage from './pages/LandingPage/LandingPage.js';
 import Auth from './pages/Auth/Auth.js';
 import Post from './pages/Post/Post.js';
+import ChangePassword from './pages/ChangePassword/ChangePassword.jsx';
 // Lazy-loaded components
 const NewPost = lazy(() => import('./pages/NewPost/NewPost.js'));
 const EditPost = lazy(() => import('./pages/EditPost/EditPost.js'));
@@ -72,6 +73,7 @@ const MainRouter = () => {
 
           {/* Protected routes */}
           <ProtectedRoute path="/home" exact component={Home} />
+          <ProtectedRoute path="/:userId/change-password" exact component={ChangePassword} />
           <ProtectedRoute path="/users/:userId/edit" exact component={EditUserProfile} />
           <ProtectedRoute path="/users/:userId/readinglist" exact component={ReadingList} />
           <ProtectedRoute path="/users/:userId/notifications" exact component={Notifications} />

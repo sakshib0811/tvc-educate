@@ -12,14 +12,14 @@ export const Dropdown = ({ showMenu, currentUser, handleLogout }) => {
         <li className='list__item hvr-bg-lt'>
           <button
             onMouseDown={() =>
-              handleRedirect(`/users/${currentUser && currentUser.userId}`)
+              handleRedirect(`/users/${currentUser?.userId}`)
             }
             className='btn dropdown__btn'
-            to={`/users/${currentUser && currentUser.userId}`}
+            to={`/users/${currentUser?.userId}`}
           >
-            <div>{currentUser && currentUser.name}</div>
+            <div>{currentUser?.name}</div>
             <small className='u-name-id'>
-              {currentUserEmail && currentUserEmail.split('.')[0]}
+              {currentUserEmail?.split('.')[0]}
             </small>
           </button>
         </li>
@@ -51,6 +51,16 @@ export const Dropdown = ({ showMenu, currentUser, handleLogout }) => {
             }
           >
             Edit Profile
+          </button>
+        </li>
+        <li className='list__item hvr-bg-lt'>
+          <button
+            className='btn dropdown__btn'
+            onMouseDown={()=>{
+              handleRedirect(`/${currentUser && currentUser.userId}/change-password`)
+            }}
+          >
+            Change Password
           </button>
         </li>
         <li className='list__item hvr-bg-lt'>

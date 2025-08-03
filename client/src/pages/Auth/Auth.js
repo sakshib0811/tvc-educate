@@ -5,6 +5,7 @@ import useForm from "../../hooks/useForm";
 import { loginForm, signupForm } from "../../utils/formConfig";
 import { appendData, baseURL } from "../../utils";
 import Welcome from "../../components/Auth/Welcome";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./Auth.css";
 import ErrorModal from "../../components/Modal/ErrorModal";
 import useAuth from "../../hooks/useAuth";
@@ -28,7 +29,7 @@ const Auth = ({ newUser }) => {
 
   const history = useHistory();
 
-  const { sendReq, error, clearError } = useHttpClient();
+  const { sendReq, error, clearError, isLoading } = useHttpClient();
 
   const handleAuthSubmit = async (evt) => {
     evt.preventDefault();
@@ -62,6 +63,7 @@ const Auth = ({ newUser }) => {
   return (
     <>
       <ErrorModal error={error} onClose={clearError} />
+      {isLoading && <LoadingSpinner asOverlay />}
       <div className="container container-auth">
         <Welcome />
 
@@ -77,9 +79,9 @@ const Auth = ({ newUser }) => {
             <button
               onClick={handleAuthSubmit}
               className="btn btn__auth btn__auth--mode"
-              disabled={!isFormValid()}
+              disabled={!isFormValid() || isLoading}
             >
-              {newUser ? "Create account" : "Login"}
+              {isLoading ? "Loading..." : (newUser ? "Create account" : "Login")}
             </button>
             <Link
               className="btn btn__auth btn__auth--switch"

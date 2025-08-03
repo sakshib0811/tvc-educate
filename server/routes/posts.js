@@ -14,8 +14,6 @@ const {
   deletePost,
   likePost,
   unlikePost,
-  unicornPost,
-  ununicornPost,
   unbookmarkPost,
   bookmarkPost,
   approvePost,
@@ -23,6 +21,8 @@ const {
 } = postsControllers;
 
 router.get('/', getAllPosts);
+
+router.use(checkAuth);
 
 router.get('/user/:userId', getPostsByUserId);
 
@@ -33,8 +33,6 @@ router.get('/search?', getSearchResults);
 router.patch('/:titleURL/:postId/approve', approvePost);
 
 router.delete('/:titleURL/:postId/delete', removePost);
-
-router.use(checkAuth);
 
 router.post(
   '/',
@@ -61,18 +59,11 @@ router.patch(
   updatePost
 );
 
-
-
-
 router.delete('/:titleURL/:postId', deletePost);
 
 router.put('/:postId/like', likePost);
 
 router.put('/:postId/unlike', unlikePost);
-
-router.put('/:postId/unicorn', unicornPost);
-
-router.put('/:postId/ununicorn', ununicornPost);
 
 router.put('/:postId/bookmark', bookmarkPost);
 

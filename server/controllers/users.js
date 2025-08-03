@@ -1,20 +1,10 @@
 const { validationResult } = require('express-validator');
-const axios = require('axios');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-//const passport = require('passport');
-//const TwitterStrategy = require('passport-twitter').Strategy;
-const { OAuth2Client } = require('google-auth-library');
 require('dotenv').config();
-const { GOOGLE_API_KEY, JWT_KEY, GH_CLIENT_ID, GH_CLIENT_SECRET } = process.env;
-const client = new OAuth2Client(GOOGLE_API_KEY);
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
-const Post = require('../models/post');
-const { fileUpload } = require('../middleware/file-upload');
 const { createJWTtoken } = require('../utils');
-const DEFAULT_AVATAR =
-  'https://res.cloudinary.com/drkvr9wta/image/upload/v1647701003/undraw_profile_pic_ic5t_ncxyyo.png';
+const DEFAULT_AVATAR = 'https://res.cloudinary.com/drkvr9wta/image/upload/v1647701003/undraw_profile_pic_ic5t_ncxyyo.png';
 
 const {
   followNotification,
@@ -45,179 +35,151 @@ const getUserById = async (req, res, next) => {
 
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
-    return next(
-      new HttpError('Invalid inputs passed, please check your data', 422)
-    );
+    return next(new HttpError('Invalid inputs passed, please check your data', 422));
   }
+
   const { name, email, password } = req.body;
+  console.log(email);
 
-  //check if there is an existing user
-  let existingUser;
   try {
-    existingUser = await User.findOne({ email });
-    //user already exists => tell him/her to login
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return next(
-        new HttpError('User already exists, please login instead', 422)
-      );
+      return next(new HttpError('User already exists, please login instead', 422));
     }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const avatar = req.file ? await uploadToCloudinary(req.file) : DEFAULT_AVATAR;
+
+    const newUser = new User({ name, email, password: hashedPassword, avatar });
+
+    await newUser.save();
+
+    const token = createJWTtoken(newUser.id, newUser.email);
+
+    res.status(201).json({
+      user: {
+        name: newUser.name,
+        userId: newUser.id,
+        email: newUser.email,
+        bio: newUser.bio,
+        avatar: newUser.avatar,
+        token,
+      },
+    });
   } catch (err) {
-    return next(new HttpError('Signing up failed, please try again!', 500));
+    return next(new HttpError('Signup failed, please try again.', 500));
   }
-
-  //hash the password
-  let hashedPassword;
-  try {
-    hashedPassword = await bcrypt.hash(password, 12); //12 - number of salting rounds (can't be reverse-engineered)
-  } catch (err) {
-    return next(new HttpError('Could not create user, please try again', 500));
-  }
-
-  const imageUrl = await uploadToCloudinary(req.file);
-
-  //create a new user with hashed password
-  const createdUser = new User({
-    name,
-    email,
-    password: hashedPassword,
-    avatar: imageUrl,
-  });
-
-  //save the user
-  try {
-    await createdUser.save();
-  } catch (err) {
-    return next(new HttpError('Signup failed, please try again', 500));
-  }
-
-  //generate a token
-  let token;
-  try {
-    token = jwt.sign(
-      //takes payload (the data you want to encode)
-      { userId: createdUser.id, email: createdUser.email },
-      JWT_KEY,
-      { expiresIn: '1h' } //token expires in 1 hr
-    );
-  } catch (err) {
-    return next(new HttpError('Signup failed, please try again', 500));
-  }
-
-  res.status(201).json({
-    user: {
-      name: createdUser.name,
-      userId: createdUser.id,
-      email: createdUser.email,
-      token,
-      bio: createdUser.bio,
-      avatar: createdUser.avatar,
-    },
-  });
 };
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
-  let existingUser;
+
   try {
-    existingUser = await User.findOne({ email });
-    if (!existingUser) {
+    const user = await User.findOne({ email });
+    if (!user) {
       return next(new HttpError('Invalid credentials, login failed!', 403));
     }
-  } catch (err) {
-    console.log(err);
-    return next(new HttpError('Logging in failed, please try again.', 500));
-  }
 
-  //validate password
-  let isValidPassword = false;
-  try {
-    isValidPassword = await bcrypt.compare(password, existingUser.password);
-  } catch (err) {
-    console.log(err);
-    return next(
-      new HttpError('Login failed, please check your credentials!', 500)
-    );
-  }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return next(new HttpError('Invalid credentials, login failed!', 401));
+    }
 
-  //invalid password
-  if (!isValidPassword) {
-    return next(new HttpError('Invalid credentials, login failed!', 401));
-  }
+    const token = createJWTtoken(user.id, user.email);
 
-  //everything ok => generate token
-  let token;
-  try {
-    token = jwt.sign(
-      { userId: existingUser.id, email: existingUser.email },
-      JWT_KEY,
-      { expiresIn: '1h' }
-    );
+    res.status(200).json({
+      user: {
+        name: user.name,
+        userId: user.id,
+        email: user.email,
+        token,
+        bio: user.bio,
+        avatar: user.avatar,
+        tags: user.followedTags,
+      },
+    });
   } catch (err) {
-    console.log(err); 
-    return next(new HttpError('Login failed, please try again', 500));
+    return next(new HttpError('Login failed, please try again.', 500));
   }
-  res.json({
-    user: {
-      name: existingUser.name,
-      userId: existingUser.id,
-      email: existingUser.email,
-      token,
-      bio: existingUser.bio,
-      avatar: existingUser.avatar,
-      tags: existingUser.followedTags,
-    },
-  });
 };
 
+const changePassword = async (req, res, next) => {
+  const { oldPassword, newPassword } = req.body;
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return next(new HttpError('User not found', 404));
+
+    const isValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isValid) return next(new HttpError('Old password is incorrect', 401));
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (err) {
+    return next(new HttpError('Could not change password, try again', 500));
+  }
+};
 
 const updateUser = async (req, res, next) => {
   const { userId } = req.params;
-  const { body } = req;
+  let updateData = { ...req.body };
 
-  if (req.file) {
-    const imageUrl = await uploadToCloudinary(req.file);
-    req = { ...req, body: { ...body, avatar: imageUrl } };
-  }
-
-  let user;
   try {
-    user = User.findByIdAndUpdate(
-      userId,
-      req.body,
-      { new: true },
-      (err, data) => {
-        if (err) {
-          return next(new HttpError('Could not find user to update', 500));
-        } else {
-          const { name, id: userId, bio, email, avatar } = data;
-          res.status(200).json({ user: { name, userId, bio, email, avatar } });
-        }
-      }
-    );
+    if (req.file) {
+      const imageUrl = await uploadToCloudinary(req.file);
+      updateData.avatar = imageUrl;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    }).select('name _id bio email avatar');
+
+    if (!updatedUser) {
+      return next(new HttpError('Could not find user to update', 404));
+    }
+
+    const { name, _id: userDocId, bio, email, avatar } = updatedUser;
+    res.status(200).json({ user: { name, userId: userDocId, bio, email, avatar } });
   } catch (err) {
+    console.log(err);
     return next(new HttpError('Could not update user', 500));
   }
 };
 
 const followUser = async (req, res, next) => {
   const { userId, followId } = req.body;
-  let user;
+
+  if (userId === followId) {
+    return next(new HttpError("You can't follow yourself", 400));
+  }
+
   try {
-    user = await User.findByIdAndUpdate(
-      userId,
-      { $addToSet: { following: followId } },
-      { new: true }
-    );
-    userToFollow = await User.findByIdAndUpdate(
-      followId,
-      { $addToSet: { followers: userId } },
-      { new: true }
-    );
+    const [user, userToFollow] = await Promise.all([
+      User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { following: followId } },
+        { new: true }
+      ),
+      User.findByIdAndUpdate(
+        followId,
+        { $addToSet: { followers: userId } },
+        { new: true }
+      ),
+    ]);
+
+    if (!user || !userToFollow) {
+      return next(new HttpError('User not found', 404));
+    }
+
     await followNotification(userId, followId);
-    res.status(201).json(user);
+
+    res.status(200).json(user);
   } catch (err) {
     return next(new HttpError('Follow failed, please try again', 400));
   }
@@ -225,24 +187,37 @@ const followUser = async (req, res, next) => {
 
 const unfollowUser = async (req, res, next) => {
   const { userId, followId } = req.body;
-  let user;
+
+  if (userId === followId) {
+    return next(new HttpError("You can't unfollow yourself", 400));
+  }
+
   try {
-    user = await User.findByIdAndUpdate(
-      userId,
-      { $pull: { following: followId } },
-      { new: true }
-    );
-    userToFollow = await User.findByIdAndUpdate(
-      followId,
-      { $pull: { followers: userId } },
-      { new: true }
-    );
+    const [user, userToUnfollow] = await Promise.all([
+      User.findByIdAndUpdate(
+        userId,
+        { $pull: { following: followId } },
+        { new: true }
+      ),
+      User.findByIdAndUpdate(
+        followId,
+        { $pull: { followers: userId } },
+        { new: true }
+      ),
+    ]);
+
+    if (!user || !userToUnfollow) {
+      return next(new HttpError('User not found', 404));
+    }
+
     await removeFollowNotification(userId, followId);
-    res.status(201).json(user);
+
+    res.status(200).json(user);
   } catch (err) {
     return next(new HttpError('Unfollow failed, please try again', 400));
   }
 };
+
 
 exports.getUserById = getUserById;
 exports.signup = signup;
@@ -250,3 +225,4 @@ exports.login = login;
 exports.updateUser = updateUser;
 exports.followUser = followUser;
 exports.unfollowUser = unfollowUser;
+exports.changePassword = changePassword;

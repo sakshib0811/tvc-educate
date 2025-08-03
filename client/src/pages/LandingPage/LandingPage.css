@@ -674,23 +674,23 @@
 
 .col4gy3row02 {
   display: flex;
-  /* margin-bottom: 40px; */
+  flex-direction: row;
+  align-items: stretch;
+  margin-bottom: 40px;
+  padding: 1rem;
   justify-content: space-between;
   margin-top: 2rem;
 }
 
-.col4gy3row02:hover {
-  /* transform: scale(1.01); */
+/* .col4gy3row02:hover {
+  transform: scale(1.01);
   transition: all 0.6s ease-out;
   background: linear-gradient(to right, white 50%, #ebf2f5 50%);
   background-size: 200% 100%;
   color: #e14177;
   background-position: right bottom;
-}
+} */
 
-/* .col4gy3row02, .lp:hover{
-    color: #fae903;
-  } */
 .lp {
   transition: all 0.6s ease-out;
   color: #e14177;
@@ -977,4 +977,33 @@
   .quizCta {
     padding: 0px !important;
   }
+}
+
+.col4gy3row02.hovered {
+  transform: scale(1.01);
+  background: linear-gradient(to right, white 50%, #ebf2f5 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 0.4s ease-out;
+}
+
+.col4gy3row02 .author__name,
+.col4gy3row02 .author__date,
+.col4gy3row02 .authorTitle02,
+.col4gy3row02 .authSubHed02,
+.col4gy3row02 .authDaTiSt02 span {
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+.col4gy3row02.hovered .userBlogTag{
+  color: #F5F5F5;
+}
+
+.col4gy3row02.hovered .author__name,
+.col4gy3row02.hovered .author__date,
+.col4gy3row02.hovered .authorTitle02,
+.col4gy3row02.hovered .authSubHed02,
+.col4gy3row02.hovered .authDaTiSt02 span {
+  color: #e14177;
 }

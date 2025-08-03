@@ -16,6 +16,7 @@ import {
 import { SlCalender } from "react-icons/sl";
 
 const LandingPage = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [addTask, setAddTask] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { handleChangeTheme } = useContext(ThemeContexts);
@@ -175,7 +176,7 @@ const LandingPage = () => {
     ],
   };
 
-
+  const postsToRender = filteredPosts.length > 0 ? filteredPosts : approvedPosts;
   return (
     <>
       {!isLoading ? (
@@ -358,189 +359,55 @@ const LandingPage = () => {
                   </div>
                 </div>
 
-                {filteredPosts.length > 0
-                  ? filteredPosts.map((e, i) => {
-                    var date = formatDate(e.date);
-                    var readingDuration = readingTime(e.body);
-                    var shortenedBody = bodyShortener(e.body);
-                    // var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
-                    return (
-                      <div
-                        className="col4gy3row02"
-                        key={e._id + idx}
-                        onMouseEnter={() => {
-                          var arr = [...hoverClass];
-                          arr[i].hoverClass = true;
-                          setHoverClass(arr);
-                        }}
-                        onMouseLeave={() => {
-                          var arr = [...hoverClass];
-                          arr[i].hoverClass = false;
-                          setHoverClass(arr);
-                        }}
-                      >
-                        <div className="colis1002">
-                          <Link
-                            // onClick={() => handleChangeTheme(5)}
-                            // style={{ textDecoration: "none" }}
-                            to={`/posts/${e.id}`}
-                          >
-                            <div className="preview__author ml--1">
-                              <div className="author__image">
-                                <img
-                                  src={e.author.avatar}
-                                  alt={`user ${e.author.name}`}
-                                />
-                              </div>
-                              <div
-                                className={`author__details ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
-                              >
-                                <p
-                                  className={`author__name ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                >
-                                  {e.author.name}
-                                </p>
-                                <p
-                                  className={`author__date ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                >
-                                  {date}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="authHeading02 ">
-                              <p
-                                className={`authorTitle02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
-                              >
-                                {e.title}
-                              </p>
-                              <p
-                                className={`authSubHed02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                  }`}
-                              >
-                                {shortenedBody}
-                              </p>
-                            </div>
-                          </Link>
-                          <div
-                            className={`authDaTiSt02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                              }`}
-                          >
-                            <span>{e.userBlogDate} ·</span>
-                            <span className="">{readingDuration}</span>
-                            <span className="mx-1 ">·</span>
-                            <span
-                              className={`mx-1 ${hoverClass[i]?.hoverClass
-                                ? "userTagHover"
-                                : "userBlogTag"
-                                }`}
-                            >
-                              {e.tags[0].name}
-                            </span>
-                            <span className="mx-1 ">&#9733;</span>
+                {postsToRender.map((e, idx) => {
+                const date = formatDate(e.date);
+                const readingDuration = readingTime(e.body);
+                const shortenedBody = bodyShortener(e.body);
+                const isHovered = hoveredIndex === idx;
+
+                return (
+                  <div
+                    key={e._id + idx}
+                    className={`col4gy3row02 ${isHovered ? "hovered" : ""}`}
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <div className="colis1002">
+                      <Link to={`/posts/${e.id}`}>
+                        <div className="preview__author ml--1">
+                          <div className="author__image">
+                            <img src={e.author.avatar} alt={`user ${e.author.name}`} />
+                          </div>
+                          <div className="author__details">
+                            <p className="author__name">{e.author.name}</p>
+                            <p className="author__date">{date}</p>
                           </div>
                         </div>
-                        <div className="colis202">
-                          <img src={e.image} alt={i + " " + e.title} />
+
+                        <div className="authHeading02">
+                          <p className="authorTitle02">{e.title}</p>
+                          <p className="authSubHed02">{shortenedBody}</p>
                         </div>
+                      </Link>
+
+                      <div className="authDaTiSt02">
+                        <span>{e.userBlogDate} ·</span>
+                        <span>{readingDuration}</span>
+                        <span className="mx-1">·</span>
+                        <span className={`mx-1 ${isHovered ? "userTagHover" : "userBlogTag"}`}>
+                          {e.tags?.[0]?.name}
+                        </span>
+                        {/* <span className="mx-1">&#9733;</span> */}
                       </div>
-                    );
-                  })
-                  : approvedPosts.length > 0
-                    ? approvedPosts.map((e, i) => {
-                      var date = formatDate(e.date);
-                      var readingDuration = readingTime(e.body);
-                      var shortenedBody = bodyShortener(e.body);
-                      // var hoverVal = hoverClass[i]?.hoverClass ? "lp" : "no-lp";
-                      return (
-                        <div
-                          className="col4gy3row02"
-                          key={e._id + 1}
-                          onMouseEnter={() => {
-                            var arr = [...hoverClass];
-                            arr[i].hoverClass = true;
-                            setHoverClass(arr);
-                          }}
-                          onMouseLeave={() => {
-                            var arr = [...hoverClass];
-                            arr[i].hoverClass = false;
-                            setHoverClass(arr);
-                          }}
-                        >
-                          <div className="colis1002">
-                            <Link
-                              // onClick={() => handleChangeTheme(5)}
-                              // style={{ textDecoration: "none" }}
-                              to={`/posts/${e.id}`}
-                            >
-                              <div className="preview__author ml--1">
-                                <div className="author__image">
-                                  <img
-                                    src={e.author.avatar}
-                                    alt={`user profile ${e.author.name}`}
-                                  />
-                                </div>
-                                <div
-                                  className={`author__details ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                >
-                                  <p
-                                    className={`author__name ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                      }`}
-                                  >
-                                    {e.author.name}
-                                  </p>
-                                  <p
-                                    className={`author__date ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                      }`}
-                                  >
-                                    {date}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="authHeading02 ">
-                                <p
-                                  className={`authorTitle02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                >
-                                  {e.title}
-                                </p>
-                                <p
-                                  className={`authSubHed02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                    }`}
-                                >
-                                  {shortenedBody}
-                                </p>
-                              </div>
-                            </Link>
-                            <div
-                              className={`authDaTiSt02 ${hoverClass[i]?.hoverClass ? "lp" : "no-lp"
-                                }`}
-                            >
-                              <span>{e.userBlogDate} ·</span>
-                              <span className="">{readingDuration}</span>
-                              <span className="mx-1 ">·</span>
-                              <span
-                                className={`mx-1 ${hoverClass[i]?.hoverClass
-                                  ? "userTagHover"
-                                  : "userBlogTag"
-                                  }`}
-                              >
-                                {e.tags[0].name}
-                              </span>
-                              <span className="mx-1 ">&#9733;</span>
-                            </div>
-                          </div>
-                          <div className="colis202">
-                            <img src={e.image} alt={i + " " + e.title} />
-                          </div>
-                        </div>
-                      );
-                    })
-                    : ""}
+                    </div>
+
+                    <div className="colis202">
+                      <img src={e.image} alt={`${idx} ${e.title}`} />
+                    </div>
+                  </div>
+                );
+              })}
+
               </div>
               <div className="rightBlogSection">
                 <div className="allBlogTypes">
