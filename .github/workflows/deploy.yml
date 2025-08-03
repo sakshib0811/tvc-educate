@@ -210,7 +210,6 @@ jobs:
       uses: actions/checkout@v4
       
     - name: 🔍 Run security scan
-      if: secrets.SNYK_TOKEN != ''
       uses: snyk/actions/node@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
