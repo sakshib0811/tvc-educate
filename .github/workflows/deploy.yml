@@ -3,8 +3,38 @@ name: 🚀 Deploy TVC Educate
 on:
   push:
     branches: [ main, master ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.gif'
+      - '**/*.svg'
+      - '**/*.ico'
+      - 'docs/**'
+      - '.gitignore'
+      - 'README.md'
+      - 'DEPLOYMENT.md'
+      - 'QUICK_START.md'
+      - 'GITHUB_SECRETS.md'
   pull_request:
     branches: [ main, master ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.gif'
+      - '**/*.svg'
+      - '**/*.ico'
+      - 'docs/**'
+      - '.gitignore'
+      - 'README.md'
+      - 'DEPLOYMENT.md'
+      - 'QUICK_START.md'
+      - 'GITHUB_SECRETS.md'
 
 env:
   NODE_VERSION: '18'
@@ -108,7 +138,7 @@ jobs:
   deploy-production:
     needs: test-and-build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, '[skip ci]')
     environment: production
     
     steps:

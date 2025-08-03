@@ -28,13 +28,13 @@
 - Database: <a href="https://github.com/mongodb/mongo">MongoDB</a>
 - ORM: <a href="https://github.com/Automattic/mongoose">Mongoose</a>
 - Image hosting: <a href="https://cloudinary.com/">Cloudinary</a>
+- Reverse Proxy & Load Balancer: <a href="https://nginx.org/">Nginx</a>
 
 ## Features
 
-- Login / Signup
-- Google / Facebook / Twitter / GitHub OAuth
+- Login / Signup / Change Password
 - Create / Remove / Update / Delete Post
-- Like / Unicorn / Bookmark Post
+- Like / Bookmark Post
 - Reading List
 - Create / Add Tags to Post
 - Follow Tags
@@ -48,6 +48,9 @@
 - Search Posts
 - Real-time Notifications
 - Skeleton Loading
+- Quiz
+- Trending Posts / Tags
+- Filter by Tags
 
 ## How to setup locally
 
@@ -79,9 +82,6 @@ In `client/.env`:
 ```js
 REACT_APP_BASE_URL=http://localhost:5000/api
 REACT_APP_SOCKET_IO_URL=http://localhost:5000
-REACT_APP_GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID>
-REACT_APP_GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID>
-REACT_APP_FB_APP_ID=<FACEBOOK_CLIENT_ID>
 ```
 
 In `server/.env`:
@@ -100,16 +100,6 @@ CLOUDINARY_CLOUD_NAME = //cloud name
 CLOUDINARY_API_KEY = //API key
 CLOUDINARY_API_SECRET; //API secret
 
-//Google will provide you with the following credentials
-GOOGLE_API_KEY = //API key
-
-//Github will provide you with the following credentials
-GH_CLIENT_ID = //Github's Client ID
-GH_CLIENT_SECRET = //Github's Client Secret
-
-// Twitter will provide you with the following credentials
-TWITTER_CONSUMER_KEY = //Twitter's Consumer key
-TWITTER_CONSUMER_SECRET = //Twitter's Consumer Secret
 ```
 
 Finally, run <code>npm start</code> in both `client` and `server` subdirectories
@@ -118,37 +108,3 @@ Finally, run <code>npm start</code> in both `client` and `server` subdirectories
 $ cd server && npm start
 $ cd client && npm start
 ```
-
-<!-- ## Screenshots
-
-### Login / Signup
-
-![](screenshots/login-signup.gif)
-
-### Like / Unicorn / Bookmark
-
-![](screenshots/like-unicorn-bookmark.gif)
-
-### New Post
-
-![](screenshots/new-post.gif)
-
-### Comments and Replies
-
-![](screenshots/comments-replies.gif)
-
-### Real-time Notifications
-
-![](screenshots/notif.gif)
-
-### Follow Tags
-
-![](screenshots/tags.gif)
-
-### Edit Profile
-
-![](screenshots/edit-profile.gif)
-
-### Search
-
-![](screenshots/search.gif) -->
