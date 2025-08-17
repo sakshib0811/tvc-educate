@@ -14,7 +14,6 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - tvc-network
 
@@ -37,11 +36,6 @@ services:
       - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
       - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
       - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - GH_CLIENT_ID=${GH_CLIENT_ID}
-      - GH_CLIENT_SECRET=${GH_CLIENT_SECRET}
-      - TWITTER_CONSUMER_KEY=${TWITTER_CONSUMER_KEY}
-      - TWITTER_CONSUMER_SECRET=${TWITTER_CONSUMER_SECRET}
     ports:
       - "5000:5000"
     depends_on:
@@ -57,26 +51,10 @@ services:
       retries: 3
       start_period: 40s
 
-  # Nginx Reverse Proxy (for production)
-  nginx:
-    image: nginx:alpine
-    container_name: tvc-educate-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - server
-    networks:
-      - tvc-network
-
 volumes:
   mongodb_data:
     driver: local
 
 networks:
   tvc-network:
-    driver: bridge 
+    driver: bridge
