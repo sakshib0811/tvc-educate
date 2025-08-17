@@ -169,7 +169,7 @@ socketHandlers(io);
     
     logger.info(`✅ Connected to MongoDB: ${DB_NAME}`);
     
-    httpServer.listen(PORT, () => {
+    httpServer.listen(3000, () => {
       logger.info(`✅ Server running on http://localhost:${PORT}`);
       logger.info(`✅ Environment: ${NODE_ENV}`);
       logger.info(`✅ Health check available at: http://localhost:${PORT}/health`);
