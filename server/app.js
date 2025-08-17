@@ -162,6 +162,7 @@ socketHandlers(io);
 // ----- DATABASE + SERVER START -----
 (async () => {
   try {
+    logger.info(`we are here ${MONGO_URI} ${DB_NAME}`);
     await mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
